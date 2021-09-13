@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "694910055150",
+    "project_id": "shallows-3e9ed",
+    "storage_bucket": "shallows-3e9ed.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:694910055150:android:1645a85a9545e4638d39ff",
+        "android_client_info": {
+          "package_name": "com.netscaledigital.shallows"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "694910055150-ku4lq9ktcch1k34pptr3tq3ae58vnbn9.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBkfE2NkwMPE3fdhFcIWHnrP_QDi0DmeLM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "694910055150-ku4lq9ktcch1k34pptr3tq3ae58vnbn9.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "694910055150-n0uq0c5v2h6bioticrms37m1a787rbis.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.netscaledigital.shallows"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
