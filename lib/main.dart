@@ -5,7 +5,7 @@ import 'package:shallows/screens/authenticate/register.dart';
 import 'package:shallows/screens/authenticate/sign_in.dart';
 import 'package:shallows/screens/wrapper.dart';
 import 'package:provider/provider.dart';
-import 'package:shallows/services.dart/auth_service.dart';
+import 'package:shallows/services/auth_service.dart';
 //import 'models/myUser.dart';
 
 void main() async {

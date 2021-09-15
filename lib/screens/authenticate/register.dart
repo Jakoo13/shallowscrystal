@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:shallows/services.dart/auth_service.dart';
+import 'package:shallows/services/auth_service.dart';
 
 class Register extends StatefulWidget {
   const Register({Key? key}) : super(key: key);
@@ -12,6 +12,7 @@ class Register extends StatefulWidget {
 class _RegisterState extends State<Register> {
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
+  final confirmPasswordController = TextEditingController();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   bool isLoading = false;
   final AuthService _auth = AuthService();
@@ -21,113 +22,152 @@ class _RegisterState extends State<Register> {
     User? user = FirebaseAuth.instance.currentUser;
     return MaterialApp(
       home: Scaffold(
-        backgroundColor: Colors.lightBlue,
         appBar: AppBar(
           title: Text('Register'),
         ),
-        body: Form(
-          key: _formKey,
-          child: Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                RichText(
-                  text: TextSpan(
-                    text: 'Welcome to',
-                    style: TextStyle(
-                      fontSize: 25.0,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.yellow,
-                    ),
-                  ),
-                ),
-                SizedBox(height: 10),
-                RichText(
-                  text: TextSpan(
-                    text: 'the Shallows',
-                    style: TextStyle(
-                      fontSize: 25.0,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.yellow,
-                    ),
-                  ),
-                ),
-                SizedBox(height: 50),
-                Padding(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 90,
-                  ),
-                  child: TextFormField(
-                    controller: emailController,
-                    validator: validateEmail,
-                    decoration: InputDecoration(
-                      labelText: "Email",
-                      labelStyle: TextStyle(
-                        color: Colors.white,
-                      ),
-                    ),
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(
-                    left: 90,
-                    right: 90,
-                    bottom: 40,
-                  ),
-                  child: TextFormField(
-                    controller: passwordController,
-                    validator: validatePassword,
-                    obscureText: true,
-                    decoration: InputDecoration(
-                      labelText: "Password",
-                      labelStyle: TextStyle(
-                        color: Colors.white,
-                      ),
-                      //border: InputBorder.none,
-                    ),
-                  ),
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: [
-                    ElevatedButton(
-                      child: isLoading
-                          ? CircularProgressIndicator(color: Colors.white)
-                          : Text('Sign Up'),
-                      onPressed: user != null
-                          ? null
-                          : () async {
-                              setState(() => isLoading = true);
-                              if (_formKey.currentState!.validate()) {
-                                try {
-                                  dynamic result = await _auth.register(
-                                    emailController.text,
-                                    passwordController.text,
-                                  );
-                                  if (result == null) {
-                                    print('error registering');
-                                  } else {
-                                    print('registered');
-                                    print(result.uid);
-                                  }
-                                  Navigator.pop(context);
-                                } catch (error) {
-                                  print(error);
-                                }
-
-                                setState(() => isLoading = false);
-                              }
-                            },
-                    ),
-                    ElevatedButton(
-                      child: Text('Back'),
-                      onPressed: () {
-                        Navigator.pop(context);
-                      },
-                    ),
-                  ],
-                ),
+        body: Container(
+          decoration: new BoxDecoration(
+            gradient: new LinearGradient(
+              begin: Alignment.topCenter,
+              end: Alignment.bottomCenter,
+              colors: [
+                Color.fromARGB(255, 58, 123, 213),
+                Color.fromARGB(255, 58, 96, 115),
               ],
+            ),
+          ),
+          child: Form(
+            key: _formKey,
+            child: Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  SizedBox(
+                    height: 90,
+                  ),
+                  RichText(
+                    text: TextSpan(
+                      text: 'Welcome to',
+                      style: TextStyle(
+                        fontSize: 25.0,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.yellow,
+                      ),
+                    ),
+                  ),
+                  SizedBox(height: 10),
+                  RichText(
+                    text: TextSpan(
+                      text: 'the Shallows',
+                      style: TextStyle(
+                        fontSize: 25.0,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.yellow,
+                      ),
+                    ),
+                  ),
+                  SizedBox(height: 50),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 90,
+                    ),
+                    child: TextFormField(
+                      controller: emailController,
+                      validator: validateEmail,
+                      decoration: InputDecoration(
+                        labelText: "Email",
+                        labelStyle: TextStyle(
+                          color: Colors.white,
+                        ),
+                      ),
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(
+                      left: 90,
+                      right: 90,
+                    ),
+                    child: TextFormField(
+                      controller: passwordController,
+                      validator: validatePassword,
+                      obscureText: true,
+                      decoration: InputDecoration(
+                        labelText: "Password",
+                        labelStyle: TextStyle(
+                          color: Colors.white,
+                        ),
+                        //border: InputBorder.none,
+                      ),
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(
+                      left: 90,
+                      right: 90,
+                      bottom: 40,
+                    ),
+                    child: TextFormField(
+                      controller: confirmPasswordController,
+                      validator: (val) {
+                        if (val!.isEmpty) {
+                          return 'Empty';
+                        } else if (val != passwordController.text) {
+                          return "Does not match";
+                        } else
+                          return null;
+                      },
+                      obscureText: true,
+                      decoration: InputDecoration(
+                        labelText: "Confirm Password",
+                        labelStyle: TextStyle(
+                          color: Colors.white,
+                        ),
+                        //border: InputBorder.none,
+                      ),
+                    ),
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      ElevatedButton(
+                        child: isLoading
+                            ? CircularProgressIndicator(color: Colors.white)
+                            : Text('Sign Up'),
+                        onPressed: user != null
+                            ? null
+                            : () async {
+                                //setState(() => isLoading = true);
+                                if (_formKey.currentState!.validate()) {
+                                  try {
+                                    dynamic result = await _auth.register(
+                                      emailController.text,
+                                      passwordController.text,
+                                    );
+                                    if (result == null) {
+                                      print('error registering');
+                                    } else {
+                                      print('registered');
+                                      print(result.uid);
+                                    }
+                                    Navigator.pop(context);
+                                  } catch (error) {
+                                    print(error);
+                                  }
+
+                                  setState(() => isLoading = false);
+                                }
+                              },
+                      ),
+                      ElevatedButton(
+                        child: Text('Back'),
+                        onPressed: () {
+                          Navigator.pop(context);
+                        },
+                      ),
+                    ],
+                  ),
+                ],
+              ),
             ),
           ),
         ),

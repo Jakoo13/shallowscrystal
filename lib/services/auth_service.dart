@@ -39,6 +39,7 @@ class AuthService {
         password: password,
       );
       User? user = result.user;
+
       return _getMyUserFromFirebase(user!);
     } on FirebaseAuthException catch (e) {
       if (e.code == 'weak-passord') {
