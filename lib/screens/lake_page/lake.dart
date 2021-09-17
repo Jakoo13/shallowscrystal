@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:shallows/services/auth_service.dart';
 import 'package:shallows/services/database.dart';
+import 'package:shallows/screens/lake_page/skier-animation.dart';
 
 class Lake extends StatefulWidget {
   static String id = 'lake';
@@ -21,26 +22,6 @@ class _LakeState extends State<Lake> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        // appBar: AppBar(
-        //   title: Text(
-        //     'Now Skiing',
-        //     style: TextStyle(color: Colors.black),
-        //   ),
-        //   backgroundColor: Colors.teal[200],
-        //   elevation: 0.0,
-        //   actions: <Widget>[
-        //     TextButton.icon(
-        //       icon: Icon(Icons.person),
-        //       label: Text('Logout'),
-        //       style: TextButton.styleFrom(
-        //         primary: Colors.white,
-        //       ),
-        //       onPressed: () async {
-        //         await _auth.logOut();
-        //       },
-        //     )
-        //   ],
-        // ),
         body: Container(
       decoration: new BoxDecoration(
         gradient: new LinearGradient(
@@ -53,87 +34,82 @@ class _LakeState extends State<Lake> {
         ),
       ),
       child: Padding(
-          padding: const EdgeInsets.all(20.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Container(
-                padding: const EdgeInsets.only(top: 20),
-                child: new Image.asset(
-                  'assets/lake2.png',
-                  height: 250,
-                ),
-                alignment: Alignment.center,
-              ),
-              Container(
-                height: 250,
-                padding: const EdgeInsets.symmetric(vertical: 0),
-                child: StreamBuilder<QuerySnapshot>(
-                    stream: _database.residenceSnapshot,
-                    builder: (
-                      BuildContext context,
-                      AsyncSnapshot<QuerySnapshot> snapshot,
-                    ) {
-                      if (snapshot.hasError) {
-                        return Text('Something Went Wrong');
-                      }
-                      if (snapshot.connectionState == ConnectionState.waiting) {
-                        return Text('Loading');
-                      }
-                      final data = snapshot.requireData;
-                      return ListView.builder(
-                          itemCount: data.size,
-                          itemBuilder: (context, index) {
-                            return Card(
-                              child: ListTile(
-                                tileColor: Colors.teal[200],
-                                onTap: () {
-                                  print(data.docs[index].id);
-                                  if (data.docs[index]['flagOut'] == true) {
-                                    _database.changeFlagPosition(
-                                        false, data.docs[index].id);
-                                  } else {
-                                    _database.changeFlagPosition(
-                                        true, data.docs[index].id);
-                                  }
-                                },
-                                trailing: Icon(Icons.flag_rounded),
-                                selected: data.docs[index]['flagOut'],
-                                selectedTileColor: Colors.yellow,
-                                title: Text(
-                                  '${data.docs[index]['name']}:  Flag Out - ${data.docs[index]['flagOut']}',
-                                  textAlign: TextAlign.center,
-                                  style: TextStyle(
-                                    color: Colors.grey[900],
-                                    fontWeight: FontWeight.w700,
-                                    fontSize: 18,
-                                  ),
+        padding: const EdgeInsets.all(20.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Container(
+              padding: const EdgeInsets.only(top: 50),
+              child: SkierAnimation(),
+              alignment: Alignment.center,
+            ),
+            Container(
+              height: 200,
+              padding: const EdgeInsets.symmetric(vertical: 0),
+              child: StreamBuilder<QuerySnapshot>(
+                  stream: _database.residenceSnapshot,
+                  builder: (
+                    BuildContext context,
+                    AsyncSnapshot<QuerySnapshot> snapshot,
+                  ) {
+                    if (snapshot.hasError) {
+                      return Text('Something Went Wrong');
+                    }
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return Text('Loading');
+                    }
+                    final data = snapshot.requireData;
+                    return ListView.builder(
+                        itemCount: data.size,
+                        itemBuilder: (context, index) {
+                          return Card(
+                            child: ListTile(
+                              tileColor: Colors.teal[200],
+                              onTap: () {
+                                print(data.docs[index].id);
+                                if (data.docs[index]['flagOut'] == true) {
+                                  _database.changeFlagPosition(
+                                      false, data.docs[index].id);
+                                } else {
+                                  _database.changeFlagPosition(
+                                      true, data.docs[index].id);
+                                }
+                              },
+                              trailing: Icon(Icons.flag_rounded),
+                              selected: data.docs[index]['flagOut'],
+                              selectedTileColor: Colors.yellow,
+                              title: Text(
+                                '${data.docs[index]['name']}:  Flag Out - ${data.docs[index]['flagOut']}',
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                  color: Colors.grey[900],
+                                  fontWeight: FontWeight.w700,
+                                  fontSize: 18,
                                 ),
                               ),
-                            );
-                          });
-                    }),
+                            ),
+                          );
+                        });
+                  }),
+            ),
+            Expanded(
+              child: Align(
+                alignment: FractionalOffset.bottomCenter,
+                child: ElevatedButton(
+                  child: Text('Log Out'),
+                  onPressed: () async {
+                    await _auth.logOut();
+                  },
+                ),
               ),
-              // Text(
-              //   currentUser.toString(),
-              //   style: TextStyle(color: Colors.white),
-              // ),
-            ],
-          )),
+            ),
+            // Text(
+            //   currentUser.toString(),
+            //   style: TextStyle(color: Colors.white),
+            // ),
+          ],
+        ),
+      ),
     ));
-  }
-}
-
-class DetailPage extends StatefulWidget {
-  const DetailPage({Key? key}) : super(key: key);
-
-  @override
-  _DetailPageState createState() => _DetailPageState();
-}
-
-class _DetailPageState extends State<DetailPage> {
-  @override
-  Widget build(BuildContext context) {
-    return Container();
   }
 }

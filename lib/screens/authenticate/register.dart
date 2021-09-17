@@ -45,24 +45,26 @@ class _RegisterState extends State<Register> {
                   SizedBox(
                     height: 90,
                   ),
-                  RichText(
-                    text: TextSpan(
-                      text: 'Welcome to',
-                      style: TextStyle(
-                        fontSize: 25.0,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.yellow,
-                      ),
-                    ),
-                  ),
-                  SizedBox(height: 10),
-                  RichText(
-                    text: TextSpan(
-                      text: 'the Shallows',
-                      style: TextStyle(
-                        fontSize: 25.0,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.yellow,
+                  // RichText(
+                  //   text: TextSpan(
+                  //     text: 'Welcome to',
+                  //     style: TextStyle(
+                  //       fontSize: 25.0,
+                  //       fontWeight: FontWeight.bold,
+                  //       color: Colors.yellow,
+                  //     ),
+                  //   ),
+                  // ),
+                  SizedBox(height: 0),
+                  AnimatedOpacity(
+                    opacity: .7,
+                    //_currentOpacity fix this later
+                    duration: const Duration(seconds: 2),
+                    child: Padding(
+                      padding: const EdgeInsets.all(50),
+                      child: Image.asset(
+                        'assets/Untitled-3.png',
+                        width: 400,
                       ),
                     ),
                   ),
@@ -79,6 +81,12 @@ class _RegisterState extends State<Register> {
                         labelStyle: TextStyle(
                           color: Colors.white,
                         ),
+                        errorStyle: TextStyle(
+                          color: Colors.black,
+                        ),
+                      ),
+                      style: TextStyle(
+                        color: Colors.yellow,
                       ),
                     ),
                   ),
@@ -96,7 +104,13 @@ class _RegisterState extends State<Register> {
                         labelStyle: TextStyle(
                           color: Colors.white,
                         ),
+                        errorStyle: TextStyle(
+                          color: Colors.black,
+                        ),
                         //border: InputBorder.none,
+                      ),
+                      style: TextStyle(
+                        color: Colors.yellow,
                       ),
                     ),
                   ),
@@ -122,7 +136,12 @@ class _RegisterState extends State<Register> {
                         labelStyle: TextStyle(
                           color: Colors.white,
                         ),
-                        //border: InputBorder.none,
+                        errorStyle: TextStyle(
+                          color: Colors.black,
+                        ),
+                      ),
+                      style: TextStyle(
+                        color: Colors.yellow,
                       ),
                     ),
                   ),

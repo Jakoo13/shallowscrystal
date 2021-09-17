@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:shallows/services/auth_service.dart';
 import 'register.dart';
+import 'package:page_transition/page_transition.dart';
 //import 'lake.dart';
 
 class SignIn extends StatefulWidget {
@@ -41,9 +42,14 @@ class _SignInState extends State<SignIn> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Padding(
-                    padding: const EdgeInsets.all(50),
-                    child: Image.asset('assets/Untitled-3.png'),
+                  AnimatedOpacity(
+                    opacity: .7,
+                    //_currentOpacity fix this later
+                    duration: const Duration(seconds: 2),
+                    child: Padding(
+                      padding: const EdgeInsets.all(50),
+                      child: Image.asset('assets/Untitled-3.png'),
+                    ),
                   ),
                   Padding(
                     padding: const EdgeInsets.symmetric(
@@ -57,6 +63,12 @@ class _SignInState extends State<SignIn> {
                         labelStyle: TextStyle(
                           color: Colors.white,
                         ),
+                        errorStyle: TextStyle(
+                          color: Colors.black,
+                        ),
+                      ),
+                      style: TextStyle(
+                        color: Colors.yellow,
                       ),
                     ),
                   ),
@@ -75,7 +87,13 @@ class _SignInState extends State<SignIn> {
                         labelStyle: TextStyle(
                           color: Colors.white,
                         ),
+                        errorStyle: TextStyle(
+                          color: Colors.black,
+                        ),
                         //border: InputBorder.none,
+                      ),
+                      style: TextStyle(
+                        color: Colors.yellow,
                       ),
                     ),
                   ),
@@ -115,11 +133,12 @@ class _SignInState extends State<SignIn> {
                         child: Text('Sign Up'),
                         onPressed: () {
                           Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => Register(),
-                            ),
-                          );
+                              context,
+                              PageTransition(
+                                type: PageTransitionType.size,
+                                alignment: Alignment.bottomCenter,
+                                child: Register(),
+                              ));
                         },
                       ),
                     ],
