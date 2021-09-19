@@ -43,54 +43,56 @@ class _LakeState extends State<Lake> {
               child: SkierAnimation(),
               alignment: Alignment.center,
             ),
-            Container(
-              height: 200,
-              padding: const EdgeInsets.symmetric(vertical: 0),
-              child: StreamBuilder<QuerySnapshot>(
-                  stream: _database.residenceSnapshot,
-                  builder: (
-                    BuildContext context,
-                    AsyncSnapshot<QuerySnapshot> snapshot,
-                  ) {
-                    if (snapshot.hasError) {
-                      return Text('Something Went Wrong');
-                    }
-                    if (snapshot.connectionState == ConnectionState.waiting) {
-                      return Text('Loading');
-                    }
-                    final data = snapshot.requireData;
-                    return ListView.builder(
-                        itemCount: data.size,
-                        itemBuilder: (context, index) {
-                          return Card(
-                            child: ListTile(
-                              tileColor: Colors.teal[200],
-                              onTap: () {
-                                print(data.docs[index].id);
-                                if (data.docs[index]['flagOut'] == true) {
-                                  _database.changeFlagPosition(
-                                      false, data.docs[index].id);
-                                } else {
-                                  _database.changeFlagPosition(
-                                      true, data.docs[index].id);
-                                }
-                              },
-                              trailing: Icon(Icons.flag_rounded),
-                              selected: data.docs[index]['flagOut'],
-                              selectedTileColor: Colors.yellow,
-                              title: Text(
-                                '${data.docs[index]['name']}:  Flag Out - ${data.docs[index]['flagOut']}',
-                                textAlign: TextAlign.center,
-                                style: TextStyle(
-                                  color: Colors.grey[900],
-                                  fontWeight: FontWeight.w700,
-                                  fontSize: 18,
+            SingleChildScrollView(
+              child: Container(
+                height: 550,
+                padding: const EdgeInsets.symmetric(vertical: 0),
+                child: StreamBuilder<QuerySnapshot>(
+                    stream: _database.residenceSnapshot,
+                    builder: (
+                      BuildContext context,
+                      AsyncSnapshot<QuerySnapshot> snapshot,
+                    ) {
+                      if (snapshot.hasError) {
+                        return Text('Something Went Wrong');
+                      }
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        return Text('Loading');
+                      }
+                      final data = snapshot.requireData;
+                      return ListView.builder(
+                          itemCount: data.size,
+                          itemBuilder: (context, index) {
+                            return Card(
+                              child: ListTile(
+                                tileColor: Colors.teal[200],
+                                onTap: () {
+                                  print(data.docs[index].id);
+                                  if (data.docs[index]['flagOut'] == true) {
+                                    _database.changeFlagPosition(
+                                        false, data.docs[index].id);
+                                  } else {
+                                    _database.changeFlagPosition(
+                                        true, data.docs[index].id);
+                                  }
+                                },
+                                trailing: Icon(Icons.flag_rounded),
+                                selected: data.docs[index]['flagOut'],
+                                selectedTileColor: Colors.yellow,
+                                title: Text(
+                                  '${data.docs[index]['name']}:  Flag Out - ${data.docs[index]['flagOut'] ? "Yes" : "No"}',
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                    color: Colors.grey[900],
+                                    fontWeight: FontWeight.w700,
+                                    fontSize: 18,
+                                  ),
                                 ),
                               ),
-                            ),
-                          );
-                        });
-                  }),
+                            );
+                          });
+                    }),
+              ),
             ),
             Expanded(
               child: Align(

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:shallows/services/auth_service.dart';
+//import 'package:shallows/screens/authenticate/residenceDropDown.dart';
 
 class Register extends StatefulWidget {
   const Register({Key? key}) : super(key: key);
@@ -20,11 +21,9 @@ class _RegisterState extends State<Register> {
   @override
   Widget build(BuildContext context) {
     User? user = FirebaseAuth.instance.currentUser;
+
     return MaterialApp(
       home: Scaffold(
-        appBar: AppBar(
-          title: Text('Register'),
-        ),
         body: Container(
           decoration: new BoxDecoration(
             gradient: new LinearGradient(
@@ -40,22 +39,8 @@ class _RegisterState extends State<Register> {
             key: _formKey,
             child: Center(
               child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  SizedBox(
-                    height: 90,
-                  ),
-                  // RichText(
-                  //   text: TextSpan(
-                  //     text: 'Welcome to',
-                  //     style: TextStyle(
-                  //       fontSize: 25.0,
-                  //       fontWeight: FontWeight.bold,
-                  //       color: Colors.yellow,
-                  //     ),
-                  //   ),
-                  // ),
-                  SizedBox(height: 0),
                   AnimatedOpacity(
                     opacity: .7,
                     //_currentOpacity fix this later
@@ -68,7 +53,6 @@ class _RegisterState extends State<Register> {
                       ),
                     ),
                   ),
-                  SizedBox(height: 50),
                   Padding(
                     padding: const EdgeInsets.symmetric(
                       horizontal: 90,
@@ -76,6 +60,7 @@ class _RegisterState extends State<Register> {
                     child: TextFormField(
                       controller: emailController,
                       validator: validateEmail,
+                      keyboardType: TextInputType.emailAddress,
                       decoration: InputDecoration(
                         labelText: "Email",
                         labelStyle: TextStyle(
@@ -90,6 +75,12 @@ class _RegisterState extends State<Register> {
                       ),
                     ),
                   ),
+                  // Padding(
+                  //   padding: const EdgeInsets.symmetric(
+                  //     horizontal: 90,
+                  //   ),
+                  //   child: ResidenceDropdown(),
+                  // ),
                   Padding(
                     padding: const EdgeInsets.only(
                       left: 90,
@@ -146,9 +137,17 @@ class _RegisterState extends State<Register> {
                     ),
                   ),
                   Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
                       ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          primary: Colors.limeAccent[700],
+                          onPrimary: Colors.black87,
+                          textStyle: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            color: Colors.grey,
+                          ),
+                        ),
                         child: isLoading
                             ? CircularProgressIndicator(color: Colors.white)
                             : Text('Sign Up'),
@@ -162,6 +161,7 @@ class _RegisterState extends State<Register> {
                                       emailController.text,
                                       passwordController.text,
                                     );
+
                                     if (result == null) {
                                       print('error registering');
                                     } else {
@@ -179,6 +179,14 @@ class _RegisterState extends State<Register> {
                       ),
                       ElevatedButton(
                         child: Text('Back'),
+                        style: ElevatedButton.styleFrom(
+                          primary: Colors.limeAccent[700],
+                          onPrimary: Colors.black87,
+                          textStyle: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            color: Colors.grey,
+                          ),
+                        ),
                         onPressed: () {
                           Navigator.pop(context);
                         },
@@ -220,3 +228,14 @@ String? validatePassword(String? formPassword) {
 
   return null;
 }
+// child: DropdownButtonHideUnderline(
+//                       child: DropdownButton<String>(
+//                         value: null,
+//                         items: currentResidences.map((String value) {
+//                           return DropdownMenuItem<String>(
+//                             value: value,
+//                             child: Text(value),
+//                           );
+//                         }).toList(),
+//                       ),
+//                     ),

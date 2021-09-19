@@ -26,8 +26,8 @@ class _SkierAnimationState extends State<SkierAnimation>
 
   @override
   void dispose() {
-    super.dispose();
     _controller.dispose();
+    super.dispose();
   }
 
   @override

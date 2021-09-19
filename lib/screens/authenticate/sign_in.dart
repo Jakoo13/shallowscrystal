@@ -54,6 +54,7 @@ class _SignInState extends State<SignIn> {
                   Padding(
                     padding: const EdgeInsets.symmetric(
                       horizontal: 90,
+                      vertical: 10,
                     ),
                     child: TextFormField(
                       controller: emailController,
@@ -76,7 +77,7 @@ class _SignInState extends State<SignIn> {
                     padding: const EdgeInsets.only(
                       left: 90,
                       right: 90,
-                      bottom: 40,
+                      bottom: 0,
                     ),
                     child: TextFormField(
                       controller: passwordController,
@@ -101,48 +102,102 @@ class _SignInState extends State<SignIn> {
                     child: Text(errorMessage),
                   ),
                   Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
-                      ElevatedButton(
-                        child: Text('Sign In'),
-                        onPressed: user != null
-                            ? null
-                            : () async {
-                                if (_formKey.currentState!.validate()) {
-                                  try {
-                                    dynamic result =
-                                        await _auth.signInWithEmailAndPassword(
-                                            emailController.text,
-                                            passwordController.text);
-                                    if (result == null) {
-                                      print('error signing in');
-                                    } else {
-                                      print('signed in');
-                                      print(result.uid);
-                                    }
-                                    errorMessage = '';
-                                  } on FirebaseAuthException catch (error) {
-                                    errorMessage = error.message!;
-                                  }
+                      Column(
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.only(
+                              top: 15.0,
+                              left: 20,
+                            ),
+                            child: ElevatedButton(
+                              child: Text('Login'),
+                              style: ElevatedButton.styleFrom(
+                                primary: Colors.limeAccent[700],
+                                onPrimary: Colors.black87,
+                                textStyle: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.grey,
+                                ),
+                              ),
+                              onPressed: user != null
+                                  ? null
+                                  : () async {
+                                      if (_formKey.currentState!.validate()) {
+                                        try {
+                                          dynamic result = await _auth
+                                              .signInWithEmailAndPassword(
+                                                  emailController.text,
+                                                  passwordController.text);
+                                          if (result == null) {
+                                            print('error signing in');
+                                          } else {
+                                            print('signed in');
+                                            print(result.uid);
+                                          }
+                                          errorMessage = '';
+                                        } on FirebaseAuthException catch (error) {
+                                          errorMessage = error.message!;
+                                        }
 
-                                  setState(() {});
-                                }
-                              },
+                                        setState(() {});
+                                      }
+                                    },
+                            ),
+                          ),
+                        ],
                       ),
-                      ElevatedButton(
-                        child: Text('Sign Up'),
-                        onPressed: () {
-                          Navigator.push(
-                              context,
-                              PageTransition(
-                                type: PageTransitionType.size,
-                                alignment: Alignment.bottomCenter,
-                                child: Register(),
-                              ));
-                        },
+                      Column(
+                        children: [
+                          Padding(
+                            padding: EdgeInsets.only(
+                              right: 0,
+                            ),
+                            child: TextButton(
+                              child: Text('Forgot Password?'),
+                              onPressed: () {},
+                              style: TextButton.styleFrom(
+                                primary: Colors.limeAccent[700],
+                              ),
+                            ),
+                          ),
+                        ],
                       ),
                     ],
                   ),
+                  Padding(
+                    padding: const EdgeInsets.only(top: 40.0),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          'Don\'t have an account?',
+                          style: TextStyle(
+                            color: Colors.black87,
+                            fontSize: 15,
+                          ),
+                        ),
+                        TextButton(
+                          child: Text('Sign Up'),
+                          style: TextButton.styleFrom(
+                              primary: Colors.limeAccent[700],
+                              textStyle: TextStyle(
+                                decoration: TextDecoration.underline,
+                              )),
+                          onPressed: () {
+                            Navigator.push(
+                                context,
+                                PageTransition(
+                                  type: PageTransitionType.size,
+                                  alignment: Alignment.bottomCenter,
+                                  child: Register(),
+                                ));
+                          },
+                        ),
+                      ],
+                    ),
+                  )
                 ],
               ),
             ),
