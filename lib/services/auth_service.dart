@@ -1,21 +1,28 @@
 import 'package:firebase_auth/firebase_auth.dart';
-import '../models/myUser.dart';
+import '../models/UserModel.dart';
+import 'UserCollectionSetup.dart';
 
 class AuthService {
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
-  // create custom MyUser object based on FirebaseUser
-  MyUser? _getMyUserFromFirebase(User user) {
-    return MyUser(uid: user.uid, email: user.email);
+  // create custom UserModel object based on FirebaseUser
+  UserModel? _getUserModelFromFirebase(User user) {
+    return UserModel(uid: user.uid, email: user.email);
   }
 
   // auth change user stream
   // value will either be user object(sign-in) or null (sign-out)
   // need this info available to the entire widget tree so use Provider package
-  Stream<MyUser?> get user {
+  Stream<UserModel?> get user {
     return _auth
         .authStateChanges()
-        .map((User? user) => _getMyUserFromFirebase(user!));
+        .map((User? user) => _getUserModelFromFirebase(user!));
+  }
+
+  Future getCurrentUserUID() async {
+    final User? user = _auth.currentUser;
+    final uid = user!.uid;
+    return uid;
   }
 
 // Sign In W/ Email and Password
@@ -26,13 +33,14 @@ class AuthService {
         password: password,
       );
       User? user = result.user;
-      return _getMyUserFromFirebase(user!);
+      return _getUserModelFromFirebase(user!);
     } catch (e) {
       print(e);
     }
   }
 
-  Future register(String email, String password) async {
+  Future register(String firstName, String lastName, String residence,
+      String email, String password) async {
     try {
       UserCredential result = await _auth.createUserWithEmailAndPassword(
         email: email,
@@ -40,7 +48,10 @@ class AuthService {
       );
       User? user = result.user;
 
-      return _getMyUserFromFirebase(user!);
+      //Setting up users table data in Firestore via UserSetup Class
+      await UserCollectionSetup(uid: user!.uid)
+          .updateUserData(firstName, lastName, residence, email);
+      return _getUserModelFromFirebase(user);
     } on FirebaseAuthException catch (e) {
       if (e.code == 'weak-passord') {
         print('The password provided is too weak');

@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:shallows/screens/lake_page/lake.dart';
-import 'package:shallows/screens/authenticate/register.dart';
-import 'package:shallows/screens/authenticate/sign_in.dart';
+import 'package:shallows/screens/lake/LakePage.dart';
+import 'package:shallows/screens/authenticate/Register.dart';
+import 'package:shallows/screens/authenticate/SignIn.dart';
+import 'package:shallows/screens/profile/editProfile.dart';
 import 'package:shallows/screens/wrapper.dart';
 import 'package:provider/provider.dart';
 import 'package:shallows/services/auth_service.dart';
+
 //import 'models/myUser.dart';
 
 void main() async {
@@ -30,7 +32,8 @@ class MyApp extends StatelessWidget {
           '/': (context) => Wrapper(),
           '/login': (context) => SignIn(),
           '/register': (context) => Register(),
-          '/lake': (context) => Lake(),
+          '/lake': (context) => LakePage(),
+          '/editProfile': (context) => EditProfile(),
         },
       ),
     );

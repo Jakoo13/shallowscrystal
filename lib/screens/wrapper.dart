@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:shallows/screens/home/home_page.dart';
-import 'package:shallows/screens/authenticate/sign_in.dart';
-import 'package:shallows/models/myUser.dart';
+import 'package:shallows/screens/home/HomePage.dart';
+import 'package:shallows/screens/authenticate/SignIn.dart';
+import 'package:shallows/models/UserModel.dart';
 import 'package:shallows/services/auth_service.dart';
 
 class Wrapper extends StatelessWidget {
@@ -11,12 +11,12 @@ class Wrapper extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final authService = Provider.of<AuthService>(context);
-    return StreamBuilder<MyUser?>(
+    return StreamBuilder<UserModel?>(
         stream: authService.user,
-        builder: (_, AsyncSnapshot<MyUser?> snapshot) {
+        builder: (_, AsyncSnapshot<UserModel?> snapshot) {
           if (snapshot.connectionState == ConnectionState.active) {
-            final MyUser? myUser = snapshot.data;
-            return myUser == null ? SignIn() : HomePage();
+            final UserModel? userModel = snapshot.data;
+            return userModel == null ? SignIn() : HomePage();
           } else {
             return Scaffold(
               body: Center(
