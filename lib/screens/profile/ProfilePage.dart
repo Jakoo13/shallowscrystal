@@ -6,7 +6,6 @@ import 'package:flutter/material.dart';
 //import 'package:image_picker/image_picker.dart';
 //import 'package:provider/provider.dart';
 import 'package:shallows/models/UserModel.dart';
-import 'package:shallows/screens/profile/Avatar.dart';
 
 //import 'package:shallows/screens/profile/Avatar.dart';
 //import 'package:shallows/services/UserCollectionSetup.dart';
@@ -101,10 +100,13 @@ class _ProfilePageState extends State<ProfilePage> {
             width: 4.0,
           ),
         ),
-        child: Avatar(
-            imagePath:
-                'https://scontent.fphx1-1.fna.fbcdn.net/v/t1.6435-9/135292659_10159211270053960_6003474687665634357_n.jpg?_nc_cat=106&ccb=1-5&_nc_sid=09cbfe&_nc_ohc=LLixfywgwQQAX_OvrDU&_nc_ht=scontent.fphx1-1.fna&oh=9cba6c2ed46e003669c1934f3bd60c32&oe=6187BD37',
-            onClick: () => {}),
+        child: CircleAvatar(
+          radius: 65,
+          child: ClipOval(
+            child: Image.network(
+                'https://scontent.fphx1-1.fna.fbcdn.net/v/t1.6435-9/135292659_10159211270053960_6003474687665634357_n.jpg?_nc_cat=106&ccb=1-5&_nc_sid=09cbfe&_nc_ohc=KyBbHvICSNwAX86hx3d&_nc_ht=scontent.fphx1-1.fna&oh=b05c4c5d5d68c083ae5bb0ee5b96217e&oe=618BB1B7'),
+          ),
+        ),
       );
 
   // Bottom Content
@@ -168,7 +170,7 @@ class _ProfilePageState extends State<ProfilePage> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Container(
-                      padding: EdgeInsets.only(top: 40),
+                      padding: EdgeInsets.only(top: 25),
                       child: Text(
                         'About Me:',
                         style: TextStyle(fontSize: 21, color: Colors.yellow),

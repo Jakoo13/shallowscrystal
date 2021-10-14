@@ -1,7 +1,12 @@
+import 'dart:io';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:shallows/models/UserModel.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
+import 'package:path/path.dart';
 
 class EditProfile extends StatefulWidget {
   const EditProfile({Key? key}) : super(key: key);
@@ -17,6 +22,36 @@ class _EditProfileState extends State<EditProfile> {
   TextEditingController _aboutMeController = new TextEditingController();
   TextEditingController _personalBestController = new TextEditingController();
   UserModel userModel = new UserModel();
+  ImagePicker picker = ImagePicker();
+  firebase_storage.FirebaseStorage storage =
+      firebase_storage.FirebaseStorage.instance;
+  //File? file;
+
+  Future uploadPhoto() async {
+    final result = await picker.pickImage(source: ImageSource.gallery);
+    final path = result!.path;
+
+    File? file = File(path);
+    try {
+      final fileName = basename(file.path);
+      final destination = 'profilePhotos/$fileName';
+      final ref = storage.ref(destination);
+      return ref.putFile(file);
+    } on FirebaseException catch (e) {
+      print(e);
+    }
+  }
+
+  // Future uploadFile() async {
+  //   try {
+  //     final fileName = basename(file!.path);
+  //     final destination = 'files/$fileName';
+  //     final ref = storage.ref(destination);
+  //     return ref.putFile(file!);
+  //   } on FirebaseException catch (e) {
+  //     print(e);
+  //   }
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -57,11 +92,69 @@ class _EditProfileState extends State<EditProfile> {
               return SingleChildScrollView(
                 child: Column(
                   children: [
+                    Padding(
+                      padding: const EdgeInsets.only(top: 100.0),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          InkWell(
+                            onTap: () async {
+                              uploadPhoto();
+                            },
+                            child: Stack(
+                              children: [
+                                Container(
+                                  width: 200,
+                                  decoration: new BoxDecoration(
+                                    shape: BoxShape.circle,
+                                    border: new Border.all(
+                                      color: Colors.yellow,
+                                      width: 4.0,
+                                    ),
+                                  ),
+                                  child: CircleAvatar(
+                                    radius: 65,
+                                    child: ClipOval(
+                                      child: Image.network(
+                                          'https://scontent.fphx1-1.fna.fbcdn.net/v/t1.6435-9/135292659_10159211270053960_6003474687665634357_n.jpg?_nc_cat=106&ccb=1-5&_nc_sid=09cbfe&_nc_ohc=KyBbHvICSNwAX86hx3d&_nc_ht=scontent.fphx1-1.fna&oh=b05c4c5d5d68c083ae5bb0ee5b96217e&oe=618BB1B7'),
+                                    ),
+                                  ),
+                                ),
+                                Positioned(
+                                  //top: 1,
+                                  bottom: 0,
+                                  //right: 0,
+                                  left: 120,
+
+                                  child: ClipOval(
+                                    child: Container(
+                                      color: Colors.yellow,
+                                      padding: EdgeInsets.all(3),
+                                      child: ClipOval(
+                                        child: Container(
+                                          color: Colors.blue,
+                                          padding: EdgeInsets.all(8),
+                                          child: Icon(
+                                            Icons.edit,
+                                            size: 20,
+                                            color: Colors.white,
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Container(
-                          padding: EdgeInsets.only(top: 155),
+                          padding: EdgeInsets.only(top: 35),
                           child: Text(
                             '${data['firstName']} ${data['lastName']}',
                             style: TextStyle(fontSize: 30, color: Colors.white),
