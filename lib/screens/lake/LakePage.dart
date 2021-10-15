@@ -145,7 +145,11 @@ class _LakePageState extends State<LakePage> {
                                                   color: Colors.black)
                                               : Icon(Icons.whatshot_sharp),
                                           selected: data.docs[index]['flagOut'],
-                                          selectedTileColor: Colors.yellow,
+                                          selectedTileColor:
+                                              userData['residence'] ==
+                                                      data.docs[index]['name']
+                                                  ? Colors.yellow
+                                                  : Colors.redAccent,
                                           title: Text(
                                             '${data.docs[index]['name']}:  Flag ${flagOut ? "Out" : "In"}',
                                             textAlign: TextAlign.center,
@@ -160,9 +164,13 @@ class _LakePageState extends State<LakePage> {
                                                 CrossAxisAlignment.end,
                                             children: [
                                               flagOut
-                                                  ? Text('At ' +
-                                                      data.docs[index]
-                                                          ['flagOutTime'])
+                                                  ? Text(
+                                                      'At ' +
+                                                          data.docs[index]
+                                                              ['flagOutTime'],
+                                                      style: TextStyle(
+                                                          color: Colors.black),
+                                                    )
                                                   : Text(''),
                                             ],
                                           ),

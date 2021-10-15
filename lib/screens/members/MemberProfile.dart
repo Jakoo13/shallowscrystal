@@ -1,15 +1,16 @@
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
-import 'package:shallows/screens/profile/Avatar.dart';
 
 class MemberProfile extends StatefulWidget {
   final int index;
   final String firstName;
   final String lastName;
   final String residence;
-  final String aboutMe;
-  final String personalBest;
+  final String? aboutMe;
+  final String? personalBest;
+  final String photoURL;
   MemberProfile(this.index, this.firstName, this.lastName, this.residence,
-      this.aboutMe, this.personalBest);
+      this.aboutMe, this.personalBest, this.photoURL);
 
   @override
   State<MemberProfile> createState() => _MemberProfileState();
@@ -20,6 +21,13 @@ class _MemberProfileState extends State<MemberProfile> {
 
   final double profileHeight = 144;
 
+  static Future<dynamic> loadImage(BuildContext context, String path) async {
+    String image =
+        await FirebaseStorage.instance.ref().child(path).getDownloadURL();
+
+    return image.toString();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -29,61 +37,17 @@ class _MemberProfileState extends State<MemberProfile> {
         backgroundColor: Colors.lightBlue[700],
       ),
       body: Stack(
+        alignment: Alignment.topCenter,
         children: [
           buildContent(),
-          buildTop(),
+          Padding(
+            padding: const EdgeInsets.only(top: 30.0),
+            child: buildProfileImage(),
+          ),
         ],
       ),
     );
   }
-
-  Widget buildTop() {
-    final top = coverHeight - profileHeight / 2;
-    return Stack(
-      clipBehavior: Clip.none,
-      alignment: Alignment.center,
-      children: [
-        buildCoverImage(),
-        Positioned(
-          top: top,
-          child: buildProfileImage(),
-        ),
-      ],
-    );
-  }
-
-  Widget buildCoverImage() => Container(
-        color: Colors.grey,
-        child: Stack(
-          children: [
-            Container(
-              decoration: BoxDecoration(
-                color: Colors.transparent,
-                image: DecorationImage(
-                  fit: BoxFit.fill,
-                  image: AssetImage('assets/LakesideEstates.jpg'),
-                ),
-              ),
-              height: coverHeight,
-            ),
-            Container(
-              height: coverHeight,
-              decoration: BoxDecoration(
-                color: Colors.white,
-                gradient: LinearGradient(
-                  begin: FractionalOffset.topCenter,
-                  end: FractionalOffset.bottomCenter,
-                  colors: [
-                    Colors.grey.withOpacity(0.0),
-                    Colors.black.withOpacity(0.8),
-                  ],
-                  stops: [0.0, 1.0],
-                ),
-              ),
-            )
-          ],
-        ),
-      );
 
   Widget buildProfileImage() => Container(
         width: 200,
@@ -94,10 +58,29 @@ class _MemberProfileState extends State<MemberProfile> {
             width: 4.0,
           ),
         ),
-        child: Avatar(
-            imagePath:
-                'https://scontent.fphx1-1.fna.fbcdn.net/v/t1.6435-9/135292659_10159211270053960_6003474687665634357_n.jpg?_nc_cat=106&ccb=1-5&_nc_sid=09cbfe&_nc_ohc=LLixfywgwQQAX_OvrDU&_nc_ht=scontent.fphx1-1.fna&oh=9cba6c2ed46e003669c1934f3bd60c32&oe=6187BD37',
-            onClick: () => {}),
+        child: FutureBuilder(
+          future: loadImage(context, widget.photoURL),
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return CircularProgressIndicator();
+            }
+            if (snapshot.hasError) {
+              return CircleAvatar(
+                radius: 70,
+                backgroundColor: Colors.grey,
+              );
+            }
+
+            if (snapshot.connectionState == ConnectionState.done) {
+              return CircleAvatar(
+                radius: 70,
+                backgroundImage: NetworkImage(snapshot.data.toString()),
+              );
+            }
+
+            return Container();
+          },
+        ),
       );
 
   // Bottom Content
@@ -122,7 +105,7 @@ class _MemberProfileState extends State<MemberProfile> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Container(
-                padding: EdgeInsets.only(top: 285),
+                padding: EdgeInsets.only(top: 220),
                 child: Text(
                   "${widget.firstName} ${widget.lastName}",
                   style: TextStyle(fontSize: 30, color: Colors.white),
@@ -161,12 +144,9 @@ class _MemberProfileState extends State<MemberProfile> {
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(10),
                   border: Border.all(
-                    color: Colors.yellow,
+                    color: Colors.blueGrey,
                   ),
-                  color: Colors.yellowAccent.withOpacity(.2),
-                  gradient: new LinearGradient(
-                    colors: [Colors.yellow, Colors.cyan],
-                  ),
+                  color: Colors.white70,
                 ),
                 width: width * .9,
                 margin: const EdgeInsets.all(15),
@@ -175,7 +155,9 @@ class _MemberProfileState extends State<MemberProfile> {
                 child: Text(
                   '${widget.aboutMe}',
                   style: TextStyle(
-                      fontSize: 18, color: Colors.white, fontFamily: 'RaleWay'),
+                      fontSize: 18,
+                      color: Colors.black87,
+                      fontFamily: 'RaleWay'),
                   maxLines: 4,
                   overflow: TextOverflow.fade,
                   textAlign: TextAlign.start,
@@ -200,18 +182,15 @@ class _MemberProfileState extends State<MemberProfile> {
               Container(
                 width: width * .9,
                 decoration: BoxDecoration(
-                  border: Border.all(color: Colors.yellow),
+                  border: Border.all(color: Colors.blueGrey),
                   borderRadius: BorderRadius.circular(10),
-                  color: Colors.yellowAccent.withOpacity(.2),
-                  gradient: new LinearGradient(
-                    colors: [Colors.yellow, Colors.cyan],
-                  ),
+                  color: Colors.white70,
                 ),
                 padding: EdgeInsets.all(10),
                 margin: const EdgeInsets.all(15),
                 child: Text(
                   '${widget.personalBest}',
-                  style: TextStyle(fontSize: 19, color: Colors.white),
+                  style: TextStyle(fontSize: 19, color: Colors.black87),
                 ),
               ),
             ],

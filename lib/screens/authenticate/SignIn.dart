@@ -85,22 +85,25 @@ class _SignInState extends State<SignIn> {
                       validator: validatePassword,
                       obscureText: true,
                       decoration: InputDecoration(
-                        labelText: "Password",
-                        labelStyle: TextStyle(
-                          color: Colors.white,
-                        ),
-                        errorStyle: TextStyle(
-                          color: Colors.black,
-                        ),
-                        //border: InputBorder.none,
-                      ),
+                          labelText: "Password",
+                          labelStyle: TextStyle(
+                            color: Colors.white,
+                          ),
+                          errorStyle: TextStyle(
+                            color: Colors.black,
+                          ),
+                          errorMaxLines: 3
+                          //border: InputBorder.none,
+                          ),
                       style: TextStyle(
                         color: Colors.yellow,
                       ),
                     ),
                   ),
                   Center(
-                    child: Text(errorMessage),
+                    child: Text(
+                      errorMessage,
+                    ),
                   ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -133,11 +136,11 @@ class _SignInState extends State<SignIn> {
                                                   passwordController.text);
                                           if (result == null) {
                                             print('error signing in');
+                                            errorMessage = 'Incorrect Password';
                                           } else {
                                             print('signed in');
                                             print(result.uid);
                                           }
-                                          errorMessage = '';
                                         } on FirebaseAuthException catch (error) {
                                           errorMessage = error.message!;
                                         }

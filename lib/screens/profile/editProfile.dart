@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -5,7 +6,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:shallows/models/UserModel.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:path/path.dart';
 
 class EditProfile extends StatefulWidget {
@@ -23,46 +24,40 @@ class _EditProfileState extends State<EditProfile> {
   TextEditingController _personalBestController = new TextEditingController();
   UserModel userModel = new UserModel();
   ImagePicker picker = ImagePicker();
-  firebase_storage.FirebaseStorage storage =
-      firebase_storage.FirebaseStorage.instance;
-  //File? file;
+  FirebaseStorage storage = FirebaseStorage.instance;
 
   Future uploadPhoto() async {
-    final result = await picker.pickImage(source: ImageSource.gallery);
-    final path = result!.path;
+    final result = await picker.getImage(source: ImageSource.gallery);
+    if (result == null) return;
+    final path = result.path;
 
-    File? file = File(path);
+    File file = File(path);
     try {
       final fileName = basename(file.path);
       final destination = 'profilePhotos/$fileName';
       final ref = storage.ref(destination);
+      users
+          .doc(auth.currentUser!.uid)
+          .update({"photoURL": destination})
+          .then((value) => print('Profile Updated'))
+          .catchError((error) => print(error));
+
       return ref.putFile(file);
     } on FirebaseException catch (e) {
       print(e);
     }
   }
 
-  // Future uploadFile() async {
-  //   try {
-  //     final fileName = basename(file!.path);
-  //     final destination = 'files/$fileName';
-  //     final ref = storage.ref(destination);
-  //     return ref.putFile(file!);
-  //   } on FirebaseException catch (e) {
-  //     print(e);
-  //   }
-  // }
+  static Future<dynamic> loadImage(BuildContext context, String path) async {
+    String image =
+        await FirebaseStorage.instance.ref().child(path).getDownloadURL();
+    print(image.toString());
+    return image.toString();
+  }
 
   @override
   Widget build(BuildContext context) {
-    // double width = MediaQuery.of(context).size.width;
-    // double height = MediaQuery.of(context).size.height;
     return Scaffold(
-      // appBar: AppBar(
-      //   title: Text('Edit Profile'),
-      //   elevation: 0,
-      //   backgroundColor: Colors.blue[100],
-      // ),
       backgroundColor: Colors.blueGrey,
       body: Container(
         // height: height,
@@ -112,12 +107,26 @@ class _EditProfileState extends State<EditProfile> {
                                       width: 4.0,
                                     ),
                                   ),
-                                  child: CircleAvatar(
-                                    radius: 65,
-                                    child: ClipOval(
-                                      child: Image.network(
-                                          'https://scontent.fphx1-1.fna.fbcdn.net/v/t1.6435-9/135292659_10159211270053960_6003474687665634357_n.jpg?_nc_cat=106&ccb=1-5&_nc_sid=09cbfe&_nc_ohc=KyBbHvICSNwAX86hx3d&_nc_ht=scontent.fphx1-1.fna&oh=b05c4c5d5d68c083ae5bb0ee5b96217e&oe=618BB1B7'),
-                                    ),
+                                  child: FutureBuilder(
+                                    future: loadImage(
+                                        context, '${data['photoURL']}'),
+                                    builder: (context, snapshot) {
+                                      if (snapshot.connectionState ==
+                                          ConnectionState.done) {
+                                        return CircleAvatar(
+                                          radius: 65,
+                                          backgroundImage: NetworkImage(
+                                              snapshot.data.toString()),
+                                        );
+                                      }
+
+                                      if (snapshot.connectionState ==
+                                          ConnectionState.waiting) {
+                                        return CircularProgressIndicator();
+                                      }
+
+                                      return Container();
+                                    },
                                   ),
                                 ),
                                 Positioned(
@@ -300,7 +309,7 @@ class _EditProfileState extends State<EditProfile> {
                                                     print('Profile Updated'))
                                                 .catchError(
                                                     (error) => print(error));
-                                            setState(() {});
+
                                             Navigator.of(context).pop();
                                           },
                                         ),

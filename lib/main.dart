@@ -3,6 +3,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:shallows/screens/lake/LakePage.dart';
 import 'package:shallows/screens/authenticate/Register.dart';
 import 'package:shallows/screens/authenticate/SignIn.dart';
+import 'package:shallows/screens/profile/ProfilePage.dart';
 import 'package:shallows/screens/profile/editProfile.dart';
 import 'package:shallows/screens/wrapper.dart';
 import 'package:provider/provider.dart';
@@ -34,6 +35,7 @@ class MyApp extends StatelessWidget {
           '/register': (context) => Register(),
           '/lake': (context) => LakePage(),
           '/editProfile': (context) => EditProfile(),
+          '/profile': (context) => ProfilePage(),
         },
       ),
     );

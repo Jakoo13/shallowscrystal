@@ -8,12 +8,21 @@ class UserCollectionSetup {
       FirebaseFirestore.instance.collection('users');
 
   Future updateUserData(
-      String firstName, String lastName, String residence, String email) async {
+      String firstName,
+      String lastName,
+      String residence,
+      String email,
+      String photoURL,
+      String aboutMe,
+      String personalBest) async {
     return await usersCollection.doc(uid).set({
       'firstName': firstName,
       'lastName': lastName,
       'residence': residence,
       'email': email,
+      'photoURL': photoURL,
+      'aboutMe': aboutMe,
+      'personalBest': personalBest
     });
   }
 

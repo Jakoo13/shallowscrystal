@@ -2,6 +2,7 @@
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 //import 'package:image_picker/image_picker.dart';
 //import 'package:provider/provider.dart';
@@ -25,6 +26,11 @@ class _ProfilePageState extends State<ProfilePage> {
   final CollectionReference users =
       FirebaseFirestore.instance.collection('users');
   final FirebaseAuth auth = FirebaseAuth.instance;
+  static Future<dynamic> loadImage(BuildContext context, String path) async {
+    String image =
+        await FirebaseStorage.instance.ref().child(path).getDownloadURL();
+    return image.toString();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -100,12 +106,45 @@ class _ProfilePageState extends State<ProfilePage> {
             width: 4.0,
           ),
         ),
-        child: CircleAvatar(
-          radius: 65,
-          child: ClipOval(
-            child: Image.network(
-                'https://scontent.fphx1-1.fna.fbcdn.net/v/t1.6435-9/135292659_10159211270053960_6003474687665634357_n.jpg?_nc_cat=106&ccb=1-5&_nc_sid=09cbfe&_nc_ohc=KyBbHvICSNwAX86hx3d&_nc_ht=scontent.fphx1-1.fna&oh=b05c4c5d5d68c083ae5bb0ee5b96217e&oe=618BB1B7'),
-          ),
+        child: FutureBuilder(
+          future: users.doc(auth.currentUser!.uid).get(),
+          builder:
+              (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot) {
+            if (snapshot.hasError) {
+              return Text('Something went wrong');
+            }
+            if (snapshot.hasData && !snapshot.data!.exists) {
+              return Text('Document does not exist');
+            }
+            if (snapshot.connectionState == ConnectionState.done) {
+              Map<String, dynamic> data =
+                  snapshot.data!.data() as Map<String, dynamic>;
+              return CircleAvatar(
+                radius: 65,
+                child: ClipOval(
+                  child: FutureBuilder(
+                    future: loadImage(context, '${data['photoURL']}'),
+                    builder: (context, snapshot) {
+                      if (snapshot.connectionState == ConnectionState.done) {
+                        return CircleAvatar(
+                          radius: 65,
+                          backgroundImage:
+                              NetworkImage(snapshot.data.toString()),
+                        );
+                      }
+
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        return CircularProgressIndicator();
+                      }
+
+                      return Container();
+                    },
+                  ),
+                ),
+              );
+            }
+            return Text('loading');
+          },
         ),
       );
 
@@ -266,7 +305,8 @@ class _ProfilePageState extends State<ProfilePage> {
                     child: ElevatedButton(
                       child: Text('Edit Profile'),
                       onPressed: () {
-                        Navigator.pushNamed(context, "/editProfile");
+                        Navigator.pushNamed(context, "/editProfile")
+                            .then((_) => setState(() {}));
                       },
                     ),
                   ),
@@ -279,125 +319,4 @@ class _ProfilePageState extends State<ProfilePage> {
       ),
     );
   }
-
-  // void _userEditBottomSheet(BuildContext context) {
-  //   showModalBottomSheet(
-  //       isScrollControlled: true,
-  //       backgroundColor: Colors.white,
-  //       context: context,
-  //       builder: (BuildContext bc) {
-  //         return FutureBuilder<DocumentSnapshot>(
-  //             future: users.doc(auth.currentUser!.uid).get(),
-  //             builder: (BuildContext context,
-  //                 AsyncSnapshot<DocumentSnapshot> snapshot) {
-  //               if (snapshot.hasError) {
-  //                 return Text("Something went wrong");
-  //               }
-
-  //               if (snapshot.hasData && !snapshot.data!.exists) {
-  //                 return Text("Document does not exist");
-  //               }
-
-  //               if (snapshot.connectionState == ConnectionState.done) {
-  //                 Map<String, dynamic> data =
-  //                     snapshot.data!.data() as Map<String, dynamic>;
-  //                 return Container(
-  //                   height: MediaQuery.of(context).size.height * .4,
-  //                   child: Padding(
-  //                     padding: const EdgeInsets.only(
-  //                         left: 15.0, top: 15.0, bottom: 5),
-  //                     child: Column(
-  //                       children: <Widget>[
-  //                         Row(
-  //                           children: <Widget>[
-  //                             Text('Update Profile'),
-  //                             Spacer(),
-  //                             IconButton(
-  //                               icon: Icon(Icons.cancel),
-  //                               color: Colors.blue,
-  //                               iconSize: 25,
-  //                               onPressed: () {
-  //                                 Navigator.of(context).pop();
-  //                               },
-  //                             )
-  //                           ],
-  //                         ),
-  //                         Row(
-  //                           children: [
-  //                             Expanded(
-  //                               child: Padding(
-  //                                 padding: const EdgeInsets.only(right: 15.0),
-  //                                 child: TextField(
-  //                                   maxLength: 140,
-  //                                   maxLines: 4,
-  //                                   controller: _aboutMeController
-  //                                     ..text = '${data['aboutMe']}',
-  //                                   decoration: InputDecoration(
-  //                                     helperText: "About Me",
-  //                                     border: OutlineInputBorder(),
-  //                                   ),
-  //                                 ),
-  //                               ),
-  //                             ),
-  //                           ],
-  //                         ),
-  //                         Row(
-  //                           children: [
-  //                             Expanded(
-  //                               child: Padding(
-  //                                 padding: const EdgeInsets.only(
-  //                                     top: 10, right: 15.0),
-  //                                 child: TextField(
-  //                                   maxLength: 30,
-  //                                   maxLines: 1,
-  //                                   controller: _personalBestController
-  //                                     ..text = '${data['personalBest']}',
-  //                                   decoration: InputDecoration(
-  //                                     helperText: "Personal Best",
-  //                                     //border: OutlineInputBorder(),
-  //                                   ),
-  //                                 ),
-  //                               ),
-  //                             ),
-  //                           ],
-  //                         ),
-  //                         Row(
-  //                           mainAxisAlignment: MainAxisAlignment.center,
-  //                           children: <Widget>[
-  //                             ElevatedButton(
-  //                               child: Text('Save'),
-  //                               style: ElevatedButton.styleFrom(
-  //                                 primary: Colors.limeAccent[700],
-  //                                 onPrimary: Colors.black87,
-  //                                 textStyle: TextStyle(
-  //                                   fontWeight: FontWeight.bold,
-  //                                   color: Colors.grey,
-  //                                 ),
-  //                               ),
-  //                               onPressed: () async {
-  //                                 userModel.aboutMe = _aboutMeController.text;
-  //                                 users
-  //                                     .doc(auth.currentUser!.uid)
-  //                                     .update({
-  //                                       'aboutMe': _aboutMeController.text,
-  //                                       'personalBest':
-  //                                           _personalBestController.text,
-  //                                     })
-  //                                     .then((value) => print('Profile Updated'))
-  //                                     .catchError((error) => print(error));
-  //                                 setState(() {});
-  //                                 Navigator.of(context).pop();
-  //                               },
-  //                             ),
-  //                           ],
-  //                         ),
-  //                       ],
-  //                     ),
-  //                   ),
-  //                 );
-  //               }
-  //               return Text('Loading');
-  //             });
-  //       });
-  // }
 }

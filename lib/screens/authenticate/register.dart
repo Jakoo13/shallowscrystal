@@ -240,12 +240,14 @@ class _RegisterState extends State<Register> {
                                   if (_formKey.currentState!.validate()) {
                                     try {
                                       dynamic result = await _auth.register(
-                                        firstNameController.text,
-                                        lastNameController.text,
-                                        residenceController.text,
-                                        emailController.text,
-                                        passwordController.text,
-                                      );
+                                          firstNameController.text,
+                                          lastNameController.text,
+                                          residenceController.text,
+                                          emailController.text,
+                                          passwordController.text,
+                                          '',
+                                          '',
+                                          '');
 
                                       if (result == null) {
                                         print('error registering');
@@ -254,8 +256,8 @@ class _RegisterState extends State<Register> {
                                         print(result.uid);
                                       }
                                       Navigator.pop(context);
-                                    } catch (error) {
-                                      print(error);
+                                    } on FirebaseAuthException catch (error) {
+                                      print(error.message);
                                     }
 
                                     setState(() => isLoading = false);
@@ -337,14 +339,3 @@ String? validatePassword(String? formPassword) {
 
   return null;
 }
-// child: DropdownButtonHideUnderline(
-//                       child: DropdownButton<String>(
-//                         value: null,
-//                         items: currentResidences.map((String value) {
-//                           return DropdownMenuItem<String>(
-//                             value: value,
-//                             child: Text(value),
-//                           );
-//                         }).toList(),
-//                       ),
-//                     ),

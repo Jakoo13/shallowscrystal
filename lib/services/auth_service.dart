@@ -40,7 +40,7 @@ class AuthService {
   }
 
   Future register(String firstName, String lastName, String residence,
-      String email, String password) async {
+      String email, String password, String photoURL, String aboutMe, String personalBest) async {
     try {
       UserCredential result = await _auth.createUserWithEmailAndPassword(
         email: email,
@@ -50,7 +50,7 @@ class AuthService {
 
       //Setting up users table data in Firestore via UserSetup Class
       await UserCollectionSetup(uid: user!.uid)
-          .updateUserData(firstName, lastName, residence, email);
+          .updateUserData(firstName, lastName, residence, email, photoURL, aboutMe, personalBest);
       return _getUserModelFromFirebase(user);
     } on FirebaseAuthException catch (e) {
       if (e.code == 'weak-passord') {

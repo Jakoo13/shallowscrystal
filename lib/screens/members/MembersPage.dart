@@ -67,6 +67,7 @@ class _MembersPageState extends State<MembersPage> {
                                       data.docs[index]['residence'],
                                       data.docs[index]['aboutMe'],
                                       data.docs[index]['personalBest'],
+                                      data.docs[index]['photoURL'],
                                     ),
                                   ),
                                 );
