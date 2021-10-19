@@ -124,8 +124,9 @@ class _RegisterState extends State<Register> {
                         controller: residenceController,
                         validator: validateResidence,
                         keyboardType: TextInputType.name,
+                        textCapitalization: TextCapitalization.sentences,
                         decoration: InputDecoration(
-                          labelText: "Residence",
+                          labelText: "Residence Last Name",
                           labelStyle: TextStyle(
                             color: Colors.white,
                           ),

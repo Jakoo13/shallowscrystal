@@ -1,7 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:shallows/screens/lake/FlagAnimation.dart';
 import 'package:shallows/services/database.dart';
 import 'package:intl/intl.dart';
 
@@ -51,7 +50,7 @@ class _LakePageState extends State<LakePage> {
                 snapshot.data!.data() as Map<String, dynamic>;
             return Scaffold(
               appBar: AppBar(
-                title: Text('Lake'),
+                title: Text('Lake Queue'),
                 elevation: 0,
                 backgroundColor: Colors.lightBlue[700],
               ),
@@ -67,18 +66,13 @@ class _LakePageState extends State<LakePage> {
                   ),
                 ),
                 child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                  padding: const EdgeInsets.symmetric(
+                      horizontal: 20.0, vertical: 20),
                   child: Column(
                     children: [
-                      Container(
-                        height: 190,
-                        padding: const EdgeInsets.only(bottom: 0),
-                        child: FlagAnimation(),
-                        alignment: Alignment.center,
-                      ),
                       SingleChildScrollView(
                         child: Container(
-                          height: newheight * .65,
+                          height: newheight * .85,
                           padding: const EdgeInsets.only(top: 20),
                           child: StreamBuilder<QuerySnapshot>(
                               stream: _database.residenceSnapshot,

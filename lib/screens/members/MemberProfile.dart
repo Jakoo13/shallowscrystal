@@ -74,7 +74,12 @@ class _MemberProfileState extends State<MemberProfile> {
             if (snapshot.connectionState == ConnectionState.done) {
               return CircleAvatar(
                 radius: 70,
-                backgroundImage: NetworkImage(snapshot.data.toString()),
+                child: ClipOval(
+                  child: CircleAvatar(
+                    radius: 70,
+                    backgroundImage: NetworkImage(snapshot.data.toString()),
+                  ),
+                ),
               );
             }
 

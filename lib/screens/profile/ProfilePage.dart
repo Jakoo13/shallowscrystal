@@ -29,6 +29,7 @@ class _ProfilePageState extends State<ProfilePage> {
   static Future<dynamic> loadImage(BuildContext context, String path) async {
     String image =
         await FirebaseStorage.instance.ref().child(path).getDownloadURL();
+
     return image.toString();
   }
 
@@ -36,7 +37,7 @@ class _ProfilePageState extends State<ProfilePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Profile'),
+        title: Text('My Profile'),
         elevation: 0,
         backgroundColor: Colors.lightBlue[700],
       ),
