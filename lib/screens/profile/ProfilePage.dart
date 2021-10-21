@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 //import 'package:image_picker/image_picker.dart';
 //import 'package:provider/provider.dart';
 import 'package:shallows/models/UserModel.dart';
+import 'package:shallows/services/auth_service.dart';
 
 //import 'package:shallows/screens/profile/Avatar.dart';
 //import 'package:shallows/services/UserCollectionSetup.dart';
@@ -20,6 +21,7 @@ class ProfilePage extends StatefulWidget {
 }
 
 class _ProfilePageState extends State<ProfilePage> {
+  final AuthService _auth = AuthService();
   final double coverHeight = 200;
   final double profileHeight = 144;
   UserModel userModel = new UserModel();
@@ -37,7 +39,7 @@ class _ProfilePageState extends State<ProfilePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('My Profile'),
+        title: Text('Profile'),
         elevation: 0,
         backgroundColor: Colors.lightBlue[700],
       ),
@@ -153,9 +155,10 @@ class _ProfilePageState extends State<ProfilePage> {
 
   Widget buildContent() {
     double width = MediaQuery.of(context).size.width;
+    double height = MediaQuery.of(context).size.height;
 
     return Container(
-      //height: height,
+      height: height * 2,
       decoration: new BoxDecoration(
         gradient: new LinearGradient(
           begin: Alignment.topCenter,
@@ -179,7 +182,8 @@ class _ProfilePageState extends State<ProfilePage> {
           if (snapshot.connectionState == ConnectionState.done) {
             Map<String, dynamic> data =
                 snapshot.data!.data() as Map<String, dynamic>;
-            return Column(
+            return ListView(
+              padding: const EdgeInsets.only(bottom: 50),
               children: [
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -263,7 +267,7 @@ class _ProfilePageState extends State<ProfilePage> {
                     Container(
                       padding: EdgeInsets.only(top: 20),
                       child: Text(
-                        'Personal Best:',
+                        'Contact:',
                         style: TextStyle(fontSize: 21, color: Colors.yellow),
                       ),
                     ),
@@ -300,17 +304,23 @@ class _ProfilePageState extends State<ProfilePage> {
                     ),
                   ],
                 ),
-                Expanded(
-                  child: Align(
-                    alignment: FractionalOffset.bottomCenter,
-                    child: ElevatedButton(
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    ElevatedButton(
                       child: Text('Edit Profile'),
                       onPressed: () {
                         Navigator.pushNamed(context, "/editProfile")
                             .then((_) => setState(() {}));
                       },
                     ),
-                  ),
+                    ElevatedButton(
+                      child: Text('Log Out'),
+                      onPressed: () async {
+                        await _auth.logOut();
+                      },
+                    ),
+                  ],
                 ),
               ],
             );

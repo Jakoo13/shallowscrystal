@@ -4,11 +4,8 @@ import 'package:page_transition/page_transition.dart';
 import 'package:shallows/screens/lake/LakePage.dart';
 import 'package:shallows/screens/members/MembersPage.dart';
 import 'package:shallows/screens/profile/ProfilePage.dart';
-import 'package:shallows/services/auth_service.dart';
 
 class HomePage extends StatelessWidget {
-  final AuthService _auth = AuthService();
-
   @override
   Widget build(BuildContext context) {
     //Get Screen Size of Every Device
@@ -17,7 +14,7 @@ class HomePage extends StatelessWidget {
     //Get Safe Area of Every Device
     var padding = MediaQuery.of(context).padding;
     double newheight = height - padding.top - padding.bottom;
-    print(newheight);
+
     return Container(
       decoration: BoxDecoration(
         gradient: LinearGradient(
@@ -33,18 +30,19 @@ class HomePage extends StatelessWidget {
         // By defaut, Scaffold background is white
         // Set its value to transparent
         backgroundColor: Colors.transparent,
-        body: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
+        body: ListView(
+          //padding: EdgeInsets.only(bottom: 50),
+          //mainAxisAlignment: MainAxisAlignment.start,
           children: <Widget>[
             Padding(
               padding: const EdgeInsets.only(
                 top: 90.0,
                 left: 30,
                 right: 30,
-                bottom: 10,
+                bottom: 0,
               ),
               child: Container(
-                height: newheight - 70,
+                height: newheight - 40,
                 //color: Colors.green,
                 child: Column(
                   children: [
@@ -149,17 +147,6 @@ class HomePage extends StatelessWidget {
                       ),
                     ),
                   ],
-                ),
-              ),
-            ),
-            Expanded(
-              child: Align(
-                alignment: FractionalOffset.bottomCenter,
-                child: ElevatedButton(
-                  child: Text('Log Out'),
-                  onPressed: () async {
-                    await _auth.logOut();
-                  },
                 ),
               ),
             ),
