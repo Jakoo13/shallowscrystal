@@ -67,13 +67,13 @@ class _LakePageState extends State<LakePage> {
                 ),
                 child: Padding(
                   padding: const EdgeInsets.symmetric(
-                      horizontal: 20.0, vertical: 20),
+                      horizontal: 20.0, vertical: 10),
                   child: Column(
                     children: [
                       SingleChildScrollView(
                         child: Container(
-                          height: newheight * .85,
-                          padding: const EdgeInsets.only(top: 20),
+                          height: newheight * .84,
+                          padding: const EdgeInsets.only(top: 10),
                           child: StreamBuilder<QuerySnapshot>(
                               stream: _database.residenceSnapshot,
                               builder: (
@@ -174,6 +174,20 @@ class _LakePageState extends State<LakePage> {
                               }),
                         ),
                       ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Container(
+                            padding: const EdgeInsets.only(top: 12),
+                            alignment: Alignment.center,
+                            child: Icon(
+                              Icons.arrow_downward,
+                              color: Colors.white,
+                              size: 22,
+                            ),
+                          )
+                        ],
+                      )
                     ],
                   ),
                 ),

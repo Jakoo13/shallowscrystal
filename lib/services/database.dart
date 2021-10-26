@@ -1,12 +1,13 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-//import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class DatabaseService {
   FirebaseFirestore firestore = FirebaseFirestore.instance;
+  final FirebaseAuth auth = FirebaseAuth.instance;
 
   //Residences Collection
-  final CollectionReference residencesCollection =
-      FirebaseFirestore.instance.collection('residences');
+  final residencesCollection =
+      FirebaseFirestore.instance.collection('residences').orderBy('position');
 
   Stream<QuerySnapshot> get residenceSnapshot {
     return residencesCollection.snapshots();
@@ -20,7 +21,8 @@ class DatabaseService {
     return usersCollection.snapshots();
   }
 
-  Future getCurrentResidence() async {
+  // Get all residences
+  Future getCurrentResidences() async {
     residencesCollection.get().then((QuerySnapshot querySnapshot) {
       querySnapshot.docs.forEach((doc) {
         print(doc['name']);
@@ -28,6 +30,20 @@ class DatabaseService {
     });
   }
 
+  // Get residence of user Signed In
+  getCurrentResident() async {
+    DocumentReference documentReference =
+        usersCollection.doc(auth.currentUser!.uid);
+    String residence;
+    await documentReference.get().then((snapshot) {
+      residence = snapshot['residence'].toString();
+
+      return residence;
+    });
+    return 'residence is null';
+  }
+
+  //Change Flag from In to Out or vice versa
   Future<void> changeFlagPosition(bool _flagPosition, String id) async {
     await firestore
         .collection("residences")
@@ -35,8 +51,3 @@ class DatabaseService {
         .update({"flagOut": _flagPosition});
   }
 }
-
-
-/// can also do: 
-///final Stream<QuerySnapshot> residenceSnapshot = FirebaseFirestore.instance.collection('residences').snapshots();
-/// same thing

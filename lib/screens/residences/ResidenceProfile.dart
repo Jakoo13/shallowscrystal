@@ -1,22 +1,20 @@
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 
-class MemberProfile extends StatefulWidget {
+class ResidenceProfile extends StatefulWidget {
   final int index;
-  final String firstName;
-  final String lastName;
-  final String residence;
-  final String? aboutMe;
-  final String? personalBest;
+  final String name;
+  final String? about;
+  final String? contact;
   final String photoURL;
-  MemberProfile(this.index, this.firstName, this.lastName, this.residence,
-      this.aboutMe, this.personalBest, this.photoURL);
+  ResidenceProfile(
+      this.index, this.name, this.about, this.contact, this.photoURL);
 
   @override
-  State<MemberProfile> createState() => _MemberProfileState();
+  State<ResidenceProfile> createState() => _MemberProfileState();
 }
 
-class _MemberProfileState extends State<MemberProfile> {
+class _MemberProfileState extends State<ResidenceProfile> {
   final double coverHeight = 200;
 
   final double profileHeight = 144;
@@ -91,6 +89,7 @@ class _MemberProfileState extends State<MemberProfile> {
   // Bottom Content
   Widget buildContent() {
     double width = MediaQuery.of(context).size.width;
+    double height = MediaQuery.of(context).size.height;
 
     return Container(
       //height: height,
@@ -112,20 +111,8 @@ class _MemberProfileState extends State<MemberProfile> {
               Container(
                 padding: EdgeInsets.only(top: 220),
                 child: Text(
-                  "${widget.firstName} ${widget.lastName}",
+                  "${widget.name} Residence",
                   style: TextStyle(fontSize: 30, color: Colors.white),
-                ),
-              ),
-            ],
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Container(
-                padding: EdgeInsets.only(top: 10),
-                child: Text(
-                  '${widget.residence} Residence',
-                  style: TextStyle(fontSize: 18, color: Colors.blueGrey[200]),
                 ),
               ),
             ],
@@ -136,14 +123,14 @@ class _MemberProfileState extends State<MemberProfile> {
               Container(
                 padding: EdgeInsets.only(top: 40),
                 child: Text(
-                  'About Me:',
+                  'About:',
                   style: TextStyle(fontSize: 21, color: Colors.yellow),
                 ),
               ),
             ],
           ),
           Row(
-            mainAxisAlignment: MainAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Container(
                 decoration: BoxDecoration(
@@ -153,53 +140,55 @@ class _MemberProfileState extends State<MemberProfile> {
                   ),
                   color: Colors.white70,
                 ),
-                width: width * .9,
-                margin: const EdgeInsets.all(15),
+                height: height * .22,
+                width: width * .87,
+                margin: const EdgeInsets.only(
+                    top: 15, bottom: 15, left: 15, right: 15),
                 padding:
-                    EdgeInsets.only(left: 20, right: 20, top: 15, bottom: 15),
+                    EdgeInsets.only(left: 15, right: 15, top: 15, bottom: 15),
                 child: Text(
-                  '${widget.aboutMe}',
+                  '${widget.about}',
                   style: TextStyle(
                       fontSize: 18,
                       color: Colors.black87,
                       fontFamily: 'RaleWay'),
-                  maxLines: 4,
+                  maxLines: 7,
                   overflow: TextOverflow.fade,
                   textAlign: TextAlign.start,
                 ),
               ),
             ],
           ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Container(
-                padding: EdgeInsets.only(top: 20),
-                child: Text(
-                  'Personal Best:',
-                  style: TextStyle(fontSize: 21, color: Colors.yellow),
-                ),
-              ),
-            ],
-          ),
-          Row(
-            children: [
-              Container(
-                width: width * .9,
-                decoration: BoxDecoration(
-                  border: Border.all(color: Colors.blueGrey),
-                  borderRadius: BorderRadius.circular(10),
-                  color: Colors.white70,
-                ),
-                padding: EdgeInsets.all(10),
-                margin: const EdgeInsets.all(15),
-                child: Text(
-                  '${widget.personalBest}',
-                  style: TextStyle(fontSize: 19, color: Colors.black87),
-                ),
-              ),
-            ],
-          ),
+          // Row(
+          //   mainAxisAlignment: MainAxisAlignment.center,
+          //   children: [
+          //     Container(
+          //       padding: EdgeInsets.only(top: 20),
+          //       child: Text(
+          //         'Contact:',
+          //         style: TextStyle(fontSize: 21, color: Colors.yellow),
+          //       ),
+          //     ),
+          //   ],
+          // ),
+          // Row(
+          //   children: [
+          //     Container(
+          //       width: width * .9,
+          //       decoration: BoxDecoration(
+          //         border: Border.all(color: Colors.blueGrey),
+          //         borderRadius: BorderRadius.circular(10),
+          //         color: Colors.white70,
+          //       ),
+          //       padding: EdgeInsets.all(10),
+          //       margin: const EdgeInsets.all(15),
+          //       child: Text(
+          //         '${widget.contact}',
+          //         style: TextStyle(fontSize: 19, color: Colors.black87),
+          //       ),
+          //     ),
+          //   ],
+          // ),
         ],
       ),
     );

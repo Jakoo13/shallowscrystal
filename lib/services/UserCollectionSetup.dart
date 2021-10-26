@@ -6,32 +6,31 @@ class UserCollectionSetup {
 
   final CollectionReference usersCollection =
       FirebaseFirestore.instance.collection('users');
+  final CollectionReference residencesCollection =
+      FirebaseFirestore.instance.collection('residences');
 
   Future updateUserData(
-      String firstName,
-      String lastName,
-      String residence,
-      String email,
-      String photoURL,
-      String aboutMe,
-      String personalBest) async {
+    String email,
+    String firstName,
+    String lastName,
+    String residence,
+  ) async {
     return await usersCollection.doc(uid).set({
+      'email': email,
       'firstName': firstName,
       'lastName': lastName,
       'residence': residence,
-      'email': email,
-      'photoURL': photoURL,
-      'aboutMe': aboutMe,
-      'personalBest': personalBest
     });
-  }
-
-  Future updateAboutMe(String aboutMe) async {
-    return await usersCollection.doc(uid).set({'aboutMe': aboutMe});
   }
 
   //Get Users Stream
   Stream<QuerySnapshot> get users {
     return usersCollection.snapshots();
+  }
+
+  // Get Residences Stream
+  Stream<QuerySnapshot> get residences {
+    print(residencesCollection.snapshots());
+    return residencesCollection.snapshots();
   }
 }

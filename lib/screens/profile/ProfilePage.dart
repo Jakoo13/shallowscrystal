@@ -1,17 +1,15 @@
 //import 'dart:html';
 
+import 'dart:async';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
-//import 'package:image_picker/image_picker.dart';
-//import 'package:provider/provider.dart';
-import 'package:shallows/models/UserModel.dart';
-import 'package:shallows/services/auth_service.dart';
+// import 'package:provider/provider.dart';
+// import 'package:shallows/models/UserModel.dart';
 
-//import 'package:shallows/screens/profile/Avatar.dart';
-//import 'package:shallows/services/UserCollectionSetup.dart';
-//import 'package:shallows/services/auth_service.dart';
+import 'package:shallows/services/auth_service.dart';
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({Key? key}) : super(key: key);
@@ -24,10 +22,13 @@ class _ProfilePageState extends State<ProfilePage> {
   final AuthService _auth = AuthService();
   final double coverHeight = 200;
   final double profileHeight = 144;
-  UserModel userModel = new UserModel();
+
   final CollectionReference users =
       FirebaseFirestore.instance.collection('users');
+  final CollectionReference residences =
+      FirebaseFirestore.instance.collection('residences');
   final FirebaseAuth auth = FirebaseAuth.instance;
+
   static Future<dynamic> loadImage(BuildContext context, String path) async {
     String image =
         await FirebaseStorage.instance.ref().child(path).getDownloadURL();
@@ -37,9 +38,12 @@ class _ProfilePageState extends State<ProfilePage> {
 
   @override
   Widget build(BuildContext context) {
+    //UserModel currentUser = Provider.of<UserModel>(context);
     return Scaffold(
       appBar: AppBar(
-        title: Text('Profile'),
+        title: Text(
+          'Profile',
+        ),
         elevation: 0,
         backgroundColor: Colors.lightBlue[700],
       ),
@@ -100,76 +104,8 @@ class _ProfilePageState extends State<ProfilePage> {
         ),
       );
 
-  Widget buildProfileImage() => Container(
-        width: 200,
-        decoration: new BoxDecoration(
-          shape: BoxShape.circle,
-          border: new Border.all(
-            color: Colors.yellow,
-            width: 4.0,
-          ),
-        ),
-        child: FutureBuilder(
-          future: users.doc(auth.currentUser!.uid).get(),
-          builder:
-              (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot) {
-            if (snapshot.hasError) {
-              return Text('Something went wrong');
-            }
-            if (snapshot.hasData && !snapshot.data!.exists) {
-              return Text('Document does not exist');
-            }
-            if (snapshot.connectionState == ConnectionState.done) {
-              Map<String, dynamic> data =
-                  snapshot.data!.data() as Map<String, dynamic>;
-              return CircleAvatar(
-                radius: 65,
-                child: ClipOval(
-                  child: FutureBuilder(
-                    future: loadImage(context, '${data['photoURL']}'),
-                    builder: (context, snapshot) {
-                      if (snapshot.connectionState == ConnectionState.done) {
-                        return CircleAvatar(
-                          radius: 65,
-                          backgroundImage:
-                              NetworkImage(snapshot.data.toString()),
-                        );
-                      }
-
-                      if (snapshot.connectionState == ConnectionState.waiting) {
-                        return CircularProgressIndicator();
-                      }
-
-                      return Container();
-                    },
-                  ),
-                ),
-              );
-            }
-            return Text('loading');
-          },
-        ),
-      );
-
-  // Bottom Content
-
-  Widget buildContent() {
-    double width = MediaQuery.of(context).size.width;
-    double height = MediaQuery.of(context).size.height;
-
-    return Container(
-      height: height * 2,
-      decoration: new BoxDecoration(
-        gradient: new LinearGradient(
-          begin: Alignment.topCenter,
-          end: Alignment.bottomCenter,
-          colors: [
-            Color.fromARGB(255, 58, 123, 213),
-            Color.fromARGB(255, 58, 96, 115),
-          ],
-        ),
-      ),
-      child: FutureBuilder<DocumentSnapshot>(
+  Widget buildProfileImage() {
+    return FutureBuilder(
         future: users.doc(auth.currentUser!.uid).get(),
         builder:
             (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot) {
@@ -182,152 +118,249 @@ class _ProfilePageState extends State<ProfilePage> {
           if (snapshot.connectionState == ConnectionState.done) {
             Map<String, dynamic> data =
                 snapshot.data!.data() as Map<String, dynamic>;
-            return ListView(
-              padding: const EdgeInsets.only(bottom: 50),
-              children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Container(
-                      padding: EdgeInsets.only(top: 285),
-                      child: Text(
-                        '${data['firstName']} ${data['lastName']}',
-                        style: TextStyle(fontSize: 30, color: Colors.white),
-                      ),
-                    ),
-                  ],
+            return Container(
+              width: 200,
+              decoration: new BoxDecoration(
+                shape: BoxShape.circle,
+                border: new Border.all(
+                  color: Colors.yellow,
+                  width: 4.0,
                 ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Container(
-                      padding: EdgeInsets.only(top: 10),
-                      child: Text(
-                        '${data['residence']} Residence',
-                        style: TextStyle(
-                            fontSize: 18, color: Colors.blueGrey[200]),
-                      ),
-                    ),
-                  ],
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Container(
-                      padding: EdgeInsets.only(top: 25),
-                      child: Text(
-                        'About Me:',
-                        style: TextStyle(fontSize: 21, color: Colors.yellow),
-                      ),
-                    ),
-                  ],
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    Container(
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(10),
-                        border: Border.all(
-                          color: Colors.yellow,
-                        ),
-                        color: Colors.yellowAccent.withOpacity(.2),
-                        gradient: new LinearGradient(
-                          colors: [Colors.yellow, Colors.cyan],
+              ),
+              child: FutureBuilder(
+                future: residences.doc(data['residence']).get(),
+                builder: (BuildContext context,
+                    AsyncSnapshot<DocumentSnapshot> snapshot) {
+                  if (snapshot.hasError) {
+                    return Text('Something went wrong');
+                  }
+                  if (snapshot.hasData && !snapshot.data!.exists) {
+                    return Text('Document does not exist');
+                  }
+                  if (snapshot.connectionState == ConnectionState.done) {
+                    Map<String, dynamic> data =
+                        snapshot.data!.data() as Map<String, dynamic>;
+                    return CircleAvatar(
+                      radius: 65,
+                      child: ClipOval(
+                        child: FutureBuilder(
+                          future: loadImage(context, '${data['photoURL']}'),
+                          builder: (context, snapshot) {
+                            if (snapshot.connectionState ==
+                                ConnectionState.done) {
+                              return CircleAvatar(
+                                radius: 65,
+                                backgroundImage:
+                                    NetworkImage(snapshot.data.toString()),
+                              );
+                            }
+
+                            if (snapshot.connectionState ==
+                                ConnectionState.waiting) {
+                              return CircularProgressIndicator();
+                            }
+
+                            return Container();
+                          },
                         ),
                       ),
-                      width: width * .9,
-                      margin: const EdgeInsets.all(15),
-                      padding: EdgeInsets.only(
-                          left: 20, right: 20, top: 15, bottom: 15),
-                      child: data['aboutMe'] == null || data['aboutMe'] == ''
-                          ? Text(
-                              'Enter Below',
-                              style: TextStyle(
-                                  fontSize: 19,
-                                  color: Colors.white,
-                                  fontStyle: FontStyle.italic),
-                            )
-                          : Text(
-                              '${data['aboutMe']}',
-                              style: TextStyle(
-                                  fontSize: 18,
-                                  color: Colors.white,
-                                  fontFamily: 'RaleWay'),
-                              maxLines: 4,
-                              overflow: TextOverflow.fade,
-                              textAlign: TextAlign.start,
-                            ),
-                    ),
-                  ],
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Container(
-                      padding: EdgeInsets.only(top: 20),
-                      child: Text(
-                        'Contact:',
-                        style: TextStyle(fontSize: 21, color: Colors.yellow),
-                      ),
-                    ),
-                  ],
-                ),
-                Row(
-                  children: [
-                    Container(
-                      width: width * .9,
-                      decoration: BoxDecoration(
-                        border: Border.all(color: Colors.yellow),
-                        borderRadius: BorderRadius.circular(10),
-                        color: Colors.yellowAccent.withOpacity(.2),
-                        gradient: new LinearGradient(
-                          colors: [Colors.yellow, Colors.cyan],
-                        ),
-                      ),
-                      padding: EdgeInsets.all(10),
-                      margin: const EdgeInsets.all(15),
-                      child: data['personalBest'] == null ||
-                              data['personalBest'] == ''
-                          ? Text(
-                              'Enter Below',
-                              style: TextStyle(
-                                  fontSize: 19,
-                                  fontStyle: FontStyle.italic,
-                                  color: Colors.white),
-                            )
-                          : Text(
-                              '${data['personalBest']}',
-                              style:
-                                  TextStyle(fontSize: 19, color: Colors.white),
-                            ),
-                    ),
-                  ],
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    ElevatedButton(
-                      child: Text('Edit Profile'),
-                      onPressed: () {
-                        Navigator.pushNamed(context, "/editProfile")
-                            .then((_) => setState(() {}));
-                      },
-                    ),
-                    ElevatedButton(
-                      child: Text('Log Out'),
-                      onPressed: () async {
-                        await _auth.logOut();
-                      },
-                    ),
-                  ],
-                ),
-              ],
+                    );
+                  }
+                  return Text('loading');
+                },
+              ),
             );
           }
           return Text('loading');
-        },
-      ),
-    );
+        });
+  }
+  // Bottom Content
+
+  Widget buildContent() {
+    double width = MediaQuery.of(context).size.width;
+    double height = MediaQuery.of(context).size.height;
+
+    return FutureBuilder(
+        future: users.doc(auth.currentUser!.uid).get(),
+        builder:
+            (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot) {
+          if (snapshot.hasError) {
+            return Text('Something went wrong');
+          }
+          if (snapshot.hasData && !snapshot.data!.exists) {
+            return Text('Document does not exist');
+          }
+          if (snapshot.connectionState == ConnectionState.done) {
+            Map<String, dynamic> data =
+                snapshot.data!.data() as Map<String, dynamic>;
+            return Container(
+              height: height * 2,
+              decoration: new BoxDecoration(
+                gradient: new LinearGradient(
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
+                  colors: [
+                    Color.fromARGB(255, 58, 123, 213),
+                    Color.fromARGB(255, 58, 96, 115),
+                  ],
+                ),
+              ),
+              child: FutureBuilder<DocumentSnapshot>(
+                future: residences.doc(data['residence']).get(),
+                builder: (BuildContext context,
+                    AsyncSnapshot<DocumentSnapshot> snapshot) {
+                  if (snapshot.hasError) {
+                    return Text('Something went wrong');
+                  }
+                  if (snapshot.hasData && !snapshot.data!.exists) {
+                    return Text('Document does not exist');
+                  }
+                  if (snapshot.connectionState == ConnectionState.done) {
+                    Map<String, dynamic> data =
+                        snapshot.data!.data() as Map<String, dynamic>;
+                    return ListView(
+                      padding: const EdgeInsets.only(bottom: 50),
+                      children: [
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Container(
+                              padding: EdgeInsets.only(top: 285),
+                              child: Text(
+                                '${data['name']} Residence',
+                                style: TextStyle(
+                                    fontSize: 30, color: Colors.white),
+                              ),
+                            ),
+                          ],
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Container(
+                              padding: EdgeInsets.only(top: 25),
+                              child: Text(
+                                'About',
+                                style: TextStyle(
+                                    fontSize: 21, color: Colors.yellow),
+                              ),
+                            ),
+                          ],
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Container(
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(10),
+                                border: Border.all(
+                                  color: Colors.yellow,
+                                ),
+                                color: Colors.yellowAccent.withOpacity(.2),
+                                gradient: new LinearGradient(
+                                  colors: [Colors.yellow, Colors.cyan],
+                                ),
+                              ),
+                              height: 140,
+                              width: width * .9,
+                              margin: const EdgeInsets.only(
+                                  left: 10, right: 10, top: 10, bottom: 50),
+                              padding: EdgeInsets.only(
+                                  left: 15, right: 15, top: 15, bottom: 15),
+                              child:
+                                  data['about'] == null || data['about'] == ''
+                                      ? Text(
+                                          'Enter Below',
+                                          style: TextStyle(
+                                              fontSize: 19,
+                                              color: Colors.white,
+                                              fontStyle: FontStyle.italic),
+                                        )
+                                      : Text(
+                                          '${data['about']}',
+                                          style: TextStyle(
+                                              fontSize: 18,
+                                              color: Colors.white,
+                                              fontFamily: 'RaleWay'),
+                                          maxLines: 5,
+                                          overflow: TextOverflow.fade,
+                                          textAlign: TextAlign.start,
+                                        ),
+                            ),
+                          ],
+                        ),
+                        // Row(
+                        //   mainAxisAlignment: MainAxisAlignment.center,
+                        //   children: [
+                        //     Container(
+                        //       padding: EdgeInsets.only(top: 20),
+                        //       child: Text(
+                        //         'Contact:',
+                        //         style: TextStyle(
+                        //             fontSize: 21, color: Colors.yellow),
+                        //       ),
+                        //     ),
+                        //   ],
+                        // ),
+                        // Row(
+                        //   children: [
+                        //     Container(
+                        //       width: width * .9,
+                        //       decoration: BoxDecoration(
+                        //         border: Border.all(color: Colors.yellow),
+                        //         borderRadius: BorderRadius.circular(10),
+                        //         color: Colors.yellowAccent.withOpacity(.2),
+                        //         gradient: new LinearGradient(
+                        //           colors: [Colors.yellow, Colors.cyan],
+                        //         ),
+                        //       ),
+                        //       padding: EdgeInsets.all(10),
+                        //       margin: const EdgeInsets.all(15),
+                        //       child: data['contact'] == null ||
+                        //               data['contact'] == ''
+                        //           ? Text(
+                        //               'Enter Below',
+                        //               style: TextStyle(
+                        //                   fontSize: 19,
+                        //                   fontStyle: FontStyle.italic,
+                        //                   color: Colors.white),
+                        //             )
+                        //           : Text(
+                        //               '${data['contact']}',
+                        //               style: TextStyle(
+                        //                   fontSize: 19, color: Colors.white),
+                        //             ),
+                        //     ),
+                        //   ],
+                        // ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                            ElevatedButton(
+                              child: Text('Edit Profile'),
+                              onPressed: () {
+                                Navigator.pushNamed(context, "/editProfile")
+                                    .then((_) => setState(() {}));
+                              },
+                            ),
+                            ElevatedButton(
+                              child: Text('Log Out'),
+                              onPressed: () async {
+                                await _auth.logOut();
+                                Navigator.pop(context);
+                              },
+                            ),
+                          ],
+                        ),
+                      ],
+                    );
+                  }
+                  return Text('loading');
+                },
+              ),
+            );
+          }
+          return Text('Loading');
+        });
   }
 }

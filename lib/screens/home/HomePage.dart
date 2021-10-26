@@ -1,11 +1,54 @@
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:shallows/screens/home/SkierAnimation.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:shallows/screens/lake/LakePage.dart';
-import 'package:shallows/screens/members/MembersPage.dart';
+import 'package:shallows/screens/residences/ResidencesPage.dart';
 import 'package:shallows/screens/profile/ProfilePage.dart';
 
-class HomePage extends StatelessWidget {
+class HomePage extends StatefulWidget {
+  @override
+  State<HomePage> createState() => _HomePageState();
+}
+
+Future<void> backgroundHandler(RemoteMessage message) async {
+  print(message.data.toString());
+  print(message.notification!.title);
+}
+
+class _HomePageState extends State<HomePage> {
+  @override
+  void initState() {
+    super.initState();
+    Firebase.initializeApp();
+
+    //uses function above, opens app from background
+    FirebaseMessaging.onBackgroundMessage(backgroundHandler);
+
+    //gives you the message on which user taps and opens app from terminated state
+    FirebaseMessaging.instance.getInitialMessage().then((message) {
+      if (message != null) {
+        final routeFromMessage = message.data["route"];
+        Navigator.pushNamed(context, routeFromMessage);
+        print('opened from terminated');
+      }
+    });
+
+    // Stream for only when app is in Foreground
+    FirebaseMessaging.onMessage.listen((message) {
+      print(message.notification!.body);
+      print(message.notification!.title);
+    });
+
+    // When app is in background but opened and user taps notification
+    FirebaseMessaging.onMessageOpenedApp.listen((message) {
+      final routeFromMessage = message.data["route"];
+
+      Navigator.pushNamed(context, routeFromMessage);
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     //Get Screen Size of Every Device
@@ -112,7 +155,7 @@ class HomePage extends StatelessWidget {
 
                         leading: Icon(Icons.add),
                         title: Text(
-                          'Members',
+                          'Residences',
                           textScaleFactor: 1.5,
                           textAlign: TextAlign.center,
                         ),
@@ -125,7 +168,7 @@ class HomePage extends StatelessWidget {
                               PageTransition(
                                 type: PageTransitionType.size,
                                 alignment: Alignment.bottomCenter,
-                                child: MembersPage(),
+                                child: ResidencesPage(),
                               ));
                         },
                       ),

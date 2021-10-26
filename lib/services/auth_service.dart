@@ -13,10 +13,10 @@ class AuthService {
   // auth change user stream
   // value will either be user object(sign-in) or null (sign-out)
   // need this info available to the entire widget tree so use Provider package
-  Stream<UserModel?> get user {
+  Stream<UserModel?> get userStream {
     return _auth
         .authStateChanges()
-        .map((User? user) => _getUserModelFromFirebase(user!));
+        .map((User? someUser) => _getUserModelFromFirebase(someUser!));
   }
 
   Future getCurrentUserUID() async {
@@ -39,8 +39,13 @@ class AuthService {
     }
   }
 
-  Future register(String firstName, String lastName, String residence,
-      String email, String password, String photoURL, String aboutMe, String personalBest) async {
+  Future register(
+    String email,
+    String firstName,
+    String lastName,
+    String residence,
+    String password,
+  ) async {
     try {
       UserCredential result = await _auth.createUserWithEmailAndPassword(
         email: email,
@@ -49,8 +54,12 @@ class AuthService {
       User? user = result.user;
 
       //Setting up users table data in Firestore via UserSetup Class
-      await UserCollectionSetup(uid: user!.uid)
-          .updateUserData(firstName, lastName, residence, email, photoURL, aboutMe, personalBest);
+      await UserCollectionSetup(uid: user!.uid).updateUserData(
+        email,
+        firstName,
+        lastName,
+        residence,
+      );
       return _getUserModelFromFirebase(user);
     } on FirebaseAuthException catch (e) {
       if (e.code == 'weak-passord') {

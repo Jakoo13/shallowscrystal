@@ -12,7 +12,7 @@ class Wrapper extends StatelessWidget {
   Widget build(BuildContext context) {
     final authService = Provider.of<AuthService>(context);
     return StreamBuilder<UserModel?>(
-        stream: authService.user,
+        stream: authService.userStream,
         builder: (_, AsyncSnapshot<UserModel?> snapshot) {
           if (snapshot.connectionState == ConnectionState.active) {
             final UserModel? userModel = snapshot.data;

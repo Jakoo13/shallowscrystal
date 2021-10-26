@@ -1,24 +1,24 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:shallows/screens/members/MemberProfile.dart';
-import 'package:shallows/screens/members/MembersAnimation.dart';
+import 'package:shallows/screens/residences/ResidenceProfile.dart';
+import 'package:shallows/screens/residences/MembersAnimation.dart';
 import 'package:shallows/services/UserCollectionSetup.dart';
 
-class MembersPage extends StatefulWidget {
-  const MembersPage({Key? key}) : super(key: key);
+class ResidencesPage extends StatefulWidget {
+  const ResidencesPage({Key? key}) : super(key: key);
 
   @override
-  _MembersPageState createState() => _MembersPageState();
+  _ResidencesPageState createState() => _ResidencesPageState();
 }
 
-class _MembersPageState extends State<MembersPage> {
+class _ResidencesPageState extends State<ResidencesPage> {
   var users = UserCollectionSetup();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Members'),
+        title: Text('Residences'),
         elevation: 0,
         backgroundColor: Colors.lightBlue[700],
       ),
@@ -47,26 +47,30 @@ class _MembersPageState extends State<MembersPage> {
               padding: const EdgeInsets.only(top: 20),
               height: 400,
               child: StreamBuilder<QuerySnapshot>(
-                  stream: users.users,
+                  stream: users.residences,
                   builder: (context, snapshot) {
                     final data = snapshot.requireData;
                     return ListView.builder(
                         itemCount: data.size,
                         itemBuilder: (context, index) {
                           return Card(
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(25),
+                            ),
                             child: ListTile(
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(25),
+                              ),
                               tileColor: Colors.teal[200],
                               onTap: () {
                                 Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                    builder: (context) => MemberProfile(
+                                    builder: (context) => ResidenceProfile(
                                       index,
-                                      data.docs[index]['firstName'],
-                                      data.docs[index]['lastName'],
-                                      data.docs[index]['residence'],
-                                      data.docs[index]['aboutMe'],
-                                      data.docs[index]['personalBest'],
+                                      data.docs[index]['name'],
+                                      data.docs[index]['about'],
+                                      data.docs[index]['contact'],
                                       data.docs[index]['photoURL'],
                                     ),
                                   ),
@@ -74,14 +78,10 @@ class _MembersPageState extends State<MembersPage> {
                               },
                               leading: Icon(Icons.flag_sharp),
                               trailing: Icon(Icons.arrow_forward_ios),
-                              subtitle: Text(
-                                '${data.docs[index]['residence']} Residence',
-                                textAlign: TextAlign.center,
-                              ),
                               selected: false,
                               selectedTileColor: Colors.yellow,
                               title: Text(
-                                '${data.docs[index]['firstName']} ${data.docs[index]['lastName']}',
+                                '${data.docs[index]['name']}',
                                 textAlign: TextAlign.left,
                                 style: TextStyle(
                                   color: Colors.grey[900],
@@ -94,6 +94,20 @@ class _MembersPageState extends State<MembersPage> {
                         });
                   }),
             ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Container(
+                  padding: const EdgeInsets.only(top: 15),
+                  alignment: Alignment.center,
+                  child: Icon(
+                    Icons.arrow_downward,
+                    color: Colors.white,
+                    size: 22,
+                  ),
+                )
+              ],
+            )
           ],
         ),
       ),

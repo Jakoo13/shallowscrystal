@@ -241,14 +241,12 @@ class _RegisterState extends State<Register> {
                                   if (_formKey.currentState!.validate()) {
                                     try {
                                       dynamic result = await _auth.register(
-                                          firstNameController.text,
-                                          lastNameController.text,
-                                          residenceController.text,
-                                          emailController.text,
-                                          passwordController.text,
-                                          '',
-                                          '',
-                                          '');
+                                        emailController.text,
+                                        firstNameController.text,
+                                        lastNameController.text,
+                                        residenceController.text,
+                                        passwordController.text,
+                                      );
 
                                       if (result == null) {
                                         print('error registering');
