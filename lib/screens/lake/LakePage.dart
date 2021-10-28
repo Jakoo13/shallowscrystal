@@ -1,6 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:shallows/main.dart';
 import 'package:shallows/services/database.dart';
 import 'package:intl/intl.dart';
 
@@ -112,6 +114,27 @@ class _LakePageState extends State<LakePage> {
                                               ? Colors.white
                                               : Colors.teal[200],
                                           onTap: () {
+                                            flutterLocalNotificationsPlugin
+                                                .show(
+                                              0,
+                                              flagOut
+                                                  ? "The ${data.docs[index]['name']}'s Flag Is Now In"
+                                                  : "The ${data.docs[index]['name']}'s Flag Is Out",
+                                              "Tap to go to the Lake Queue",
+                                              NotificationDetails(
+                                                android:
+                                                    AndroidNotificationDetails(
+                                                        channel.id,
+                                                        channel.name,
+                                                        importance:
+                                                            Importance.high,
+                                                        color: Colors.blue,
+                                                        playSound: true,
+                                                        icon:
+                                                            '@mipmap/ic_launcher'),
+                                              ),
+                                            );
+
                                             residences
                                                 .doc(data.docs[index].id)
                                                 .update({
