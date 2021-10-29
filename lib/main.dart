@@ -14,13 +14,13 @@ import 'package:provider/provider.dart';
 import 'package:shallows/services/auth_service.dart';
 
 const AndroidNotificationChannel channel = AndroidNotificationChannel(
-    'high_importance_channel', 'High Importance Notifications',
+    'com.netscaledigital.shallows.urgent', 'High Importance Notifications',
     importance: Importance.high, playSound: true);
 
 final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
     FlutterLocalNotificationsPlugin();
 
-//fires when receive notification in background, does not show popup
+//fires when receive notification in background, does not show popup, This Handler must be top level because this works outside of the app when app is in background
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
   await Firebase.initializeApp();
   print('Handling a background message ${message.messageId}');

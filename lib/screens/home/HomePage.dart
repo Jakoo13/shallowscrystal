@@ -17,20 +17,23 @@ class HomePage extends StatefulWidget {
   State<HomePage> createState() => _HomePageState();
 }
 
-// Future<void> backgroundHandler(RemoteMessage message) async {
-//   await Firebase.initializeApp();
-//   print('Handling a background message ${message.messageId}');
-// }
-
 class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     super.initState();
 
     //different Video
-    FirebaseMessaging.instance.getInitialMessage();
+    //gives message on which user taps and opens app from terminated
+    FirebaseMessaging.instance.getInitialMessage().then((message) {
+      print('opened app from terminated');
+      if (message != null) {
+        print('received message from terminated');
+      }
+    });
 
-    //When App is in Foreground, does not show popup, but gets message
+    // end different video
+
+    //When App is in Foreground, does not show popup, but gets message, does not run when app is in background
     FirebaseMessaging.onMessage.listen((RemoteMessage message) {
       RemoteNotification? notification = message.notification;
       AndroidNotification? android = message.notification?.android;
@@ -49,7 +52,7 @@ class _HomePageState extends State<HomePage> {
       }
     });
 
-    //Fires when User CLICKS notification while app is in background
+    //Fires when User CLICKS notification while app only is in background and not terminated
     FirebaseMessaging.onMessageOpenedApp.listen((message) {
       print('A new onMessageOpenedApp event was published!');
       RemoteNotification? notification = message.notification;
@@ -82,69 +85,18 @@ class _HomePageState extends State<HomePage> {
       "Testing",
       "Testing Body",
       NotificationDetails(
-        android: AndroidNotificationDetails(channel.id, channel.name,
-            importance: Importance.high,
-            color: Colors.blue,
-            playSound: true,
-            icon: '@mipmap/ic_launcher'),
-      ),
+          android: AndroidNotificationDetails(channel.id, channel.name,
+              importance: Importance.high,
+              color: Colors.blue,
+              playSound: true,
+              icon: '@mipmap/ic_launcher'),
+          iOS: IOSNotificationDetails(
+            presentAlert: true,
+            presentBadge: true,
+            presentSound: true,
+          )),
     );
   }
-//     Firebase.initializeApp();
-//     LocalNotificationService.initialize();
-//     var initializationSettingsAndroid =
-//         AndroidInitializationSettings('@mipmap/ic_launcher');
-//     var initializationSettings =
-//         InitializationSettings(android: initializationSettingsAndroid);
-
-//     flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
-//     flutterLocalNotificationsPlugin.initialize(initializationSettings);
-//     //uses function above, opens app from background
-//     FirebaseMessaging.onBackgroundMessage(backgroundHandler);
-
-//     //gives you the message on which user taps and opens app from terminated state
-//     FirebaseMessaging.instance.getInitialMessage().then((message) {
-//       if (message != null) {
-//         final routeFromMessage = message.data["route"];
-//         Navigator.pushNamed(context, routeFromMessage);
-//         print('opened from terminated');
-//       }
-//     });
-
-//     // Stream for only when app is in Foreground
-//     FirebaseMessaging.onMessage.listen((message) {
-//       //print(message.notification!.body);
-//       //print(message.notification!.title);
-//       //LocalNotificationService.display(message);
-//       RemoteNotification? notification = message.notification;
-//       AndroidNotification? android = message.notification?.android;
-//       if (notification != null && android != null) {
-//         flutterLocalNotificationsPlugin.show(
-//           notification.hashCode,
-//           notification.title,
-//           notification.body,
-//           NotificationDetails(
-//             android: AndroidNotificationDetails(
-//               "shallows",
-//               "Shallows Channel",
-//               importance: Importance.max,
-//               priority: Priority.high,
-//             ),
-//           ),
-//         );
-//       }
-//     });
-//     getToken();
-
-//     // When app is in background but opened and user taps notification
-//     FirebaseMessaging.onMessageOpenedApp.listen((message) {
-//       if (message.data['route'] != null) {
-//         final routeFromMessage = message.data["route"];
-
-//         Navigator.pushNamed(context, routeFromMessage);
-//       }
-//     });
-//   }
 
   @override
   Widget build(BuildContext context) {
