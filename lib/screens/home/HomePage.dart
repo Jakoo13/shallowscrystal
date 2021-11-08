@@ -1,16 +1,37 @@
 //import 'package:firebase_core/firebase_core.dart';
 //import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+
 import 'package:shallows/main.dart';
 //import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:shallows/screens/home/SkierAnimation.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:shallows/screens/lake/LakePage.dart';
+import 'package:shallows/screens/messages/allMessages.dart';
 import 'package:shallows/screens/residences/ResidencesPage.dart';
 import 'package:shallows/screens/profile/ProfilePage.dart';
 //import 'package:shallows/services/local_notification_service.dart';
+
+Future<void> saveTokenToDatabase(String token) async {
+  // Assume user is logged in for this example
+  String userId = FirebaseAuth.instance.currentUser!.uid;
+
+  await FirebaseFirestore.instance.collection('users').doc(userId).update({
+    'tokens': FieldValue.arrayUnion([token]),
+  });
+}
+
+Future<void> getFirebaseToken() async {
+  // Get the token each time the application loads
+  String? token = await FirebaseMessaging.instance.getToken();
+  // Save the initial token to the database
+
+  await saveTokenToDatabase(token!);
+}
 
 class HomePage extends StatefulWidget {
   @override
@@ -21,13 +42,15 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     super.initState();
+    getFirebaseToken();
+    // Any time the token refreshes, store this in the database too.
+    FirebaseMessaging.instance.onTokenRefresh.listen(saveTokenToDatabase);
 
-    //different Video
     //gives message on which user taps and opens app from terminated
     FirebaseMessaging.instance.getInitialMessage().then((message) {
       print('opened app from terminated');
       if (message != null) {
-        print('received message from terminated');
+        print('received message from terminated: $message');
       }
     });
 
@@ -36,6 +59,7 @@ class _HomePageState extends State<HomePage> {
     //When App is in Foreground, does not show popup, but gets message, does not run when app is in background
     FirebaseMessaging.onMessage.listen((RemoteMessage message) {
       RemoteNotification? notification = message.notification;
+      print('onMessage: $message');
       AndroidNotification? android = message.notification?.android;
       if (notification != null && android != null) {
         flutterLocalNotificationsPlugin.show(
@@ -54,10 +78,11 @@ class _HomePageState extends State<HomePage> {
 
     //Fires when User CLICKS notification while app only is in background and not terminated
     FirebaseMessaging.onMessageOpenedApp.listen((message) {
-      print('A new onMessageOpenedApp event was published!');
+      print('A new onMessageOpenedApp event was published!: $message');
       RemoteNotification? notification = message.notification;
       AndroidNotification? android = message.notification?.android;
       if (notification != null && android != null) {
+        print('on message opened app: $message');
         showDialog(
             context: context,
             builder: (_) {
@@ -228,7 +253,7 @@ class _HomePageState extends State<HomePage> {
 
                         leading: Icon(Icons.add),
                         title: Text(
-                          'Message Board',
+                          'Messages',
                           textScaleFactor: 1.5,
                           textAlign: TextAlign.center,
                         ),
@@ -236,7 +261,13 @@ class _HomePageState extends State<HomePage> {
                         //subtitle: Text('This is subtitle'),
                         selected: false,
                         onTap: () {
-                          showNotification();
+                          Navigator.push(
+                              context,
+                              PageTransition(
+                                type: PageTransitionType.size,
+                                alignment: Alignment.bottomCenter,
+                                child: AllMessages(),
+                              ));
                         },
                       ),
                     ),

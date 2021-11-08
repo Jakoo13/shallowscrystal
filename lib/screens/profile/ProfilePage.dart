@@ -138,13 +138,14 @@ class _ProfilePageState extends State<ProfilePage> {
                     return Text('Document does not exist');
                   }
                   if (snapshot.connectionState == ConnectionState.done) {
-                    Map<String, dynamic> data =
+                    Map<String, dynamic> residenceData =
                         snapshot.data!.data() as Map<String, dynamic>;
                     return CircleAvatar(
                       radius: 65,
                       child: ClipOval(
                         child: FutureBuilder(
-                          future: loadImage(context, '${data['photoURL']}'),
+                          future: loadImage(
+                              context, '${residenceData['photoURL']}'),
                           builder: (context, snapshot) {
                             if (snapshot.connectionState ==
                                 ConnectionState.done) {
@@ -261,7 +262,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                   colors: [Colors.yellow, Colors.cyan],
                                 ),
                               ),
-                              height: 140,
+                              height: 160,
                               width: width * .9,
                               margin: const EdgeInsets.only(
                                   left: 10, right: 10, top: 10, bottom: 50),
@@ -282,7 +283,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                               fontSize: 18,
                                               color: Colors.white,
                                               fontFamily: 'RaleWay'),
-                                          maxLines: 5,
+                                          maxLines: 6,
                                           overflow: TextOverflow.fade,
                                           textAlign: TextAlign.start,
                                         ),

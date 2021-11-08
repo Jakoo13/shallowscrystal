@@ -1,4 +1,4 @@
-package com.example.shallows
+package com.netscaledigital.shallows
 
 import io.flutter.embedding.android.FlutterActivity
 

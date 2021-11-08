@@ -12,6 +12,7 @@ import 'package:shallows/screens/profile/editProfile.dart';
 import 'package:shallows/screens/wrapper.dart';
 import 'package:provider/provider.dart';
 import 'package:shallows/services/auth_service.dart';
+//import 'package:shared_preferences/shared_preferences.dart';
 
 const AndroidNotificationChannel channel = AndroidNotificationChannel(
     'com.netscaledigital.shallows.urgent', 'High Importance Notifications',
@@ -29,6 +30,7 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
+  //SharedPreferences prefs = await SharedPreferences.getInstance();
   FirebaseMessaging messaging = FirebaseMessaging.instance;
   NotificationSettings iosSettings = await messaging.requestPermission(
       alert: true,
@@ -64,6 +66,8 @@ Future<void> main() async {
 class MyApp extends StatefulWidget {
   @override
   State<MyApp> createState() => _MyAppState();
+  //final SharedPreferences prefs;
+  MyApp();
 }
 
 class _MyAppState extends State<MyApp> {
