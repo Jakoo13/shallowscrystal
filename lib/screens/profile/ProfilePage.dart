@@ -295,13 +295,6 @@ class _ProfilePageState extends State<ProfilePage> {
                                     .then((_) => setState(() {}));
                               },
                             ),
-                            ElevatedButton(
-                              child: Text('Log Out'),
-                              onPressed: () async {
-                                await _auth.logOut();
-                                Navigator.pop(context);
-                              },
-                            ),
                           ],
                         ),
                       ],

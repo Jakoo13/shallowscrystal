@@ -275,13 +275,13 @@ class _HomePageState extends State<HomePage> {
                         },
                       ),
                     ),
-                    ElevatedButton(
-                      child: Text('Log Out'),
-                      onPressed: () async {
-                        await _auth.logOut();
-                        //Navigator.pop(context);
-                      },
-                    ),
+                    // ElevatedButton(
+                    //   child: Text('Log Out'),
+                    //   onPressed: () async {
+                    //     await _auth.logOut();
+                    //     //Navigator.pop(context);
+                    //   },
+                    // ),
                   ],
                 ),
               ),
