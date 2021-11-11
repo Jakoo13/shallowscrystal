@@ -45,12 +45,16 @@ exports.messageTrigger = functions.firestore.document('/messages/{names}/chats/{
 
 //Fires when a Residence puts there flag out and puts there flag in. 
 exports.flagOutTrigger = functions.firestore.document('/residences/{name}').onUpdate(async (change, context)=> {
-    
+    var newData;
+    newData = snapshot.data();
+    var residenceName = newData.name;
     var userRef = admin.firestore().collection("users");
     const userSnapshot = await userRef.get();
     var deviceTokens = [];
     userSnapshot.forEach(doc=> {
-        deviceTokens.push(doc.data().tokens)
+        if(doc.data().residence != residenceName){
+            deviceTokens.push(doc.data().tokens)
+        }
     });
     const tokenIds = await Promise.all(deviceTokens);
 
