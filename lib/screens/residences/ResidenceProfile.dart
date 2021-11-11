@@ -5,10 +5,10 @@ class ResidenceProfile extends StatefulWidget {
   final int index;
   final String name;
   final String? about;
-  final String? contact;
+
   final String photoURL;
   ResidenceProfile(
-      this.index, this.name, this.about, this.contact, this.photoURL);
+      this.index, this.name, this.about,  this.photoURL);
 
   @override
   State<ResidenceProfile> createState() => _MemberProfileState();

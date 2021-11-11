@@ -1,11 +1,10 @@
+import 'dart:async';
 import 'dart:collection';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:shallows/screens/messages/widgets/message_input.dart';
-//import 'package:shallows/screens/messages/widgets/message_input.dart';
-//import 'package:shallows/screens/messages/widgets/message_input.dart';
 
 class ChatScreen extends StatefulWidget {
   final int index;
@@ -24,10 +23,18 @@ class _ChatScreenState extends State<ChatScreen> {
   // final CollectionReference messages =
   //     FirebaseFirestore.instance.collection('messages');
   FirebaseFirestore fireStore = FirebaseFirestore.instance;
-
   final FirebaseAuth auth = FirebaseAuth.instance;
+  ScrollController _myScrollController = ScrollController();
+  void scrollDown() {
+    Timer(
+        Duration(milliseconds: 500),
+        () => _myScrollController
+            .jumpTo(_myScrollController.position.maxScrollExtent));
+  }
+
   @override
   Widget build(BuildContext context) {
+    scrollDown();
     //print(widget.name);
     return Scaffold(
       appBar: AppBar(
@@ -75,30 +82,28 @@ class _ChatScreenState extends State<ChatScreen> {
                             ConnectionState.waiting) {
                           return Text('Loading');
                         }
-
-                        return ListView(
-                          children: chatSnapshot.data!.docs
-                              .map((DocumentSnapshot document) {
-                            Map<String, dynamic> data =
-                                document.data()! as Map<String, dynamic>;
-
-                            return Row(
-                              mainAxisAlignment:
-                                  data['from'] == userData['residence']
-                                      ? MainAxisAlignment.end
-                                      : MainAxisAlignment.start,
-                              children: [
-                                Container(
+                        final data = chatSnapshot.requireData;
+                        return ListView.builder(
+                            controller: _myScrollController,
+                            itemCount: data.size,
+                            itemBuilder: (context, index) {
+                              var from = data.docs[index]['from'];
+                              var content = data.docs[index]['content'];
+                              return Row(
+                                mainAxisAlignment: from == userData['residence']
+                                    ? MainAxisAlignment.end
+                                    : MainAxisAlignment.start,
+                                children: [
+                                  Container(
                                     padding: EdgeInsets.all(12),
                                     margin: EdgeInsets.symmetric(
                                         horizontal: 14, vertical: 8),
                                     constraints: BoxConstraints(maxWidth: 240),
                                     decoration: BoxDecoration(
-                                      color:
-                                          data['from'] == userData['residence']
-                                              ? Colors.blue
-                                              : Colors.green,
-                                      borderRadius: data['from'] ==
+                                      color: from == userData['residence']
+                                          ? Colors.blue
+                                          : Colors.green,
+                                      borderRadius: from ==
                                               userData['residence']
                                           ? BorderRadius.only(
                                               bottomLeft: Radius.circular(15),
@@ -109,25 +114,26 @@ class _ChatScreenState extends State<ChatScreen> {
                                     ),
                                     child: Column(
                                       crossAxisAlignment:
-                                          data['from'] == userData['residence']
+                                          from == userData['residence']
                                               ? CrossAxisAlignment.end
                                               : CrossAxisAlignment.start,
                                       children: [
                                         Text(
-                                          data['content'],
+                                          content,
                                           style: TextStyle(
                                               color: Colors.white,
                                               fontSize: 17),
                                         ),
                                       ],
-                                    ))
-                              ],
-                            );
-                          }).toList(),
-                        );
+                                    ),
+                                  ),
+                                ],
+                              );
+                            });
+                      }
 
-                        //return Text('loading');
-                      },
+                      //return Text('loading');
+                      ,
                     );
                   }
                   return Text('loading');
@@ -136,7 +142,9 @@ class _ChatScreenState extends State<ChatScreen> {
           Align(
             alignment: FractionalOffset.bottomCenter,
             child: MessageInput(
-                '${widget.name}', '${widget.currentUserResidence}'),
+              '${widget.name}',
+              '${widget.currentUserResidence}',
+            ),
           )
         ],
       ),

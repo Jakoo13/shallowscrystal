@@ -40,11 +40,12 @@ class _EditProfileState extends State<EditProfile> {
       final fileName = basename(file.path);
       final destination = 'profilePhotos/$fileName';
       final ref = storage.ref(destination);
-      residences
+      FirebaseFirestore.instance
+          .collection('residences')
           .doc(residence)
           .update({"photoURL": destination})
           .then((value) => print('Profile Updated'))
-          .catchError((error) => print(error));
+          .catchError((error) => print("Jake's error: $error"));
 
       return ref.putFile(file);
     } on FirebaseException catch (e) {
@@ -110,7 +111,7 @@ class _EditProfileState extends State<EditProfile> {
                                 children: [
                                   InkWell(
                                     onTap: () async {
-                                      uploadPhoto(data['residence']);
+                                      uploadPhoto(userData['residence']);
                                     },
                                     child: Stack(
                                       children: [
@@ -123,26 +124,35 @@ class _EditProfileState extends State<EditProfile> {
                                               width: 4.0,
                                             ),
                                           ),
-                                          child: FutureBuilder(
-                                            future: loadImage(
-                                                context, '${data['photoURL']}'),
-                                            builder: (context, snapshot) {
-                                              if (snapshot.connectionState ==
-                                                  ConnectionState.done) {
-                                                return CircleAvatar(
-                                                  radius: 65,
-                                                  backgroundImage: NetworkImage(
-                                                      snapshot.data.toString()),
-                                                );
-                                              }
+                                          child: CircleAvatar(
+                                            radius: 65,
+                                            child: ClipOval(
+                                              child: FutureBuilder(
+                                                future: loadImage(context,
+                                                    '${data['photoURL']}'),
+                                                builder: (context, snapshot) {
+                                                  if (snapshot
+                                                          .connectionState ==
+                                                      ConnectionState.done) {
+                                                    return CircleAvatar(
+                                                      radius: 65,
+                                                      backgroundImage:
+                                                          NetworkImage(snapshot
+                                                              .data
+                                                              .toString()),
+                                                    );
+                                                  }
 
-                                              if (snapshot.connectionState ==
-                                                  ConnectionState.waiting) {
-                                                return CircularProgressIndicator();
-                                              }
+                                                  if (snapshot
+                                                          .connectionState ==
+                                                      ConnectionState.waiting) {
+                                                    return CircularProgressIndicator();
+                                                  }
 
-                                              return Container();
-                                            },
+                                                  return Container();
+                                                },
+                                              ),
+                                            ),
                                           ),
                                         ),
                                         Positioned(
@@ -190,7 +200,7 @@ class _EditProfileState extends State<EditProfile> {
                                 Container(
                                   padding: EdgeInsets.only(top: 35),
                                   child: Text(
-                                    '${data['name']} Residence',
+                                    '${userData['residence']} Residence',
                                     style: TextStyle(
                                         fontSize: 30, color: Colors.white),
                                   ),

@@ -74,7 +74,6 @@ class _ResidencesPageState extends State<ResidencesPage> {
                                       index,
                                       data.docs[index]['name'],
                                       data.docs[index]['about'],
-                                      data.docs[index]['contact'],
                                       data.docs[index]['photoURL'],
                                     ),
                                   ),

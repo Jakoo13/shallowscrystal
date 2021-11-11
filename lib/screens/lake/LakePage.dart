@@ -1,9 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/cupertino.dart';
 //import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-import 'package:shallows/main.dart';
 import 'package:shallows/services/database.dart';
 import 'package:intl/intl.dart';
 
@@ -115,44 +114,66 @@ class _LakePageState extends State<LakePage> {
                                               ? Colors.white
                                               : Colors.teal[200],
                                           onTap: () {
-                                            flutterLocalNotificationsPlugin
-                                                .show(
-                                              0,
-                                              flagOut
-                                                  ? "The ${data.docs[index]['name']}'s Flag Is Now In"
-                                                  : "The ${data.docs[index]['name']}'s Flag Is Out",
-                                              "Tap to go to the Lake Queue",
-                                              NotificationDetails(
-                                                android:
-                                                    AndroidNotificationDetails(
-                                                        channel.id,
-                                                        channel.name,
-                                                        importance:
-                                                            Importance.high,
-                                                        color: Colors.blue,
-                                                        playSound: true,
-                                                        icon:
-                                                            '@mipmap/ic_launcher'),
-                                              ),
-                                            );
-
-                                            residences
-                                                .doc(data.docs[index].id)
-                                                .update({
-                                                  'flagOutTime': dateFormatted,
-                                                })
-                                                .then((value) =>
-                                                    print('Profile Updated'))
-                                                .catchError(
-                                                    (error) => print(error));
-                                            print(data.docs[index].id);
-                                            if (flagOut == true) {
-                                              _database.changeFlagPosition(
-                                                  false, data.docs[index].id);
-                                            } else {
-                                              _database.changeFlagPosition(
-                                                  true, data.docs[index].id);
-                                            }
+                                            showDialog(
+                                                context: context,
+                                                builder:
+                                                    (_) => CupertinoAlertDialog(
+                                                          title: Text(
+                                                              "Change Flag Position?"),
+                                                          actions: [
+                                                            CupertinoDialogAction(
+                                                              child:
+                                                                  Text("Yes"),
+                                                              onPressed: () {
+                                                                residences
+                                                                    .doc(data
+                                                                        .docs[
+                                                                            index]
+                                                                        .id)
+                                                                    .update({
+                                                                      'flagOutTime':
+                                                                          dateFormatted,
+                                                                    })
+                                                                    .then((value) =>
+                                                                        print(
+                                                                            'Profile Updated'))
+                                                                    .catchError(
+                                                                        (error) =>
+                                                                            print(error));
+                                                                print(data
+                                                                    .docs[index]
+                                                                    .id);
+                                                                if (flagOut ==
+                                                                    true) {
+                                                                  _database.changeFlagPosition(
+                                                                      false,
+                                                                      data
+                                                                          .docs[
+                                                                              index]
+                                                                          .id);
+                                                                } else {
+                                                                  _database.changeFlagPosition(
+                                                                      true,
+                                                                      data
+                                                                          .docs[
+                                                                              index]
+                                                                          .id);
+                                                                }
+                                                                Navigator.of(
+                                                                        context)
+                                                                    .pop();
+                                                              },
+                                                            ),
+                                                            CupertinoDialogAction(
+                                                              child: Text("No"),
+                                                              onPressed: () {
+                                                                Navigator.of(
+                                                                        context)
+                                                                    .pop();
+                                                              },
+                                                            )
+                                                          ],
+                                                        ));
                                           },
                                           leading: flagOut
                                               ? Icon(Icons.flag_sharp,

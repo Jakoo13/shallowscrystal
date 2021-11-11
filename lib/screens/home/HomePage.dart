@@ -19,9 +19,11 @@ import 'package:shallows/screens/profile/ProfilePage.dart';
 Future<void> saveTokenToDatabase(String token) async {
   // Assume user is logged in for this example
   String userId = FirebaseAuth.instance.currentUser!.uid;
+  //String? userEmail = FirebaseAuth.instance.currentUser!.email;
 
   await FirebaseFirestore.instance.collection('users').doc(userId).update({
-    'tokens': FieldValue.arrayUnion([token]),
+    'tokens': token.toString()
+    // FieldValue.arrayUnion([token]),
   });
 }
 
@@ -271,6 +273,13 @@ class _HomePageState extends State<HomePage> {
                         },
                       ),
                     ),
+                    // ElevatedButton(
+                    //   child: Text('Log Out'),
+                    //   onPressed: () async {
+                    //     await _auth.signOut();
+                    //     //Navigator.pop(context);
+                    //   },
+                    // ),
                   ],
                 ),
               ),

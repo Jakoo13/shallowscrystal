@@ -97,7 +97,7 @@ class _AllMessagesState extends State<AllMessages> {
                                                 ),
                                               );
                                             },
-                                            leading: Icon(Icons.flag_sharp,
+                                            leading: Icon(Icons.message,
                                                 color: Colors.yellow[200]),
                                             trailing: Icon(
                                                 Icons.arrow_forward_ios,

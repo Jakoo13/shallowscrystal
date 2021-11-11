@@ -271,7 +271,7 @@ class _ProfilePageState extends State<ProfilePage> {
                               child:
                                   data['about'] == null || data['about'] == ''
                                       ? Text(
-                                          'Enter Below',
+                                          'Press Edit Button Below',
                                           style: TextStyle(
                                               fontSize: 19,
                                               color: Colors.white,

@@ -8,7 +8,10 @@ class MessageInput extends StatefulWidget {
   final String? sentTo;
   final String? sentFrom;
 
-  MessageInput(this.sentTo, this.sentFrom);
+  MessageInput(
+    this.sentTo,
+    this.sentFrom,
+  );
   @override
   _MessageInputState createState() => _MessageInputState();
 }
@@ -38,6 +41,7 @@ class _MessageInputState extends State<MessageInput> {
       'from': widget.sentFrom,
       'to': widget.sentTo,
       'timeStamp': Timestamp.now(),
+      'read': false
     });
     _messageController.clear();
   }
@@ -63,9 +67,7 @@ class _MessageInputState extends State<MessageInput> {
             ),
           ),
           IconButton(
-            onPressed:
-                //_messageController.text.isEmpty ? null :
-                _sendMessage,
+            onPressed: () => {_sendMessage()},
             icon: Icon(Icons.send),
           ),
         ],
