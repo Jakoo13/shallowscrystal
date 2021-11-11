@@ -14,6 +14,7 @@ import 'package:shallows/screens/lake/LakePage.dart';
 import 'package:shallows/screens/messages/allMessages.dart';
 import 'package:shallows/screens/residences/ResidencesPage.dart';
 import 'package:shallows/screens/profile/ProfilePage.dart';
+import 'package:shallows/services/auth_service.dart';
 //import 'package:shallows/services/local_notification_service.dart';
 
 Future<void> saveTokenToDatabase(String token) async {
@@ -133,6 +134,7 @@ class _HomePageState extends State<HomePage> {
     //Get Safe Area of Every Device
     var padding = MediaQuery.of(context).padding;
     double newheight = height - padding.top - padding.bottom;
+    final AuthService _auth = AuthService();
 
     return Container(
       decoration: BoxDecoration(
@@ -273,13 +275,13 @@ class _HomePageState extends State<HomePage> {
                         },
                       ),
                     ),
-                    // ElevatedButton(
-                    //   child: Text('Log Out'),
-                    //   onPressed: () async {
-                    //     await _auth.signOut();
-                    //     //Navigator.pop(context);
-                    //   },
-                    // ),
+                    ElevatedButton(
+                      child: Text('Log Out'),
+                      onPressed: () async {
+                        await _auth.logOut();
+                        //Navigator.pop(context);
+                      },
+                    ),
                   ],
                 ),
               ),

@@ -20,6 +20,7 @@ class _RegisterState extends State<Register> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   bool isLoading = false;
   final AuthService _auth = AuthService();
+  String dropdownValue = 'Residence';
 
   @override
   Widget build(BuildContext context) {
@@ -117,28 +118,58 @@ class _RegisterState extends State<Register> {
                     ),
                     /////////////Residence Input/////////
                     Padding(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 90,
-                      ),
-                      child: TextFormField(
-                        controller: residenceController,
-                        validator: validateResidence,
-                        keyboardType: TextInputType.name,
-                        textCapitalization: TextCapitalization.sentences,
-                        decoration: InputDecoration(
-                          labelText: "Residence Last Name",
-                          labelStyle: TextStyle(
-                            color: Colors.white,
-                          ),
-                          errorStyle: TextStyle(
-                            color: Colors.black,
-                          ),
+                      padding: const EdgeInsets.symmetric(horizontal: 90),
+                      child: DropdownButtonFormField<String>(
+                        value: dropdownValue,
+                        icon: const Icon(
+                          Icons.arrow_downward,
+                          color: Colors.white,
                         ),
-                        style: TextStyle(
-                          color: Colors.yellow,
-                        ),
+                        iconSize: 24,
+                        elevation: 20,
+                        validator: (value) => value == 'Residence'
+                            ? 'Please select a residence'
+                            : null,
+                        isExpanded: true,
+                        dropdownColor: Colors.black87,
+                        style: const TextStyle(color: Colors.white),
+                        onChanged: (String? newValue) {
+                          setState(() {
+                            dropdownValue = newValue!;
+                          });
+                          print(dropdownValue);
+                        },
+                        items: <String>[
+                          'Residence',
+                          'Black',
+                          'C & C',
+                          'Doran',
+                          'Earnhardt',
+                          'Eaton',
+                          'Gilker',
+                          'Gregg',
+                          'Hilderbrand',
+                          'Holmes',
+                          'Korniek',
+                          'Kubaki',
+                          'McNabb',
+                          'Miller',
+                          'Ogden',
+                          'Perkins',
+                          'Pisio',
+                          'Young'
+                        ].map<DropdownMenuItem<String>>((String value) {
+                          return DropdownMenuItem<String>(
+                            value: value,
+                            child: Text(
+                              value,
+                              style: TextStyle(fontSize: 17),
+                            ),
+                          );
+                        }).toList(),
                       ),
                     ),
+
                     //////////////Email/////////
                     Padding(
                       padding: const EdgeInsets.symmetric(
@@ -244,7 +275,7 @@ class _RegisterState extends State<Register> {
                                         emailController.text,
                                         firstNameController.text,
                                         lastNameController.text,
-                                        residenceController.text,
+                                        dropdownValue.toString(),
                                         passwordController.text,
                                       );
 
@@ -301,28 +332,28 @@ String? validateEmail(String? formEmail) {
   return null;
 }
 
-String? validateResidence(String? formResidence) {
-  if (formResidence == null || formResidence.isEmpty)
-    return 'Residence is required.';
-  List<String> residences = [
-    'Gilker',
-    'Miller',
-    'Walston',
-    'Cheney',
-    'Earnhardt',
-    'Abney',
-    'Tilton',
-    'McNabb',
-    'Perkins',
-    'Johnson',
-    'Holmes'
-  ];
-  if (residences.contains(formResidence)) {
-    return null;
-  } else {
-    return 'Residence does not exist';
-  }
-}
+// String? validateResidence(String? formResidence) {
+//   if (formResidence == null || formResidence.isEmpty)
+//     return 'Residence is required.';
+//   List<String> residences = [
+//     'Gilker',
+//     'Miller',
+//     'Walston',
+//     'Cheney',
+//     'Earnhardt',
+//     'Abney',
+//     'Tilton',
+//     'McNabb',
+//     'Perkins',
+//     'Johnson',
+//     'Holmes'
+//   ];
+//   if (residences.contains(formResidence)) {
+//     return null;
+//   } else {
+//     return 'Residence does not exist';
+//   }
+// }
 
 String? validatePassword(String? formPassword) {
   if (formPassword == null || formPassword.isEmpty)

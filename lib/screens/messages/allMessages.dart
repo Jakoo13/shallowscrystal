@@ -1,11 +1,7 @@
-//import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:shallows/providers/UserResidence.dart';
 import 'package:shallows/screens/messages/ChatScreen.dart';
-
-//import 'package:shallows/screens/residences/ResidenceProfile.dart';
-//import 'package:shallows/screens/residences/ResidenceProfile.dart';
 import 'package:shallows/services/UserCollectionSetup.dart';
 
 class AllMessages extends StatefulWidget {
@@ -61,7 +57,7 @@ class _AllMessagesState extends State<AllMessages> {
                   children: [
                     Container(
                       padding: const EdgeInsets.only(top: 20),
-                      height: newheight * .8,
+                      height: newheight * .85,
                       child: StreamBuilder<QuerySnapshot>(
                           stream: users.residences,
                           builder: (context, snapshot) {

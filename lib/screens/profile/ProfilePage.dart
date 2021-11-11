@@ -1,13 +1,8 @@
-//import 'dart:html';
-
 import 'dart:async';
-
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
-// import 'package:provider/provider.dart';
-// import 'package:shallows/models/UserModel.dart';
 
 import 'package:shallows/services/auth_service.dart';
 
@@ -290,50 +285,6 @@ class _ProfilePageState extends State<ProfilePage> {
                             ),
                           ],
                         ),
-                        // Row(
-                        //   mainAxisAlignment: MainAxisAlignment.center,
-                        //   children: [
-                        //     Container(
-                        //       padding: EdgeInsets.only(top: 20),
-                        //       child: Text(
-                        //         'Contact:',
-                        //         style: TextStyle(
-                        //             fontSize: 21, color: Colors.yellow),
-                        //       ),
-                        //     ),
-                        //   ],
-                        // ),
-                        // Row(
-                        //   children: [
-                        //     Container(
-                        //       width: width * .9,
-                        //       decoration: BoxDecoration(
-                        //         border: Border.all(color: Colors.yellow),
-                        //         borderRadius: BorderRadius.circular(10),
-                        //         color: Colors.yellowAccent.withOpacity(.2),
-                        //         gradient: new LinearGradient(
-                        //           colors: [Colors.yellow, Colors.cyan],
-                        //         ),
-                        //       ),
-                        //       padding: EdgeInsets.all(10),
-                        //       margin: const EdgeInsets.all(15),
-                        //       child: data['contact'] == null ||
-                        //               data['contact'] == ''
-                        //           ? Text(
-                        //               'Enter Below',
-                        //               style: TextStyle(
-                        //                   fontSize: 19,
-                        //                   fontStyle: FontStyle.italic,
-                        //                   color: Colors.white),
-                        //             )
-                        //           : Text(
-                        //               '${data['contact']}',
-                        //               style: TextStyle(
-                        //                   fontSize: 19, color: Colors.white),
-                        //             ),
-                        //     ),
-                        //   ],
-                        // ),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [

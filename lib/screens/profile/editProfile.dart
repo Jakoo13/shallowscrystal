@@ -1,10 +1,8 @@
 import 'dart:async';
 import 'dart:io';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-
 import 'package:image_picker/image_picker.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:path/path.dart';
@@ -262,33 +260,7 @@ class _EditProfileState extends State<EditProfile> {
                                         ),
                                       ],
                                     ),
-                                    // Row(
-                                    //   children: [
-                                    //     Expanded(
-                                    //       child: Padding(
-                                    //         padding: const EdgeInsets.only(
-                                    //             top: 10, right: 15.0),
-                                    //         child: TextField(
-                                    //           maxLength: 30,
-                                    //           maxLines: 1,
-                                    //           controller: _contactController
-                                    //             ..text = data['contact'] != null
-                                    //                 ? '${data['contact']}'
-                                    //                 : '',
-                                    //           decoration: InputDecoration(
-                                    //             filled: true,
-                                    //             fillColor: Colors.white70,
-                                    //             helperText: "Contact",
-                                    //             border: OutlineInputBorder(
-                                    //               borderRadius:
-                                    //                   BorderRadius.circular(10),
-                                    //             ),
-                                    //           ),
-                                    //         ),
-                                    //       ),
-                                    //     ),
-                                    //   ],
-                                    // ),
+                                    
                                     Row(
                                       mainAxisAlignment:
                                           MainAxisAlignment.center,

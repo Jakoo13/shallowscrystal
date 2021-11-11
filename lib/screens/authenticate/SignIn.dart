@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
-//import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:shallows/services/auth_service.dart';
 import 'Register.dart';
 import 'package:page_transition/page_transition.dart';
-//import 'lake.dart';
 
 class SignIn extends StatefulWidget {
   const SignIn({Key? key}) : super(key: key);
