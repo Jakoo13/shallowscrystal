@@ -2,7 +2,7 @@
     package="com.netscaledigital.shallows">
     
    <application
-        android:label="shallows"
+        android:label="Lake Flags"
         android:icon="@mipmap/ic_launcher">
 
       <meta-data

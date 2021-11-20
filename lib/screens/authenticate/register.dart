@@ -27,290 +27,293 @@ class _RegisterState extends State<Register> {
     User? user = FirebaseAuth.instance.currentUser;
 
     return MaterialApp(
-      home: Scaffold(
-        body: Container(
-          decoration: new BoxDecoration(
-            gradient: new LinearGradient(
-              begin: Alignment.topCenter,
-              end: Alignment.bottomCenter,
-              colors: [
-                Color.fromARGB(255, 58, 123, 213),
-                Color.fromARGB(255, 58, 96, 115),
-              ],
+      home: MediaQuery(
+        data: MediaQuery.of(context).copyWith(textScaleFactor: 1),
+        child: Scaffold(
+          body: Container(
+            decoration: new BoxDecoration(
+              gradient: new LinearGradient(
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter,
+                colors: [
+                  Color.fromARGB(255, 58, 123, 213),
+                  Color.fromARGB(255, 58, 96, 115),
+                ],
+              ),
             ),
-          ),
-          child: Form(
-            key: _formKey,
-            child: Center(
-              child: SingleChildScrollView(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    AnimatedOpacity(
-                      opacity: .7,
-                      //_currentOpacity fix this later
-                      duration: const Duration(seconds: 2),
-                      child: Padding(
-                        padding: const EdgeInsets.all(50),
-                        child: Image.asset(
-                          'assets/Untitled-3.png',
-                          width: 400,
-                        ),
-                      ),
-                    ),
-                    //////////////First Name/////////
-                    Padding(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 90,
-                      ),
-                      child: TextFormField(
-                        controller: firstNameController,
-                        validator: (val) {
-                          if (val!.isEmpty) {
-                            return 'Empty';
-                          } else {
-                            return null;
-                          }
-                        },
-                        keyboardType: TextInputType.name,
-                        decoration: InputDecoration(
-                          labelText: "First Name",
-                          labelStyle: TextStyle(
-                            color: Colors.white,
-                          ),
-                          errorStyle: TextStyle(
-                            color: Colors.black,
+            child: Form(
+              key: _formKey,
+              child: Center(
+                child: SingleChildScrollView(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      AnimatedOpacity(
+                        opacity: .7,
+                        //_currentOpacity fix this later
+                        duration: const Duration(seconds: 2),
+                        child: Padding(
+                          padding: const EdgeInsets.all(50),
+                          child: Image.asset(
+                            'assets/Untitled-3.png',
+                            width: 400,
                           ),
                         ),
-                        style: TextStyle(
-                          color: Colors.yellow,
-                        ),
                       ),
-                    ),
-                    //////////////Last Name/////////
-                    Padding(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 90,
-                      ),
-                      child: TextFormField(
-                        controller: lastNameController,
-                        validator: (val) {
-                          if (val!.isEmpty) {
-                            return 'Empty';
-                          } else {
-                            return null;
-                          }
-                        },
-                        keyboardType: TextInputType.name,
-                        decoration: InputDecoration(
-                          labelText: "Last Name",
-                          labelStyle: TextStyle(
-                            color: Colors.white,
-                          ),
-                          errorStyle: TextStyle(
-                            color: Colors.black,
-                          ),
+                      //////////////First Name/////////
+                      Padding(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 90,
                         ),
-                        style: TextStyle(
-                          color: Colors.yellow,
-                        ),
-                      ),
-                    ),
-                    /////////////Residence Input/////////
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 90),
-                      child: DropdownButtonFormField<String>(
-                        value: dropdownValue,
-                        icon: const Icon(
-                          Icons.arrow_downward,
-                          color: Colors.white,
-                        ),
-                        iconSize: 24,
-                        elevation: 20,
-                        validator: (value) => value == 'Residence'
-                            ? 'Please select a residence'
-                            : null,
-                        isExpanded: true,
-                        dropdownColor: Colors.black87,
-                        style: const TextStyle(color: Colors.white),
-                        onChanged: (String? newValue) {
-                          setState(() {
-                            dropdownValue = newValue!;
-                          });
-                          print(dropdownValue);
-                        },
-                        items: <String>[
-                          'Residence',
-                          'Black',
-                          'C & C',
-                          'Doran',
-                          'Earnhardt',
-                          'Eaton',
-                          'Gilker',
-                          'Gregg',
-                          'Hilderbrand',
-                          'Holmes',
-                          'Korniek',
-                          'Kubaki',
-                          'McNabb',
-                          'Miller',
-                          'Ogden',
-                          'Perkins',
-                          'Pisio',
-                          'Young'
-                        ].map<DropdownMenuItem<String>>((String value) {
-                          return DropdownMenuItem<String>(
-                            value: value,
-                            child: Text(
-                              value,
-                              style: TextStyle(fontSize: 17),
-                            ),
-                          );
-                        }).toList(),
-                      ),
-                    ),
-
-                    //////////////Email/////////
-                    Padding(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 90,
-                      ),
-                      child: TextFormField(
-                        controller: emailController,
-                        validator: validateEmail,
-                        keyboardType: TextInputType.emailAddress,
-                        decoration: InputDecoration(
-                          labelText: "Email",
-                          labelStyle: TextStyle(
-                            color: Colors.white,
-                          ),
-                          errorStyle: TextStyle(
-                            color: Colors.black,
-                          ),
-                        ),
-                        style: TextStyle(
-                          color: Colors.yellow,
-                        ),
-                      ),
-                    ),
-                    //////////////Password/////////
-                    Padding(
-                      padding: const EdgeInsets.only(
-                        left: 90,
-                        right: 90,
-                      ),
-                      child: TextFormField(
-                        controller: passwordController,
-                        validator: validatePassword,
-                        obscureText: true,
-                        decoration: InputDecoration(
-                          labelText: "Password",
-                          labelStyle: TextStyle(
-                            color: Colors.white,
-                          ),
-                          errorStyle: TextStyle(
-                            color: Colors.black,
-                          ),
-                          //border: InputBorder.none,
-                        ),
-                        style: TextStyle(
-                          color: Colors.yellow,
-                        ),
-                      ),
-                    ),
-                    //////////////ConfirmPassword/////////
-                    Padding(
-                      padding: const EdgeInsets.only(
-                        left: 90,
-                        right: 90,
-                        bottom: 40,
-                      ),
-                      child: TextFormField(
-                        controller: confirmPasswordController,
-                        validator: (val) {
-                          if (val!.isEmpty) {
-                            return 'Empty';
-                          } else if (val != passwordController.text) {
-                            return "Does not match";
-                          } else
-                            return null;
-                        },
-                        obscureText: true,
-                        decoration: InputDecoration(
-                          labelText: "Confirm Password",
-                          labelStyle: TextStyle(
-                            color: Colors.white,
-                          ),
-                          errorStyle: TextStyle(
-                            color: Colors.black,
-                          ),
-                        ),
-                        style: TextStyle(
-                          color: Colors.yellow,
-                        ),
-                      ),
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        ElevatedButton(
-                          style: ElevatedButton.styleFrom(
-                            primary: Colors.limeAccent[700],
-                            onPrimary: Colors.black87,
-                            textStyle: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              color: Colors.grey,
-                            ),
-                          ),
-                          child: isLoading
-                              ? CircularProgressIndicator(color: Colors.white)
-                              : Text('Sign Up'),
-                          onPressed: user != null
-                              ? null
-                              : () async {
-                                  //setState(() => isLoading = true);
-                                  if (_formKey.currentState!.validate()) {
-                                    try {
-                                      dynamic result = await _auth.register(
-                                        emailController.text,
-                                        firstNameController.text,
-                                        lastNameController.text,
-                                        dropdownValue.toString(),
-                                        passwordController.text,
-                                      );
-
-                                      if (result == null) {
-                                        print('error registering');
-                                      } else {
-                                        print('registered');
-                                        print(result.uid);
-                                      }
-                                      Navigator.pop(context);
-                                    } on FirebaseAuthException catch (error) {
-                                      print(error.message);
-                                    }
-
-                                    setState(() => isLoading = false);
-                                  }
-                                },
-                        ),
-                        ElevatedButton(
-                          child: Text('Back'),
-                          style: ElevatedButton.styleFrom(
-                            primary: Colors.limeAccent[700],
-                            onPrimary: Colors.black87,
-                            textStyle: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              color: Colors.grey,
-                            ),
-                          ),
-                          onPressed: () {
-                            Navigator.pop(context);
+                        child: TextFormField(
+                          controller: firstNameController,
+                          validator: (val) {
+                            if (val!.isEmpty) {
+                              return 'Empty';
+                            } else {
+                              return null;
+                            }
                           },
+                          keyboardType: TextInputType.name,
+                          decoration: InputDecoration(
+                            labelText: "First Name",
+                            labelStyle: TextStyle(
+                              color: Colors.white,
+                            ),
+                            errorStyle: TextStyle(
+                              color: Colors.black,
+                            ),
+                          ),
+                          style: TextStyle(
+                            color: Colors.yellow,
+                          ),
                         ),
-                      ],
-                    ),
-                  ],
+                      ),
+                      //////////////Last Name/////////
+                      Padding(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 90,
+                        ),
+                        child: TextFormField(
+                          controller: lastNameController,
+                          validator: (val) {
+                            if (val!.isEmpty) {
+                              return 'Empty';
+                            } else {
+                              return null;
+                            }
+                          },
+                          keyboardType: TextInputType.name,
+                          decoration: InputDecoration(
+                            labelText: "Last Name",
+                            labelStyle: TextStyle(
+                              color: Colors.white,
+                            ),
+                            errorStyle: TextStyle(
+                              color: Colors.black,
+                            ),
+                          ),
+                          style: TextStyle(
+                            color: Colors.yellow,
+                          ),
+                        ),
+                      ),
+                      /////////////Residence Input/////////
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 90),
+                        child: DropdownButtonFormField<String>(
+                          value: dropdownValue,
+                          icon: const Icon(
+                            Icons.arrow_downward,
+                            color: Colors.white,
+                          ),
+                          iconSize: 24,
+                          elevation: 20,
+                          validator: (value) => value == 'Residence'
+                              ? 'Please select a residence'
+                              : null,
+                          isExpanded: true,
+                          dropdownColor: Colors.black87,
+                          style: const TextStyle(color: Colors.white),
+                          onChanged: (String? newValue) {
+                            setState(() {
+                              dropdownValue = newValue!;
+                            });
+                            print(dropdownValue);
+                          },
+                          items: <String>[
+                            'Residence',
+                            'Black',
+                            'C & C',
+                            'Doran',
+                            'Earnhardt',
+                            'Eaton',
+                            'Gilker',
+                            'Gregg',
+                            'Hilderbrand',
+                            'Holmes',
+                            'Korniek',
+                            'Kubaki',
+                            'McNabb',
+                            'Miller',
+                            'Ogden',
+                            'Perkins',
+                            'Pisio',
+                            'Young'
+                          ].map<DropdownMenuItem<String>>((String value) {
+                            return DropdownMenuItem<String>(
+                              value: value,
+                              child: Text(
+                                value,
+                                style: TextStyle(fontSize: 17),
+                              ),
+                            );
+                          }).toList(),
+                        ),
+                      ),
+
+                      //////////////Email/////////
+                      Padding(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 90,
+                        ),
+                        child: TextFormField(
+                          controller: emailController,
+                          validator: validateEmail,
+                          keyboardType: TextInputType.emailAddress,
+                          decoration: InputDecoration(
+                            labelText: "Email",
+                            labelStyle: TextStyle(
+                              color: Colors.white,
+                            ),
+                            errorStyle: TextStyle(
+                              color: Colors.black,
+                            ),
+                          ),
+                          style: TextStyle(
+                            color: Colors.yellow,
+                          ),
+                        ),
+                      ),
+                      //////////////Password/////////
+                      Padding(
+                        padding: const EdgeInsets.only(
+                          left: 90,
+                          right: 90,
+                        ),
+                        child: TextFormField(
+                          controller: passwordController,
+                          validator: validatePassword,
+                          obscureText: true,
+                          decoration: InputDecoration(
+                            labelText: "Password",
+                            labelStyle: TextStyle(
+                              color: Colors.white,
+                            ),
+                            errorStyle: TextStyle(
+                              color: Colors.black,
+                            ),
+                            //border: InputBorder.none,
+                          ),
+                          style: TextStyle(
+                            color: Colors.yellow,
+                          ),
+                        ),
+                      ),
+                      //////////////ConfirmPassword/////////
+                      Padding(
+                        padding: const EdgeInsets.only(
+                          left: 90,
+                          right: 90,
+                          bottom: 40,
+                        ),
+                        child: TextFormField(
+                          controller: confirmPasswordController,
+                          validator: (val) {
+                            if (val!.isEmpty) {
+                              return 'Empty';
+                            } else if (val != passwordController.text) {
+                              return "Does not match";
+                            } else
+                              return null;
+                          },
+                          obscureText: true,
+                          decoration: InputDecoration(
+                            labelText: "Confirm Password",
+                            labelStyle: TextStyle(
+                              color: Colors.white,
+                            ),
+                            errorStyle: TextStyle(
+                              color: Colors.black,
+                            ),
+                          ),
+                          style: TextStyle(
+                            color: Colors.yellow,
+                          ),
+                        ),
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                              primary: Colors.limeAccent[700],
+                              onPrimary: Colors.black87,
+                              textStyle: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                color: Colors.grey,
+                              ),
+                            ),
+                            child: isLoading
+                                ? CircularProgressIndicator(color: Colors.white)
+                                : Text('Sign Up'),
+                            onPressed: user != null
+                                ? null
+                                : () async {
+                                    //setState(() => isLoading = true);
+                                    if (_formKey.currentState!.validate()) {
+                                      try {
+                                        dynamic result = await _auth.register(
+                                          emailController.text,
+                                          firstNameController.text,
+                                          lastNameController.text,
+                                          dropdownValue.toString(),
+                                          passwordController.text,
+                                        );
+
+                                        if (result == null) {
+                                          print('error registering');
+                                        } else {
+                                          print('registered');
+                                          print(result.uid);
+                                        }
+                                        Navigator.pop(context);
+                                      } on FirebaseAuthException catch (error) {
+                                        print(error.message);
+                                      }
+
+                                      setState(() => isLoading = false);
+                                    }
+                                  },
+                          ),
+                          ElevatedButton(
+                            child: Text('Back'),
+                            style: ElevatedButton.styleFrom(
+                              primary: Colors.limeAccent[700],
+                              onPrimary: Colors.black87,
+                              textStyle: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                color: Colors.grey,
+                              ),
+                            ),
+                            onPressed: () {
+                              Navigator.pop(context);
+                            },
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ),

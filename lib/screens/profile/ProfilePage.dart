@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 import 'package:shallows/services/auth_service.dart';
 
@@ -34,19 +35,22 @@ class _ProfilePageState extends State<ProfilePage> {
   @override
   Widget build(BuildContext context) {
     //UserModel currentUser = Provider.of<UserModel>(context);
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(
-          'Profile',
+    return MediaQuery(
+      data: MediaQuery.of(context).copyWith(textScaleFactor: 1),
+      child: Scaffold(
+        appBar: AppBar(
+          title: Text(
+            'Profile',
+          ),
+          elevation: 0,
+          backgroundColor: Colors.lightBlue[700],
         ),
-        elevation: 0,
-        backgroundColor: Colors.lightBlue[700],
-      ),
-      body: Stack(
-        children: [
-          buildContent(),
-          buildTop(),
-        ],
+        body: Stack(
+          children: [
+            buildContent(),
+            buildTop(),
+          ],
+        ),
       ),
     );
   }
@@ -234,9 +238,10 @@ class _ProfilePageState extends State<ProfilePage> {
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             Container(
-                              padding: EdgeInsets.only(top: 25),
+                              padding: EdgeInsets.only(top: 15),
                               child: Text(
                                 'About',
+                                textScaleFactor: 1,
                                 style: TextStyle(
                                     fontSize: 21, color: Colors.yellow),
                               ),
@@ -257,10 +262,10 @@ class _ProfilePageState extends State<ProfilePage> {
                                   colors: [Colors.yellow, Colors.cyan],
                                 ),
                               ),
-                              height: 160,
+                              height: 240,
                               width: width * .9,
                               margin: const EdgeInsets.only(
-                                  left: 10, right: 10, top: 10, bottom: 50),
+                                  left: 10, right: 10, top: 10, bottom: 30),
                               padding: EdgeInsets.only(
                                   left: 15, right: 15, top: 15, bottom: 15),
                               child:
@@ -274,11 +279,10 @@ class _ProfilePageState extends State<ProfilePage> {
                                         )
                                       : Text(
                                           '${data['about']}',
-                                          style: TextStyle(
-                                              fontSize: 18,
-                                              color: Colors.white,
-                                              fontFamily: 'RaleWay'),
-                                          maxLines: 6,
+                                          style: GoogleFonts.mukta(
+                                              fontSize: 20,
+                                              color: Colors.lightBlue[50]),
+                                          maxLines: 7,
                                           overflow: TextOverflow.fade,
                                           textAlign: TextAlign.start,
                                         ),
@@ -289,10 +293,20 @@ class _ProfilePageState extends State<ProfilePage> {
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [
                             ElevatedButton(
-                              child: Text('Edit Profile'),
+                              child: Text(
+                                'Edit Profile',
+                                textScaleFactor: 1,
+                              ),
                               onPressed: () {
                                 Navigator.pushNamed(context, "/editProfile")
                                     .then((_) => setState(() {}));
+                              },
+                            ),
+                            ElevatedButton(
+                              child: Text('Log Out'),
+                              onPressed: () async {
+                                await _auth.logOut();
+                                Navigator.pop(context);
                               },
                             ),
                           ],

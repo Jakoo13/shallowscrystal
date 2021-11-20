@@ -1,5 +1,6 @@
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class ResidenceProfile extends StatefulWidget {
   final int index;
@@ -7,8 +8,7 @@ class ResidenceProfile extends StatefulWidget {
   final String? about;
 
   final String photoURL;
-  ResidenceProfile(
-      this.index, this.name, this.about,  this.photoURL);
+  ResidenceProfile(this.index, this.name, this.about, this.photoURL);
 
   @override
   State<ResidenceProfile> createState() => _MemberProfileState();
@@ -30,7 +30,11 @@ class _MemberProfileState extends State<ResidenceProfile> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Profile'),
+        title: Text(
+          'Profile',
+          textScaleFactor: 1,
+          style: TextStyle(fontSize: 23),
+        ),
         elevation: 0,
         backgroundColor: Colors.lightBlue[700],
       ),
@@ -113,6 +117,7 @@ class _MemberProfileState extends State<ResidenceProfile> {
                 child: Text(
                   "${widget.name} Residence",
                   style: TextStyle(fontSize: 30, color: Colors.white),
+                  textScaleFactor: 1,
                 ),
               ),
             ],
@@ -121,10 +126,11 @@ class _MemberProfileState extends State<ResidenceProfile> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Container(
-                padding: EdgeInsets.only(top: 40),
+                padding: EdgeInsets.only(top: 40, bottom: 18),
                 child: Text(
                   'About:',
-                  style: TextStyle(fontSize: 21, color: Colors.yellow),
+                  style: TextStyle(fontSize: 25, color: Colors.yellow),
+                  textScaleFactor: 1,
                 ),
               ),
             ],
@@ -140,7 +146,7 @@ class _MemberProfileState extends State<ResidenceProfile> {
                   ),
                   color: Colors.white70,
                 ),
-                height: height * .22,
+                height: height * .27,
                 width: width * .87,
                 margin: const EdgeInsets.only(
                     top: 15, bottom: 15, left: 15, right: 15),
@@ -148,13 +154,14 @@ class _MemberProfileState extends State<ResidenceProfile> {
                     EdgeInsets.only(left: 15, right: 15, top: 15, bottom: 15),
                 child: Text(
                   '${widget.about}',
-                  style: TextStyle(
-                      fontSize: 18,
-                      color: Colors.black87,
-                      fontFamily: 'RaleWay'),
+                  style: GoogleFonts.mukta(
+                    fontSize: 19,
+                    color: Colors.black,
+                  ),
                   maxLines: 7,
                   overflow: TextOverflow.fade,
                   textAlign: TextAlign.start,
+                  textScaleFactor: 1,
                 ),
               ),
             ],

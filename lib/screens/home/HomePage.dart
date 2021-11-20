@@ -175,9 +175,11 @@ class _HomePageState extends State<HomePage> {
                       child: SkierAnimation(),
                       alignment: Alignment.center,
                     ),
-                    Padding(
-                      padding: const EdgeInsets.all(50),
-                      child: Image.asset('assets/Untitled-3.png'),
+                    Container(
+                      child: Padding(
+                        padding: const EdgeInsets.all(50),
+                        child: Image.asset('assets/LakeFlags.png'),
+                      ),
                     ),
                     Card(
                       child: ListTile(

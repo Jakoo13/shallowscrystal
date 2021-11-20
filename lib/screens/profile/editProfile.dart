@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:path/path.dart';
@@ -21,7 +22,6 @@ class _EditProfileState extends State<EditProfile> {
       FirebaseFirestore.instance.collection('residences');
   final FirebaseAuth auth = FirebaseAuth.instance;
   TextEditingController _aboutMeController = new TextEditingController();
-  //TextEditingController _contactController = new TextEditingController();
 
   ImagePicker picker = ImagePicker();
   FirebaseStorage storage = FirebaseStorage.instance;
@@ -182,6 +182,7 @@ class _EditProfileState extends State<EditProfile> {
                                           left: 165,
                                           child: Text(
                                             'Edit',
+                                            textScaleFactor: 1,
                                             style:
                                                 TextStyle(color: Colors.yellow),
                                           ),
@@ -199,6 +200,7 @@ class _EditProfileState extends State<EditProfile> {
                                   padding: EdgeInsets.only(top: 35),
                                   child: Text(
                                     '${userData['residence']} Residence',
+                                    textScaleFactor: 1,
                                     style: TextStyle(
                                         fontSize: 30, color: Colors.white),
                                   ),
@@ -218,6 +220,8 @@ class _EditProfileState extends State<EditProfile> {
                                           child: Text(
                                             'Update Profile',
                                             textAlign: TextAlign.center,
+                                            textScaleFactor: 1,
+                                            style: TextStyle(fontSize: 20),
                                           ),
                                         ),
                                         Spacer(),
@@ -231,42 +235,53 @@ class _EditProfileState extends State<EditProfile> {
                                         )
                                       ],
                                     ),
-                                    Row(
-                                      children: [
-                                        Expanded(
-                                          child: Padding(
-                                            padding: const EdgeInsets.only(
-                                                right: 15.0,
-                                                top: 5,
-                                                bottom: 20),
-                                            child: TextField(
-                                              maxLength: 200,
-                                              maxLines: 5,
-                                              controller: _aboutMeController
-                                                ..text = data['about'] != null
-                                                    ? '${data['about']}'
-                                                    : '',
-                                              decoration: InputDecoration(
-                                                filled: true,
-                                                fillColor: Colors.white70,
-                                                helperText: "About Us",
-                                                border: OutlineInputBorder(
-                                                  borderRadius:
-                                                      BorderRadius.circular(10),
+                                    MediaQuery(
+                                      data: MediaQuery.of(context)
+                                          .copyWith(textScaleFactor: 1),
+                                      child: Row(
+                                        children: [
+                                          Expanded(
+                                            child: Padding(
+                                              padding: const EdgeInsets.only(
+                                                  right: 15.0,
+                                                  top: 5,
+                                                  bottom: 20),
+                                              child: TextField(
+                                                style: GoogleFonts.mukta(
+                                                    fontSize: 20),
+                                                maxLength: 200,
+                                                maxLines: 6,
+                                                controller: _aboutMeController
+                                                  ..text = data['about'] != null
+                                                      ? '${data['about']}'
+                                                      : '',
+                                                decoration: InputDecoration(
+                                                  helperStyle:
+                                                      TextStyle(fontSize: 16),
+                                                  filled: true,
+                                                  fillColor: Colors.white70,
+                                                  helperText: "About Us",
+                                                  border: OutlineInputBorder(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            10),
+                                                  ),
                                                 ),
                                               ),
                                             ),
                                           ),
-                                        ),
-                                      ],
+                                        ],
+                                      ),
                                     ),
-                                    
                                     Row(
                                       mainAxisAlignment:
                                           MainAxisAlignment.center,
                                       children: <Widget>[
                                         ElevatedButton(
-                                          child: Text('Save'),
+                                          child: Text(
+                                            'Save',
+                                            textScaleFactor: 1,
+                                          ),
                                           style: ElevatedButton.styleFrom(
                                             primary: Colors.limeAccent[700],
                                             onPrimary: Colors.black87,
@@ -281,8 +296,6 @@ class _EditProfileState extends State<EditProfile> {
                                                 .update({
                                                   'about':
                                                       _aboutMeController.text,
-                                                  // 'contact':
-                                                  //     _contactController.text,
                                                 })
                                                 .then((value) =>
                                                     print('Profile Updated'))

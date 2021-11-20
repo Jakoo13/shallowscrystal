@@ -87,6 +87,7 @@ class _ResidencesPageState extends State<ResidencesPage> {
                               selectedTileColor: Colors.yellow,
                               title: Text(
                                 '${data.docs[index]['name']}',
+                                textScaleFactor: 1,
                                 textAlign: TextAlign.justify,
                                 style: TextStyle(
                                   color: Colors.grey[900],

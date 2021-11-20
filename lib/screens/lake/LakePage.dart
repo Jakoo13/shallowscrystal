@@ -37,209 +37,216 @@ class _LakePageState extends State<LakePage> {
     CollectionReference residences =
         FirebaseFirestore.instance.collection('residences');
 
-    return FutureBuilder<DocumentSnapshot>(
-        future: users.doc(auth.currentUser!.uid).get(),
-        builder:
-            (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot) {
-          if (snapshot.hasError) {
-            return Text('Something went wrong');
-          }
-          if (snapshot.hasData && !snapshot.data!.exists) {
-            return Text('Document does not exist');
-          }
-          if (snapshot.connectionState == ConnectionState.done) {
-            Map<String, dynamic> userData =
-                snapshot.data!.data() as Map<String, dynamic>;
-            return Scaffold(
-              appBar: AppBar(
-                title: Text('Lake Queue'),
-                elevation: 0,
-                backgroundColor: Colors.lightBlue[700],
-              ),
-              body: Container(
-                decoration: new BoxDecoration(
-                  gradient: new LinearGradient(
-                    begin: Alignment.topCenter,
-                    end: Alignment.bottomCenter,
-                    colors: [
-                      Color.fromARGB(255, 58, 123, 213),
-                      Color.fromARGB(255, 58, 96, 115),
-                    ],
-                  ),
+    return MediaQuery(
+      data: MediaQuery.of(context).copyWith(textScaleFactor: 1),
+      child: FutureBuilder<DocumentSnapshot>(
+          future: users.doc(auth.currentUser!.uid).get(),
+          builder:
+              (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot) {
+            if (snapshot.hasError) {
+              return Text('Something went wrong');
+            }
+            if (snapshot.hasData && !snapshot.data!.exists) {
+              return Text('Document does not exist');
+            }
+            if (snapshot.connectionState == ConnectionState.done) {
+              Map<String, dynamic> userData =
+                  snapshot.data!.data() as Map<String, dynamic>;
+              return Scaffold(
+                appBar: AppBar(
+                  title: Text('Lake Queue'),
+                  elevation: 0,
+                  backgroundColor: Colors.lightBlue[700],
                 ),
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(
-                      horizontal: 20.0, vertical: 10),
-                  child: Column(
-                    children: [
-                      SingleChildScrollView(
-                        child: Container(
-                          height: newheight * .84,
-                          padding: const EdgeInsets.only(top: 10),
-                          child: StreamBuilder<QuerySnapshot>(
-                              stream: _database.residenceSnapshot,
-                              builder: (
-                                BuildContext context,
-                                AsyncSnapshot<QuerySnapshot> snapshot,
-                              ) {
-                                if (snapshot.hasError) {
-                                  return Text('Something Went Wrong');
-                                }
-                                if (snapshot.connectionState ==
-                                    ConnectionState.waiting) {
-                                  // return Text('Loading');
-                                }
-                                final data = snapshot.requireData;
+                body: Container(
+                  decoration: new BoxDecoration(
+                    gradient: new LinearGradient(
+                      begin: Alignment.topCenter,
+                      end: Alignment.bottomCenter,
+                      colors: [
+                        Color.fromARGB(255, 58, 123, 213),
+                        Color.fromARGB(255, 58, 96, 115),
+                      ],
+                    ),
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 20.0, vertical: 10),
+                    child: Column(
+                      children: [
+                        SingleChildScrollView(
+                          child: Container(
+                            height: newheight * .84,
+                            padding: const EdgeInsets.only(top: 10),
+                            child: StreamBuilder<QuerySnapshot>(
+                                stream: _database.residenceSnapshot,
+                                builder: (
+                                  BuildContext context,
+                                  AsyncSnapshot<QuerySnapshot> snapshot,
+                                ) {
+                                  if (snapshot.hasError) {
+                                    return Text('Something Went Wrong');
+                                  }
+                                  if (snapshot.connectionState ==
+                                      ConnectionState.waiting) {
+                                    // return Text('Loading');
+                                  }
+                                  final data = snapshot.requireData;
 
-                                return ListView.builder(
-                                    itemCount: data.size,
-                                    itemBuilder: (context, index) {
-                                      var flagOut = data.docs[index]['flagOut'];
-                                      return Card(
-                                        shape: RoundedRectangleBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(25),
-                                        ),
-                                        child: ListTile(
+                                  return ListView.builder(
+                                      itemCount: data.size,
+                                      itemBuilder: (context, index) {
+                                        var flagOut =
+                                            data.docs[index]['flagOut'];
+                                        return Card(
                                           shape: RoundedRectangleBorder(
                                             borderRadius:
                                                 BorderRadius.circular(25),
                                           ),
-                                          enabled: userData['residence'] ==
-                                                  data.docs[index]['name']
-                                              ? true
-                                              : false,
-                                          tileColor: userData['residence'] ==
-                                                  data.docs[index]['name']
-                                              ? Colors.white
-                                              : Colors.teal[200],
-                                          onTap: () {
-                                            showDialog(
-                                                context: context,
-                                                builder:
-                                                    (_) => CupertinoAlertDialog(
-                                                          title: Text(
-                                                              "Change Flag Position?"),
-                                                          actions: [
-                                                            CupertinoDialogAction(
-                                                              child:
-                                                                  Text("Yes"),
-                                                              onPressed: () {
-                                                                residences
-                                                                    .doc(data
-                                                                        .docs[
-                                                                            index]
-                                                                        .id)
-                                                                    .update({
-                                                                      'flagOutTime':
-                                                                          dateFormatted,
-                                                                    })
-                                                                    .then((value) =>
-                                                                        print(
-                                                                            'Profile Updated'))
-                                                                    .catchError(
-                                                                        (error) =>
-                                                                            print(error));
-                                                                print(data
-                                                                    .docs[index]
-                                                                    .id);
-                                                                if (flagOut ==
-                                                                    true) {
-                                                                  _database.changeFlagPosition(
-                                                                      false,
-                                                                      data
+                                          child: ListTile(
+                                            shape: RoundedRectangleBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(25),
+                                            ),
+                                            enabled: userData['residence'] ==
+                                                    data.docs[index]['name']
+                                                ? true
+                                                : false,
+                                            tileColor: userData['residence'] ==
+                                                    data.docs[index]['name']
+                                                ? Colors.white
+                                                : Colors.teal[200],
+                                            onTap: () {
+                                              showDialog(
+                                                  context: context,
+                                                  builder:
+                                                      (_) =>
+                                                          CupertinoAlertDialog(
+                                                            title: Text(
+                                                                "Change Flag Position?"),
+                                                            actions: [
+                                                              CupertinoDialogAction(
+                                                                child:
+                                                                    Text("Yes"),
+                                                                onPressed: () {
+                                                                  residences
+                                                                      .doc(data
                                                                           .docs[
                                                                               index]
-                                                                          .id);
-                                                                } else {
-                                                                  _database.changeFlagPosition(
-                                                                      true,
-                                                                      data
-                                                                          .docs[
-                                                                              index]
-                                                                          .id);
-                                                                }
-                                                                Navigator.of(
-                                                                        context)
-                                                                    .pop();
-                                                              },
-                                                            ),
-                                                            CupertinoDialogAction(
-                                                              child: Text("No"),
-                                                              onPressed: () {
-                                                                Navigator.of(
-                                                                        context)
-                                                                    .pop();
-                                                              },
-                                                            )
-                                                          ],
-                                                        ));
-                                          },
-                                          leading: flagOut
-                                              ? Icon(Icons.flag_sharp,
-                                                  color: Colors.black)
-                                              : Icon(Icons.whatshot_sharp),
-                                          trailing: flagOut
-                                              ? Icon(Icons.flag_sharp,
-                                                  color: Colors.black)
-                                              : Icon(Icons.whatshot_sharp),
-                                          selected: data.docs[index]['flagOut'],
-                                          selectedTileColor:
-                                              userData['residence'] ==
-                                                      data.docs[index]['name']
-                                                  ? Colors.yellow
-                                                  : Colors.redAccent,
-                                          title: Text(
-                                            '${data.docs[index]['name']}:  Flag ${flagOut ? "Out" : "In"}',
-                                            textAlign: TextAlign.center,
-                                            style: TextStyle(
-                                              color: Colors.grey[900],
-                                              fontWeight: FontWeight.w700,
-                                              fontSize: 20,
+                                                                          .id)
+                                                                      .update({
+                                                                        'flagOutTime':
+                                                                            dateFormatted,
+                                                                      })
+                                                                      .then((value) =>
+                                                                          print(
+                                                                              'Profile Updated'))
+                                                                      .catchError(
+                                                                          (error) =>
+                                                                              print(error));
+                                                                  print(data
+                                                                      .docs[
+                                                                          index]
+                                                                      .id);
+                                                                  if (flagOut ==
+                                                                      true) {
+                                                                    _database.changeFlagPosition(
+                                                                        false,
+                                                                        data.docs[index]
+                                                                            .id);
+                                                                  } else {
+                                                                    _database.changeFlagPosition(
+                                                                        true,
+                                                                        data.docs[index]
+                                                                            .id);
+                                                                  }
+                                                                  Navigator.of(
+                                                                          context)
+                                                                      .pop();
+                                                                },
+                                                              ),
+                                                              CupertinoDialogAction(
+                                                                child:
+                                                                    Text("No"),
+                                                                onPressed: () {
+                                                                  Navigator.of(
+                                                                          context)
+                                                                      .pop();
+                                                                },
+                                                              )
+                                                            ],
+                                                          ));
+                                            },
+                                            leading: flagOut
+                                                ? Icon(Icons.flag_sharp,
+                                                    color: Colors.black)
+                                                : Icon(Icons.whatshot_sharp),
+                                            trailing: flagOut
+                                                ? Icon(Icons.flag_sharp,
+                                                    color: Colors.black)
+                                                : Icon(Icons.whatshot_sharp),
+                                            selected: data.docs[index]
+                                                ['flagOut'],
+                                            selectedTileColor:
+                                                userData['residence'] ==
+                                                        data.docs[index]['name']
+                                                    ? Colors.yellow
+                                                    : Colors.redAccent,
+                                            title: Text(
+                                              '${data.docs[index]['name']}:  Flag ${flagOut ? "Out" : "In"}',
+                                              textAlign: TextAlign.center,
+                                              style: TextStyle(
+                                                color: Colors.grey[900],
+                                                fontWeight: FontWeight.w700,
+                                                fontSize: 20,
+                                              ),
+                                              textScaleFactor: 1,
+                                            ),
+                                            subtitle: Column(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.end,
+                                              children: [
+                                                flagOut
+                                                    ? Text(
+                                                        'At ' +
+                                                            data.docs[index]
+                                                                ['flagOutTime'],
+                                                        style: TextStyle(
+                                                            color:
+                                                                Colors.black),
+                                                        textScaleFactor: 1,
+                                                      )
+                                                    : Text(''),
+                                              ],
                                             ),
                                           ),
-                                          subtitle: Column(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.end,
-                                            children: [
-                                              flagOut
-                                                  ? Text(
-                                                      'At ' +
-                                                          data.docs[index]
-                                                              ['flagOutTime'],
-                                                      style: TextStyle(
-                                                          color: Colors.black),
-                                                    )
-                                                  : Text(''),
-                                            ],
-                                          ),
-                                        ),
-                                      );
-                                    });
-                              }),
+                                        );
+                                      });
+                                }),
+                          ),
                         ),
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Container(
-                            padding: const EdgeInsets.only(top: 12),
-                            alignment: Alignment.center,
-                            child: Icon(
-                              Icons.arrow_downward,
-                              color: Colors.white,
-                              size: 22,
-                            ),
-                          )
-                        ],
-                      )
-                    ],
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Container(
+                              padding: const EdgeInsets.only(top: 12),
+                              alignment: Alignment.center,
+                              child: Icon(
+                                Icons.arrow_downward,
+                                color: Colors.white,
+                                size: 22,
+                              ),
+                            )
+                          ],
+                        )
+                      ],
+                    ),
                   ),
                 ),
-              ),
-            );
-          }
-          return Text('loading');
-        });
+              );
+            }
+            return CircularProgressIndicator();
+          }),
+    );
   }
 }

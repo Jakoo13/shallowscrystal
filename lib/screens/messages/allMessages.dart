@@ -23,7 +23,10 @@ class _AllMessagesState extends State<AllMessages> {
     double newheight = height - padding.top - padding.bottom;
     return Scaffold(
       appBar: AppBar(
-        title: Text('Messages'),
+        title: Text(
+          'Messages',
+          textScaleFactor: 1,
+        ),
         elevation: 0,
         backgroundColor: Colors.lightBlue[700],
       ),
@@ -108,6 +111,7 @@ class _AllMessagesState extends State<AllMessages> {
                                                 fontWeight: FontWeight.w700,
                                                 fontSize: 20,
                                               ),
+                                              textScaleFactor: 1,
                                             ),
                                           ),
                                         )
