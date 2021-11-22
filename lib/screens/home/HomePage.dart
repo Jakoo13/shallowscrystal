@@ -11,10 +11,11 @@ import 'package:shallows/main.dart';
 import 'package:shallows/screens/home/SkierAnimation.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:shallows/screens/lake/LakePage.dart';
-import 'package:shallows/screens/messages/allMessages.dart';
-import 'package:shallows/screens/residences/ResidencesPage.dart';
-import 'package:shallows/screens/profile/ProfilePage.dart';
-import 'package:shallows/services/auth_service.dart';
+import 'package:shallows/screens/settings/SettingsPage.dart';
+// import 'package:shallows/screens/messages/allMessages.dart';
+// import 'package:shallows/screens/residences/ResidencesPage.dart';
+// import 'package:shallows/screens/profile/ProfilePage.dart';
+//import 'package:shallows/services/auth_service.dart';
 //import 'package:shallows/services/local_notification_service.dart';
 
 Future<void> saveTokenToDatabase(String token) async {
@@ -134,7 +135,7 @@ class _HomePageState extends State<HomePage> {
     //Get Safe Area of Every Device
     var padding = MediaQuery.of(context).padding;
     double newheight = height - padding.top - padding.bottom;
-    final AuthService _auth = AuthService();
+    //final AuthService _auth = AuthService();
 
     return Container(
       decoration: BoxDecoration(
@@ -181,41 +182,48 @@ class _HomePageState extends State<HomePage> {
                         child: Image.asset('assets/LakeFlags.png'),
                       ),
                     ),
-                    Card(
-                      child: ListTile(
-                        tileColor: Colors.yellow,
+                    // Card(
+                    //   child: ListTile(
+                    //     tileColor: Colors.yellow,
 
-                        leading: Icon(Icons.add),
-                        title: Text(
-                          'Profile',
-                          textScaleFactor: 1.5,
-                          textAlign: TextAlign.center,
-                        ),
-                        trailing: Icon(Icons.done),
-                        //subtitle: Text('This is subtitle'),
-                        selected: false,
-                        onTap: () {
-                          Navigator.push(
-                              context,
-                              PageTransition(
-                                type: PageTransitionType.size,
-                                alignment: Alignment.bottomCenter,
-                                child: ProfilePage(),
-                              ));
-                        },
+                    //     leading: Icon(Icons.add),
+                    //     title: Text(
+                    //       'Profile',
+                    //       textScaleFactor: 1.5,
+                    //       textAlign: TextAlign.center,
+                    //     ),
+                    //     trailing: Icon(Icons.done),
+                    //     //subtitle: Text('This is subtitle'),
+                    //     selected: false,
+                    //     onTap: () {
+                    //       Navigator.push(
+                    //           context,
+                    //           PageTransition(
+                    //             type: PageTransitionType.size,
+                    //             alignment: Alignment.bottomCenter,
+                    //             child: ProfilePage(),
+                    //           ));
+                    //     },
+                    //   ),
+                    // ),
+                    Card(
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(25),
                       ),
-                    ),
-                    Card(
                       child: ListTile(
                         tileColor: Colors.yellow,
-
-                        leading: Icon(Icons.add),
+                        contentPadding: EdgeInsets.symmetric(
+                            vertical: 70.0, horizontal: 16.0),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(25),
+                        ),
+                        leading: Icon(Icons.assistant_photo),
                         title: Text(
                           'Lake Queue',
                           textScaleFactor: 1.5,
                           textAlign: TextAlign.center,
                         ),
-                        trailing: Icon(Icons.done),
+                        trailing: Icon(Icons.assistant_photo),
                         //subtitle: Text('This is subtitle'),
                         selected: false,
                         onTap: () {
@@ -229,54 +237,54 @@ class _HomePageState extends State<HomePage> {
                         },
                       ),
                     ),
-                    Card(
-                      child: ListTile(
-                        tileColor: Colors.yellow,
+                    // Card(
+                    //   child: ListTile(
+                    //     tileColor: Colors.yellow,
 
-                        leading: Icon(Icons.add),
-                        title: Text(
-                          'Residences',
-                          textScaleFactor: 1.5,
-                          textAlign: TextAlign.center,
-                        ),
-                        trailing: Icon(Icons.done),
-                        //subtitle: Text('This is subtitle'),
-                        selected: false,
-                        onTap: () {
-                          Navigator.push(
-                              context,
-                              PageTransition(
-                                type: PageTransitionType.size,
-                                alignment: Alignment.bottomCenter,
-                                child: ResidencesPage(),
-                              ));
-                        },
-                      ),
-                    ),
-                    Card(
-                      child: ListTile(
-                        tileColor: Colors.yellow,
+                    //     leading: Icon(Icons.add),
+                    //     title: Text(
+                    //       'Residences',
+                    //       textScaleFactor: 1.5,
+                    //       textAlign: TextAlign.center,
+                    //     ),
+                    //     trailing: Icon(Icons.done),
+                    //     //subtitle: Text('This is subtitle'),
+                    //     selected: false,
+                    //     onTap: () {
+                    //       Navigator.push(
+                    //           context,
+                    //           PageTransition(
+                    //             type: PageTransitionType.size,
+                    //             alignment: Alignment.bottomCenter,
+                    //             child: ResidencesPage(),
+                    //           ));
+                    //     },
+                    //   ),
+                    // ),
+                    // Card(
+                    //   child: ListTile(
+                    //     tileColor: Colors.yellow,
 
-                        leading: Icon(Icons.add),
-                        title: Text(
-                          'Messages',
-                          textScaleFactor: 1.5,
-                          textAlign: TextAlign.center,
-                        ),
-                        trailing: Icon(Icons.done),
-                        //subtitle: Text('This is subtitle'),
-                        selected: false,
-                        onTap: () {
-                          Navigator.push(
-                              context,
-                              PageTransition(
-                                type: PageTransitionType.size,
-                                alignment: Alignment.bottomCenter,
-                                child: AllMessages(),
-                              ));
-                        },
-                      ),
-                    ),
+                    //     leading: Icon(Icons.add),
+                    //     title: Text(
+                    //       'Messages',
+                    //       textScaleFactor: 1.5,
+                    //       textAlign: TextAlign.center,
+                    //     ),
+                    //     trailing: Icon(Icons.done),
+                    //     //subtitle: Text('This is subtitle'),
+                    //     selected: false,
+                    //     onTap: () {
+                    //       Navigator.push(
+                    //           context,
+                    //           PageTransition(
+                    //             type: PageTransitionType.size,
+                    //             alignment: Alignment.bottomCenter,
+                    //             child: AllMessages(),
+                    //           ));
+                    //     },
+                    //   ),
+                    // ),
                     // ElevatedButton(
                     //   child: Text('Log Out'),
                     //   onPressed: () async {
@@ -289,6 +297,27 @@ class _HomePageState extends State<HomePage> {
               ),
             ),
           ],
+        ),
+        floatingActionButton: Container(
+          height: 40,
+          width: 40,
+          child: FittedBox(
+            child: FloatingActionButton(
+              backgroundColor: Colors.grey,
+              elevation: 0,
+              child: Icon(Icons.settings),
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  PageTransition(
+                    type: PageTransitionType.size,
+                    alignment: Alignment.bottomCenter,
+                    child: SettingsPage(),
+                  ),
+                );
+              },
+            ),
+          ),
         ),
       ),
     );

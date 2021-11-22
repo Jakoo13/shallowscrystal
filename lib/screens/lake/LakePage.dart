@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 //import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
+import 'package:shallows/screens/messages/ChatScreen.dart';
 import 'package:shallows/services/database.dart';
 import 'package:intl/intl.dart';
 
@@ -71,7 +72,7 @@ class _LakePageState extends State<LakePage> {
                   ),
                   child: Padding(
                     padding: const EdgeInsets.symmetric(
-                        horizontal: 20.0, vertical: 10),
+                        horizontal: 18.0, vertical: 10),
                     child: Column(
                       children: [
                         SingleChildScrollView(
@@ -123,11 +124,21 @@ class _LakePageState extends State<LakePage> {
                                                       (_) =>
                                                           CupertinoAlertDialog(
                                                             title: Text(
-                                                                "Change Flag Position?"),
+                                                              "Change Flag Position?",
+                                                              textScaleFactor:
+                                                                  1,
+                                                              style: TextStyle(
+                                                                  fontSize: 20),
+                                                            ),
                                                             actions: [
                                                               CupertinoDialogAction(
-                                                                child:
-                                                                    Text("Yes"),
+                                                                child: Text(
+                                                                    "Yes",
+                                                                    style: TextStyle(
+                                                                        fontSize:
+                                                                            20),
+                                                                    textScaleFactor:
+                                                                        1),
                                                                 onPressed: () {
                                                                   residences
                                                                       .doc(data
@@ -166,8 +177,13 @@ class _LakePageState extends State<LakePage> {
                                                                 },
                                                               ),
                                                               CupertinoDialogAction(
-                                                                child:
-                                                                    Text("No"),
+                                                                child: Text(
+                                                                    "No",
+                                                                    style: TextStyle(
+                                                                        fontSize:
+                                                                            20),
+                                                                    textScaleFactor:
+                                                                        1),
                                                                 onPressed: () {
                                                                   Navigator.of(
                                                                           context)
@@ -181,10 +197,32 @@ class _LakePageState extends State<LakePage> {
                                                 ? Icon(Icons.flag_sharp,
                                                     color: Colors.black)
                                                 : Icon(Icons.whatshot_sharp),
-                                            trailing: flagOut
-                                                ? Icon(Icons.flag_sharp,
-                                                    color: Colors.black)
-                                                : Icon(Icons.whatshot_sharp),
+                                            trailing: userData['residence'] ==
+                                                    data.docs[index]['name']
+                                                ? Icon(Icons.whatshot_sharp)
+                                                : IconButton(
+                                                    icon: new Icon(
+                                                      Icons.message,
+                                                      color: Colors.blue,
+                                                    ),
+                                                    onPressed: () {
+                                                      Navigator.push(
+                                                        context,
+                                                        MaterialPageRoute(
+                                                          builder: (context) =>
+                                                              ChatScreen(
+                                                            index,
+                                                            userData[
+                                                                'residence'],
+                                                            data.docs[index]
+                                                                ['name'],
+                                                            data.docs[index]
+                                                                ['photoURL'],
+                                                          ),
+                                                        ),
+                                                      );
+                                                    },
+                                                  ),
                                             selected: data.docs[index]
                                                 ['flagOut'],
                                             selectedTileColor:
@@ -198,7 +236,7 @@ class _LakePageState extends State<LakePage> {
                                               style: TextStyle(
                                                 color: Colors.grey[900],
                                                 fontWeight: FontWeight.w700,
-                                                fontSize: 20,
+                                                fontSize: 19,
                                               ),
                                               textScaleFactor: 1,
                                             ),

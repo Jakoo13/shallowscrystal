@@ -48,7 +48,7 @@ class _SignInState extends State<SignIn> {
                       duration: const Duration(seconds: 2),
                       child: Padding(
                         padding: const EdgeInsets.all(50),
-                        child: Image.asset('assets/Untitled-3.png'),
+                        child: Image.asset('assets/LakeFlags.png'),
                       ),
                     ),
                     Padding(
