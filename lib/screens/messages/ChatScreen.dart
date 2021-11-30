@@ -4,6 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:shallows/screens/messages/widgets/message_input.dart';
+import 'package:intl/intl.dart';
 
 class ChatScreen extends StatefulWidget {
   final int index;
@@ -93,47 +94,74 @@ class _ChatScreenState extends State<ChatScreen> {
                               itemBuilder: (context, index) {
                                 var from = data.docs[index]['from'];
                                 var content = data.docs[index]['content'];
-                                return Row(
-                                  mainAxisAlignment:
-                                      from == userData['residence']
-                                          ? MainAxisAlignment.end
-                                          : MainAxisAlignment.start,
+                                var timeStamp = data.docs[index]['timeStamp'];
+                                var timeFormatted = timeStamp.toDate();
+                                var formattedDate = DateFormat('MM-dd - kk:mm')
+                                    .format(timeFormatted);
+                                return Column(
                                   children: [
-                                    Container(
-                                      padding: EdgeInsets.all(12),
-                                      margin: EdgeInsets.symmetric(
-                                          horizontal: 14, vertical: 8),
-                                      constraints:
-                                          BoxConstraints(maxWidth: 240),
-                                      decoration: BoxDecoration(
-                                        color: from == userData['residence']
-                                            ? Colors.blue
-                                            : Colors.green,
-                                        borderRadius: from ==
-                                                userData['residence']
-                                            ? BorderRadius.only(
-                                                bottomLeft: Radius.circular(15),
-                                              )
-                                            : BorderRadius.only(
-                                                bottomRight:
-                                                    Radius.circular(15),
-                                              ),
-                                      ),
-                                      child: Column(
-                                        crossAxisAlignment:
-                                            from == userData['residence']
-                                                ? CrossAxisAlignment.end
-                                                : CrossAxisAlignment.start,
-                                        children: [
-                                          Text(
-                                            content,
-                                            style: TextStyle(
-                                                color: Colors.white,
-                                                fontSize: 17),
+                                    Row(
+                                      mainAxisAlignment:
+                                          from == userData['residence']
+                                              ? MainAxisAlignment.end
+                                              : MainAxisAlignment.start,
+                                      children: [
+                                        Container(
+                                          padding: EdgeInsets.all(12),
+                                          margin: EdgeInsets.symmetric(
+                                              horizontal: 14, vertical: 8),
+                                          constraints:
+                                              BoxConstraints(maxWidth: 240),
+                                          decoration: BoxDecoration(
+                                            color: from == userData['residence']
+                                                ? Colors.blue
+                                                : Colors.green,
+                                            borderRadius:
+                                                from == userData['residence']
+                                                    ? BorderRadius.only(
+                                                        bottomLeft:
+                                                            Radius.circular(15),
+                                                      )
+                                                    : BorderRadius.only(
+                                                        bottomRight:
+                                                            Radius.circular(15),
+                                                      ),
                                           ),
-                                        ],
-                                      ),
+                                          child: Column(
+                                            crossAxisAlignment:
+                                                from == userData['residence']
+                                                    ? CrossAxisAlignment.end
+                                                    : CrossAxisAlignment.start,
+                                            children: [
+                                              Text(
+                                                content,
+                                                style: TextStyle(
+                                                    color: Colors.white,
+                                                    fontSize: 17),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      ],
                                     ),
+                                    Row(
+                                      mainAxisAlignment:
+                                          from == userData['residence']
+                                              ? MainAxisAlignment.end
+                                              : MainAxisAlignment.start,
+                                      children: [
+                                        Padding(
+                                          padding: from == userData['residence']
+                                              ? const EdgeInsets.only(
+                                                  right: 20,
+                                                )
+                                              : const EdgeInsets.only(left: 20),
+                                          child: Text(
+                                            formattedDate.toString(),
+                                          ),
+                                        ),
+                                      ],
+                                    )
                                   ],
                                 );
                               });
