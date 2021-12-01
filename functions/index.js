@@ -96,7 +96,7 @@ exports.flagOutTrigger = functions.firestore.document('/residences/{name}').onUp
     
     if (timeHour != 6 && after.flagOut != before.flagOut && after.flagOut === true){
         var flagOutPayload = {
-            notification: {title: "Flag Change", body: `${context.params.name}'s Flag Is Out`, sound: "default"}, data: {click_actions: "FLUTTER_NOTIFICATION_CLICK", message:"Sample FCM Message"}
+            notification: {title: "Flag Change", body: `${context.params.name}'s Flag Is Out`, sound: "custom_sound.wav"}, data: {click_actions: "FLUTTER_NOTIFICATION_CLICK", message:"Sample FCM Message"}
         }
         try {
             //send to device accepts array of device tokens
@@ -108,7 +108,7 @@ exports.flagOutTrigger = functions.firestore.document('/residences/{name}').onUp
         }
     } else if (timeHour != 6 && after.flagOut != before.flagOut && after.flagOut === false){
         var flagInPayload = {
-            notification: {title: "Flag Change", body: `${context.params.name}'s Flag Is Now In`, sound: "default"}, data: {click_actions: "FLUTTER_NOTIFICATION_CLICK", message:"Sample FCM Message"}
+            notification: {title: "Flag Change", body: `${context.params.name}'s Flag Is Now In`, sound: "custom_sound.wav"}, data: {click_actions: "FLUTTER_NOTIFICATION_CLICK", message:"Sample FCM Message"}
         }
         try {
             //send to device accepts array of device tokens

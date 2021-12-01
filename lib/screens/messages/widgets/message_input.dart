@@ -39,7 +39,7 @@ class _MessageInputState extends State<MessageInput> {
       'from': widget.sentFrom,
       'to': widget.sentTo,
       'timeStamp': Timestamp.now(),
-      'read': false
+      'read': "false"
     });
     _messageController.clear();
   }

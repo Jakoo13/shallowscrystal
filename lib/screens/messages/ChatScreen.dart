@@ -87,14 +87,16 @@ class _ChatScreenState extends State<ChatScreen> {
                               ConnectionState.waiting) {
                             return Text('Loading');
                           }
-                          final data = chatSnapshot.requireData;
+                          final messageData = chatSnapshot.requireData;
                           return ListView.builder(
                               controller: _myScrollController,
-                              itemCount: data.size,
+                              itemCount: messageData.size,
                               itemBuilder: (context, index) {
-                                var from = data.docs[index]['from'];
-                                var content = data.docs[index]['content'];
-                                var timeStamp = data.docs[index]['timeStamp'];
+                                var from = messageData.docs[index]['from'];
+                                var content =
+                                    messageData.docs[index]['content'];
+                                var timeStamp =
+                                    messageData.docs[index]['timeStamp'];
                                 var timeFormatted = timeStamp.toDate();
                                 var formattedDate = DateFormat('MM-dd - kk:mm')
                                     .format(timeFormatted);

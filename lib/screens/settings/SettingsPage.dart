@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class SettingsPage extends StatefulWidget {
   const SettingsPage({Key? key}) : super(key: key);
@@ -96,7 +97,71 @@ class _SettingsPageState extends State<SettingsPage> {
             ),
           ],
         ),
+        bottomSheet: Container(
+          color: Colors.lightBlue[700],
+          height: 70,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  InkWell(
+                    onTap: () {
+                      _launchURL();
+                    },
+                    child: Icon(
+                      Icons.document_scanner,
+                      size: 40,
+                    ),
+                  ),
+                  Text("Patent Pending")
+                ],
+              ),
+              Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  InkWell(
+                    onTap: () {
+                      _launchURL();
+                    },
+                    child: Icon(
+                      Icons.contact_page,
+                      size: 40,
+                    ),
+                  ),
+                  Text("Contact")
+                ],
+              ),
+            ],
+          ),
+        ),
+        // bottomNavigationBar: new BottomNavigationBar(
+        //   currentIndex: index,
+        //   onTap: () {
+        //     _getBody(index);
+        //   },
+        //   backgroundColor: Colors.lightBlue[700],
+        //   unselectedItemColor: Colors.black45,
+        //   selectedItemColor: Colors.black45,
+        //   elevation: 0,
+        //   items: [
+        //     new BottomNavigationBarItem(
+        //         icon: Icon(
+        //           Icons.document_scanner,
+        //         ),
+        //         label: "Patent Pending",
+        //         backgroundColor: Colors.black),
+        //     new BottomNavigationBarItem(
+        //         icon: Icon(Icons.contact_page), label: "Contact"),
+        //   ],
+        // ),
       ),
     );
+  }
+
+  void _launchURL() async {
+    const String _url = "https://netscaledigital.com/contact-us";
+    if (!await launch(_url)) throw 'Could not launch $_url';
   }
 }
