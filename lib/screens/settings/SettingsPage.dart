@@ -1,7 +1,10 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:page_transition/page_transition.dart';
 import 'package:url_launcher/url_launcher.dart';
+
+import 'NotificationSettings.dart';
 
 class SettingsPage extends StatefulWidget {
   const SettingsPage({Key? key}) : super(key: key);
@@ -33,10 +36,41 @@ class _SettingsPageState extends State<SettingsPage> {
             textScaleFactor: 1,
           ),
           elevation: 0,
-          backgroundColor: Colors.lightBlue[700],
+          backgroundColor: Colors.transparent,
         ),
         body: Column(
           children: [
+            Padding(
+              padding: const EdgeInsets.only(
+                top: 30.0,
+                left: 30,
+                right: 30,
+                bottom: 0,
+              ),
+              child: Card(
+                child: ListTile(
+                  tileColor: Colors.yellow,
+                  leading: Icon(Icons.add),
+                  title: Text(
+                    'Notifications',
+                    textScaleFactor: 1.5,
+                    textAlign: TextAlign.center,
+                  ),
+                  trailing: Icon(Icons.done),
+                  selected: false,
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      PageTransition(
+                        type: PageTransitionType.rightToLeftWithFade,
+                        alignment: Alignment.bottomCenter,
+                        child: NotificationSettings(),
+                      ),
+                    );
+                  },
+                ),
+              ),
+            ),
             Padding(
               padding: const EdgeInsets.only(
                 top: 30.0,
@@ -98,10 +132,10 @@ class _SettingsPageState extends State<SettingsPage> {
           ],
         ),
         bottomSheet: Container(
-          color: Colors.lightBlue[700],
+          color: Colors.lightBlue[800],
           height: 70,
           child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
               Column(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -115,7 +149,10 @@ class _SettingsPageState extends State<SettingsPage> {
                       size: 40,
                     ),
                   ),
-                  Text("Patent Pending")
+                  Text(
+                    "Patent Pending",
+                    textScaleFactor: 1,
+                  )
                 ],
               ),
               Column(
@@ -130,7 +167,7 @@ class _SettingsPageState extends State<SettingsPage> {
                       size: 40,
                     ),
                   ),
-                  Text("Contact")
+                  Text("Contact", textScaleFactor: 1),
                 ],
               ),
             ],

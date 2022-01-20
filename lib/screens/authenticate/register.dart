@@ -144,7 +144,8 @@ class _RegisterState extends State<Register> {
                           items: <String>[
                             'Residence',
                             'Black',
-                            'C & C',
+                            'Cannon',
+                            'DeGravina',
                             'Doran',
                             'Earnhardt',
                             'Eaton',
@@ -152,12 +153,13 @@ class _RegisterState extends State<Register> {
                             'Gregg',
                             'Hilderbrand',
                             'Holmes',
-                            'Korniek',
-                            'Kubaki',
+                            'Kirker',
+                            'Korinek',
+                            'Kubacki',
                             'McNabb',
                             'Miller',
                             'Ogden',
-                            'Perkins',
+                            'Perry',
                             'Pisio',
                             'Young'
                           ].map<DropdownMenuItem<String>>((String value) {
@@ -196,8 +198,8 @@ class _RegisterState extends State<Register> {
                         ),
                       ),
                       //////////////Password/////////
-                      Padding(
-                        padding: const EdgeInsets.only(
+                      Container(
+                        margin: const EdgeInsets.only(
                           left: 90,
                           right: 90,
                         ),
@@ -206,6 +208,7 @@ class _RegisterState extends State<Register> {
                           validator: validatePassword,
                           obscureText: true,
                           decoration: InputDecoration(
+                            errorMaxLines: 3,
                             labelText: "Password",
                             labelStyle: TextStyle(
                               color: Colors.white,

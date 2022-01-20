@@ -14,12 +14,14 @@ class UserCollectionSetup {
     String firstName,
     String lastName,
     String residence,
+    bool notifications,
   ) async {
     return await usersCollection.doc(uid).set({
       'email': email,
       'firstName': firstName,
       'lastName': lastName,
       'residence': residence,
+      "notifications": notifications
     });
   }
 
