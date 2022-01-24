@@ -25,6 +25,7 @@ class _SignInState extends State<SignIn> {
       home: MediaQuery(
         data: MediaQuery.of(context).copyWith(textScaleFactor: 1),
         child: Scaffold(
+          //resizeToAvoidBottomInset: false,
           body: Container(
             decoration: new BoxDecoration(
               gradient: new LinearGradient(
@@ -39,171 +40,182 @@ class _SignInState extends State<SignIn> {
             child: Form(
               key: _formKey,
               child: Center(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    AnimatedOpacity(
-                      opacity: .7,
-                      //_currentOpacity fix this later
-                      duration: const Duration(seconds: 2),
-                      child: Padding(
-                        padding: const EdgeInsets.all(50),
-                        child: Image.asset('assets/LakeFlags.png'),
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 90,
-                        vertical: 10,
-                      ),
-                      child: TextFormField(
-                        controller: emailController,
-                        validator: validateEmail,
-                        keyboardType: TextInputType.emailAddress,
-                        decoration: InputDecoration(
-                          labelText: "Username",
-                          labelStyle: TextStyle(
-                            color: Colors.white,
-                          ),
-                          errorStyle: TextStyle(
-                            color: Colors.black,
-                          ),
-                        ),
-                        style: TextStyle(
-                          color: Colors.yellow,
+                child: SingleChildScrollView(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      AnimatedOpacity(
+                        opacity: .7,
+                        //_currentOpacity fix this later
+                        duration: const Duration(seconds: 2),
+                        child: Padding(
+                          padding: const EdgeInsets.all(50),
+                          child: Image.asset('assets/LakeFlags.png'),
                         ),
                       ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(
-                        left: 90,
-                        right: 90,
-                        bottom: 0,
-                      ),
-                      child: TextFormField(
-                        controller: passwordController,
-                        validator: validatePassword,
-                        obscureText: true,
-                        decoration: InputDecoration(
-                            labelText: "Password",
+                      Padding(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 70,
+                          vertical: 10,
+                        ),
+                        child: TextFormField(
+                          controller: emailController,
+                          validator: validateEmail,
+                          keyboardType: TextInputType.emailAddress,
+                          decoration: InputDecoration(
+                            labelText: "Email",
                             labelStyle: TextStyle(
                               color: Colors.white,
+                              fontSize: 18,
                             ),
                             errorStyle: TextStyle(
                               color: Colors.black,
                             ),
-                            errorMaxLines: 3
-                            //border: InputBorder.none,
-                            ),
-                        style: TextStyle(
-                          color: Colors.yellow,
+                          ),
+                          style: TextStyle(
+                            color: Colors.yellow,
+                            fontSize: 20,
+                          ),
                         ),
                       ),
-                    ),
-                    Center(
-                      child: Text(
-                        errorMessage,
+                      Padding(
+                        padding: const EdgeInsets.only(
+                          left: 70,
+                          right: 70,
+                          bottom: 20,
+                        ),
+                        child: TextFormField(
+                          controller: passwordController,
+                          validator: validatePassword,
+                          obscureText: true,
+                          decoration: InputDecoration(
+                              labelText: "Password",
+                              labelStyle: TextStyle(
+                                color: Colors.white,
+                                fontSize: 18,
+                              ),
+                              errorStyle: TextStyle(
+                                color: Colors.black,
+                              ),
+                              errorMaxLines: 3
+                              //border: InputBorder.none,
+                              ),
+                          style: TextStyle(
+                            color: Colors.yellow,
+                            fontSize: 20,
+                          ),
+                        ),
                       ),
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        Column(
-                          children: [
-                            Padding(
-                              padding: const EdgeInsets.only(
-                                top: 15.0,
-                                left: 20,
-                              ),
-                              child: ElevatedButton(
-                                child: Text('Login'),
-                                style: ElevatedButton.styleFrom(
-                                  primary: Colors.limeAccent[700],
-                                  onPrimary: Colors.black87,
-                                  textStyle: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.grey,
-                                  ),
-                                ),
-                                onPressed: user != null
-                                    ? null
-                                    : () async {
-                                        if (_formKey.currentState!.validate()) {
-                                          try {
-                                            dynamic result = await _auth
-                                                .signInWithEmailAndPassword(
-                                                    emailController.text,
-                                                    passwordController.text);
-                                            if (result == null) {
-                                              print('error signing in');
-                                              errorMessage =
-                                                  'Incorrect Password';
-                                            } else {
-                                              print('signed in');
-                                              print(result.uid);
-                                            }
-                                          } on FirebaseAuthException catch (error) {
-                                            errorMessage = error.message!;
-                                          }
-
-                                          setState(() {});
-                                        }
-                                      },
-                              ),
-                            ),
-                          ],
+                      Center(
+                        child: Text(
+                          errorMessage,
                         ),
-                        Column(
-                          children: [
-                            Padding(
-                              padding: EdgeInsets.only(
-                                right: 0,
-                              ),
-                              child: TextButton(
-                                child: Text('Forgot Password?'),
-                                onPressed: () {},
-                                style: TextButton.styleFrom(
-                                  primary: Colors.limeAccent[700],
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(top: 40.0),
-                      child: Row(
+                      ),
+                      Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          Text(
-                            'Don\'t have an account?',
-                            style: TextStyle(
-                              color: Colors.black87,
-                              fontSize: 15,
-                            ),
+                          Column(
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.only(
+                                  top: 15.0,
+                                  //right: 70,
+                                ),
+                                child: ElevatedButton(
+                                  child: Text('Login'),
+                                  style: ElevatedButton.styleFrom(
+                                    primary: Colors.limeAccent[700],
+                                    onPrimary: Colors.black87,
+                                    textStyle: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.grey,
+                                    ),
+                                  ),
+                                  onPressed: user != null
+                                      ? null
+                                      : () async {
+                                          if (_formKey.currentState!
+                                              .validate()) {
+                                            try {
+                                              dynamic result = await _auth
+                                                  .signInWithEmailAndPassword(
+                                                      emailController.text,
+                                                      passwordController.text);
+                                              if (result == null) {
+                                                print('error signing in');
+                                                errorMessage =
+                                                    'Incorrect Password';
+                                              } else {
+                                                print('signed in');
+                                                print(result.uid);
+                                              }
+                                            } on FirebaseAuthException catch (error) {
+                                              errorMessage = error.message!;
+                                            }
+
+                                            setState(() {});
+                                          }
+                                        },
+                                ),
+                              ),
+                            ],
                           ),
-                          TextButton(
-                            child: Text('Sign Up'),
-                            style: TextButton.styleFrom(
+                          // Column(
+                          //   children: [
+                          //     Padding(
+                          //       padding: EdgeInsets.only(
+                          //         right: 0,
+                          //       ),
+                          //       child: TextButton(
+                          //         child: Text('Forgot Password?'),
+                          //         onPressed: () {},
+                          //         style: TextButton.styleFrom(
+                          //           primary: Colors.limeAccent[700],
+                          //         ),
+                          //       ),
+                          //     ),
+                          //   ],
+                          // ),
+                        ],
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(top: 40.0),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(
+                              'Don\'t have an account?',
+                              style: TextStyle(
+                                color: Colors.black87,
+                                fontSize: 17,
+                                fontWeight: FontWeight.w500,
+                              ),
+                            ),
+                            TextButton(
+                              child: Text('Sign Up'),
+                              style: TextButton.styleFrom(
                                 primary: Colors.limeAccent[700],
                                 textStyle: TextStyle(
                                   decoration: TextDecoration.underline,
-                                )),
-                            onPressed: () {
-                              Navigator.push(
-                                  context,
-                                  PageTransition(
-                                    type: PageTransitionType.size,
-                                    alignment: Alignment.bottomCenter,
-                                    child: Register(),
-                                  ));
-                            },
-                          ),
-                        ],
-                      ),
-                    )
-                  ],
+                                  fontWeight: FontWeight.w500,
+                                  fontSize: 17,
+                                ),
+                              ),
+                              onPressed: () {
+                                Navigator.push(
+                                    context,
+                                    PageTransition(
+                                      type: PageTransitionType.size,
+                                      alignment: Alignment.bottomCenter,
+                                      child: Register(),
+                                    ));
+                              },
+                            ),
+                          ],
+                        ),
+                      )
+                    ],
+                  ),
                 ),
               ),
             ),

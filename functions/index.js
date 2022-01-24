@@ -56,7 +56,7 @@ exports.messageTrigger = functions.firestore.document('/messages/{names}/chats/{
         var deviceTokens = [];
         userSnapshot.forEach(doc=> {
             //add to the if something like "&& notifications == true"
-            if(doc.data().residence == sentTo && doc.data().notifications == true){
+            if(doc.data().residence == sentTo && doc.data().messageNotifications == true){
                 deviceTokens.push(doc.data().tokens)
             }
         });
@@ -84,7 +84,7 @@ exports.flagOutTrigger = functions.firestore.document('/residences/{name}').onUp
     var deviceTokens = [];
     userSnapshot.forEach(doc=> {
         //add to the if something like "&& notifications == true"
-        if(doc.data().residence != residenceName && doc.data().notifications == true){
+        if(doc.data().residence != residenceName && doc.data().flagChangeNotifications == true){
             deviceTokens.push(doc.data().tokens)
         }
     });

@@ -63,7 +63,7 @@ class _RegisterState extends State<Register> {
                       //////////////First Name/////////
                       Padding(
                         padding: const EdgeInsets.symmetric(
-                          horizontal: 90,
+                          horizontal: 70,
                         ),
                         child: TextFormField(
                           controller: firstNameController,
@@ -75,10 +75,12 @@ class _RegisterState extends State<Register> {
                             }
                           },
                           keyboardType: TextInputType.name,
+                          textCapitalization: TextCapitalization.sentences,
                           decoration: InputDecoration(
                             labelText: "First Name",
                             labelStyle: TextStyle(
                               color: Colors.white,
+                              fontSize: 18,
                             ),
                             errorStyle: TextStyle(
                               color: Colors.black,
@@ -86,13 +88,14 @@ class _RegisterState extends State<Register> {
                           ),
                           style: TextStyle(
                             color: Colors.yellow,
+                            fontSize: 20,
                           ),
                         ),
                       ),
                       //////////////Last Name/////////
                       Padding(
                         padding: const EdgeInsets.symmetric(
-                          horizontal: 90,
+                          horizontal: 70,
                         ),
                         child: TextFormField(
                           controller: lastNameController,
@@ -104,10 +107,12 @@ class _RegisterState extends State<Register> {
                             }
                           },
                           keyboardType: TextInputType.name,
+                          textCapitalization: TextCapitalization.words,
                           decoration: InputDecoration(
                             labelText: "Last Name",
                             labelStyle: TextStyle(
                               color: Colors.white,
+                              fontSize: 18,
                             ),
                             errorStyle: TextStyle(
                               color: Colors.black,
@@ -115,12 +120,15 @@ class _RegisterState extends State<Register> {
                           ),
                           style: TextStyle(
                             color: Colors.yellow,
+                            fontSize: 20,
                           ),
                         ),
                       ),
                       /////////////Residence Input/////////
                       Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 90),
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 70,
+                        ),
                         child: DropdownButtonFormField<String>(
                           value: dropdownValue,
                           icon: const Icon(
@@ -134,7 +142,10 @@ class _RegisterState extends State<Register> {
                               : null,
                           isExpanded: true,
                           dropdownColor: Colors.black87,
-                          style: const TextStyle(color: Colors.white),
+                          style: const TextStyle(
+                            color: Colors.white,
+                            fontSize: 18,
+                          ),
                           onChanged: (String? newValue) {
                             setState(() {
                               dropdownValue = newValue!;
@@ -177,7 +188,7 @@ class _RegisterState extends State<Register> {
                       //////////////Email/////////
                       Padding(
                         padding: const EdgeInsets.symmetric(
-                          horizontal: 90,
+                          horizontal: 70,
                         ),
                         child: TextFormField(
                           controller: emailController,
@@ -187,6 +198,7 @@ class _RegisterState extends State<Register> {
                             labelText: "Email",
                             labelStyle: TextStyle(
                               color: Colors.white,
+                              fontSize: 18,
                             ),
                             errorStyle: TextStyle(
                               color: Colors.black,
@@ -194,14 +206,14 @@ class _RegisterState extends State<Register> {
                           ),
                           style: TextStyle(
                             color: Colors.yellow,
+                            fontSize: 20,
                           ),
                         ),
                       ),
                       //////////////Password/////////
                       Container(
-                        margin: const EdgeInsets.only(
-                          left: 90,
-                          right: 90,
+                        margin: const EdgeInsets.symmetric(
+                          horizontal: 70,
                         ),
                         child: TextFormField(
                           controller: passwordController,
@@ -212,6 +224,7 @@ class _RegisterState extends State<Register> {
                             labelText: "Password",
                             labelStyle: TextStyle(
                               color: Colors.white,
+                              fontSize: 18,
                             ),
                             errorStyle: TextStyle(
                               color: Colors.black,
@@ -220,14 +233,15 @@ class _RegisterState extends State<Register> {
                           ),
                           style: TextStyle(
                             color: Colors.yellow,
+                            fontSize: 20,
                           ),
                         ),
                       ),
                       //////////////ConfirmPassword/////////
                       Padding(
                         padding: const EdgeInsets.only(
-                          left: 90,
-                          right: 90,
+                          left: 70,
+                          right: 70,
                           bottom: 40,
                         ),
                         child: TextFormField(
@@ -245,6 +259,7 @@ class _RegisterState extends State<Register> {
                             labelText: "Confirm Password",
                             labelStyle: TextStyle(
                               color: Colors.white,
+                              fontSize: 18,
                             ),
                             errorStyle: TextStyle(
                               color: Colors.black,
@@ -252,6 +267,7 @@ class _RegisterState extends State<Register> {
                           ),
                           style: TextStyle(
                             color: Colors.yellow,
+                            fontSize: 20,
                           ),
                         ),
                       ),

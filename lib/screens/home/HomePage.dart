@@ -136,7 +136,8 @@ class _HomePageState extends State<HomePage> {
     var padding = MediaQuery.of(context).padding;
     double newheight = height - padding.top - padding.bottom;
     //final AuthService _auth = AuthService();
-
+    CollectionReference users = FirebaseFirestore.instance.collection('users');
+    String userId = FirebaseAuth.instance.currentUser!.uid;
     return Container(
       decoration: BoxDecoration(
         gradient: LinearGradient(
@@ -161,10 +162,10 @@ class _HomePageState extends State<HomePage> {
                 top: 90.0,
                 left: 30,
                 right: 30,
-                bottom: 0,
+                bottom: 20,
               ),
               child: Container(
-                height: newheight - 40,
+                height: newheight,
                 //color: Colors.green,
                 child: Column(
                   children: [
@@ -178,34 +179,15 @@ class _HomePageState extends State<HomePage> {
                     ),
                     Container(
                       child: Padding(
-                        padding: const EdgeInsets.all(50),
+                        padding: const EdgeInsets.only(
+                          top: 50,
+                          left: 50,
+                          right: 50,
+                          bottom: 40,
+                        ),
                         child: Image.asset('assets/LakeFlags.png'),
                       ),
                     ),
-                    // Card(
-                    //   child: ListTile(
-                    //     tileColor: Colors.yellow,
-
-                    //     leading: Icon(Icons.add),
-                    //     title: Text(
-                    //       'Profile',
-                    //       textScaleFactor: 1.5,
-                    //       textAlign: TextAlign.center,
-                    //     ),
-                    //     trailing: Icon(Icons.done),
-                    //     //subtitle: Text('This is subtitle'),
-                    //     selected: false,
-                    //     onTap: () {
-                    //       Navigator.push(
-                    //           context,
-                    //           PageTransition(
-                    //             type: PageTransitionType.size,
-                    //             alignment: Alignment.bottomCenter,
-                    //             child: ProfilePage(),
-                    //           ));
-                    //     },
-                    //   ),
-                    // ),
                     Card(
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(25),
@@ -213,7 +195,7 @@ class _HomePageState extends State<HomePage> {
                       child: ListTile(
                         tileColor: Colors.yellow,
                         contentPadding: EdgeInsets.symmetric(
-                            vertical: 70.0, horizontal: 16.0),
+                            vertical: 15.0, horizontal: 16.0),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(25),
                         ),
@@ -228,70 +210,129 @@ class _HomePageState extends State<HomePage> {
                         selected: false,
                         onTap: () {
                           Navigator.push(
-                              context,
-                              PageTransition(
-                                type: PageTransitionType.size,
-                                alignment: Alignment.bottomCenter,
-                                child: LakePage(),
-                              ));
+                            context,
+                            PageTransition(
+                              type: PageTransitionType.size,
+                              alignment: Alignment.bottomCenter,
+                              child: LakePage(),
+                            ),
+                          );
                         },
                       ),
                     ),
-                    // Card(
-                    //   child: ListTile(
-                    //     tileColor: Colors.yellow,
-
-                    //     leading: Icon(Icons.add),
-                    //     title: Text(
-                    //       'Residences',
-                    //       textScaleFactor: 1.5,
-                    //       textAlign: TextAlign.center,
-                    //     ),
-                    //     trailing: Icon(Icons.done),
-                    //     //subtitle: Text('This is subtitle'),
-                    //     selected: false,
-                    //     onTap: () {
-                    //       Navigator.push(
-                    //           context,
-                    //           PageTransition(
-                    //             type: PageTransitionType.size,
-                    //             alignment: Alignment.bottomCenter,
-                    //             child: ResidencesPage(),
-                    //           ));
-                    //     },
-                    //   ),
-                    // ),
-                    // Card(
-                    //   child: ListTile(
-                    //     tileColor: Colors.yellow,
-
-                    //     leading: Icon(Icons.add),
-                    //     title: Text(
-                    //       'Messages',
-                    //       textScaleFactor: 1.5,
-                    //       textAlign: TextAlign.center,
-                    //     ),
-                    //     trailing: Icon(Icons.done),
-                    //     //subtitle: Text('This is subtitle'),
-                    //     selected: false,
-                    //     onTap: () {
-                    //       Navigator.push(
-                    //           context,
-                    //           PageTransition(
-                    //             type: PageTransitionType.size,
-                    //             alignment: Alignment.bottomCenter,
-                    //             child: AllMessages(),
-                    //           ));
-                    //     },
-                    //   ),
-                    // ),
-                    // ElevatedButton(
-                    //   child: Text('Log Out'),
-                    //   onPressed: () async {
-                    //     await _auth.logOut();
-                    //     //Navigator.pop(context);
-                    //   },
-                    // ),
+                    FutureBuilder<DocumentSnapshot>(
+                      future: users.doc(userId).get(),
+                      builder: (BuildContext context,
+                          AsyncSnapshot<DocumentSnapshot> snapshot) {
+                        if (snapshot.hasError) {
+                          return Text('Something went wrong');
+                        }
+                        if (snapshot.hasData && !snapshot.data!.exists) {
+                          return Text('Document does not exist');
+                        }
+                        if (snapshot.connectionState ==
+                            ConnectionState.waiting) {
+                          return Center(child: CircularProgressIndicator());
+                        }
+                        if (snapshot.connectionState == ConnectionState.done) {
+                          Map<String, dynamic> userData =
+                              snapshot.data!.data() as Map<String, dynamic>;
+                          bool flagChangeSwitch =
+                              userData['flagChangeNotifications'];
+                          bool messagesSwitch =
+                              userData['messageNotifications'];
+                          return Column(
+                            children: [
+                              Container(
+                                margin: const EdgeInsets.only(
+                                  top: 40.0,
+                                  right: 10,
+                                ),
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceAround,
+                                  children: [
+                                    Flexible(
+                                      child: Text(
+                                        "Flag Change Alerts",
+                                        textScaleFactor: 1.5,
+                                        maxLines: 2,
+                                        style: TextStyle(
+                                          color: Colors.white,
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.w500,
+                                        ),
+                                      ),
+                                    ),
+                                    Transform.scale(
+                                      scale: 1.5,
+                                      child: Switch(
+                                        value: flagChangeSwitch,
+                                        onChanged: (bool value) {
+                                          setState(() {
+                                            flagChangeSwitch = value;
+                                          });
+                                          users.doc(userId).update({
+                                            "flagChangeNotifications":
+                                                flagChangeSwitch
+                                          }).catchError(
+                                              (error) => print(error));
+                                        },
+                                        activeTrackColor:
+                                            Colors.lightGreen[400],
+                                        activeColor: Colors.lightGreen[200],
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.only(
+                                  top: 10.0,
+                                ),
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceAround,
+                                  children: [
+                                    Flexible(
+                                      child: Text(
+                                        "Message Alerts",
+                                        textScaleFactor: 1.5,
+                                        style: TextStyle(
+                                          color: Colors.white,
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.w500,
+                                        ),
+                                      ),
+                                    ),
+                                    Transform.scale(
+                                      scale: 1.5,
+                                      child: Switch(
+                                        value: messagesSwitch,
+                                        onChanged: (bool value) {
+                                          setState(() {
+                                            messagesSwitch = value;
+                                          });
+                                          users.doc(userId).update({
+                                            "messageNotifications":
+                                                messagesSwitch
+                                          }).catchError(
+                                              (error) => print(error));
+                                        },
+                                        activeTrackColor:
+                                            Colors.lightGreen[400],
+                                        activeColor: Colors.lightGreen[200],
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ],
+                          );
+                        }
+                        return Center(child: CircularProgressIndicator());
+                      },
+                    ),
                   ],
                 ),
               ),

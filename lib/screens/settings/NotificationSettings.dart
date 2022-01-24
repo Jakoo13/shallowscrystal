@@ -41,7 +41,8 @@ class _NotificationSettingsState extends State<NotificationSettings> {
             if (snapshot.connectionState == ConnectionState.done) {
               Map<String, dynamic> userData =
                   snapshot.data!.data() as Map<String, dynamic>;
-              bool notificationsSwitch = userData['notifications'];
+              bool flagChangeSwitch = userData['flagChangeNotifications'];
+              bool messagesSwitch = userData['messageNotifications'];
               return Scaffold(
                 backgroundColor: Colors.transparent,
                 appBar: AppBar(
@@ -54,38 +55,80 @@ class _NotificationSettingsState extends State<NotificationSettings> {
                 ),
                 body: Column(
                   children: [
-                    Padding(
-                      padding: const EdgeInsets.only(top: 60.0),
+                    Container(
+                      margin: const EdgeInsets.only(
+                        top: 60.0,
+                        left: 10,
+                        right: 10,
+                      ),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
-                          Text(
-                            "Notifications On/Off",
-                            textScaleFactor: 1.5,
-                            style: TextStyle(
-                              color: Colors.yellow,
-                              fontSize: 16,
+                          Flexible(
+                            child: Text(
+                              "Flag Change Notifications",
+                              textScaleFactor: 1.5,
+                              maxLines: 2,
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 16,
+                                fontWeight: FontWeight.w500,
+                              ),
                             ),
                           ),
                           Transform.scale(
                             scale: 1.5,
                             child: Switch(
-                              value: notificationsSwitch,
+                              value: flagChangeSwitch,
                               onChanged: (bool value) {
                                 setState(() {
-                                  notificationsSwitch = value;
-                                  print(notificationsSwitch);
+                                  flagChangeSwitch = value;
                                 });
-                                users
-                                    .doc(userId)
-                                    .update(
-                                        {"notifications": notificationsSwitch})
-                                    .then((value) =>
-                                        print("Notifications Update"))
-                                    .catchError((error) => print(error));
+                                users.doc(userId).update({
+                                  "flagChangeNotifications": flagChangeSwitch
+                                }).catchError((error) => print(error));
                               },
-                              activeTrackColor: Colors.lightGreenAccent,
-                              activeColor: Colors.yellow,
+                              activeTrackColor: Colors.lightGreen[400],
+                              activeColor: Colors.lightGreen[200],
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(
+                        top: 60.0,
+                        left: 10,
+                        right: 10,
+                      ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          Flexible(
+                            child: Text(
+                              "Message Notifications",
+                              textScaleFactor: 1.5,
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 16,
+                                fontWeight: FontWeight.w500,
+                              ),
+                            ),
+                          ),
+                          Transform.scale(
+                            scale: 1.5,
+                            child: Switch(
+                              value: messagesSwitch,
+                              onChanged: (bool value) {
+                                setState(() {
+                                  messagesSwitch = value;
+                                });
+                                users.doc(userId).update({
+                                  "messageNotifications": messagesSwitch
+                                }).catchError((error) => print(error));
+                              },
+                              activeTrackColor: Colors.lightGreen[400],
+                              activeColor: Colors.lightGreen[200],
                             ),
                           ),
                         ],

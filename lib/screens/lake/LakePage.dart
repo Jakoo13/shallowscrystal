@@ -96,7 +96,7 @@ class _LakePageState extends State<LakePage> {
                                   }
                                   if (snapshot.connectionState ==
                                       ConnectionState.waiting) {
-                                    // return Text('Loading');
+                                    return CircularProgressIndicator();
                                   }
                                   final residenceData = snapshot.requireData;
 
@@ -177,7 +177,7 @@ class _LakePageState extends State<LakePage> {
                                                             builder: (_) =>
                                                                 CupertinoAlertDialog(
                                                                   title: Text(
-                                                                    "Change Flag Position?",
+                                                                    "Are you sure?",
                                                                     textScaleFactor:
                                                                         1,
                                                                     style: TextStyle(
@@ -610,7 +610,10 @@ class _LakePageState extends State<LakePage> {
                 ),
               );
             }
-            return CircularProgressIndicator();
+            return Center(
+                child: CircularProgressIndicator(
+              color: Colors.yellow,
+            ));
           }),
     );
   }

@@ -40,6 +40,37 @@ class _SettingsPageState extends State<SettingsPage> {
         ),
         body: Column(
           children: [
+            // Padding(
+            //   padding: const EdgeInsets.only(
+            //     top: 100.0,
+            //     left: 30,
+            //     right: 30,
+            //     bottom: 0,
+            //   ),
+            //   child: Card(
+            //     child: ListTile(
+            //       tileColor: Colors.yellow,
+            //       leading: Icon(Icons.add),
+            //       title: Text(
+            //         'Notifications',
+            //         textScaleFactor: 1.5,
+            //         textAlign: TextAlign.center,
+            //       ),
+            //       trailing: Icon(Icons.done),
+            //       selected: false,
+            //       onTap: () {
+            //         Navigator.push(
+            //           context,
+            //           PageTransition(
+            //             type: PageTransitionType.rightToLeftWithFade,
+            //             alignment: Alignment.bottomCenter,
+            //             child: NotificationSettings(),
+            //           ),
+            //         );
+            //       },
+            //     ),
+            //   ),
+            // ),
             Padding(
               padding: const EdgeInsets.only(
                 top: 30.0,
@@ -52,21 +83,14 @@ class _SettingsPageState extends State<SettingsPage> {
                   tileColor: Colors.yellow,
                   leading: Icon(Icons.add),
                   title: Text(
-                    'Notifications',
+                    'Contact',
                     textScaleFactor: 1.5,
                     textAlign: TextAlign.center,
                   ),
                   trailing: Icon(Icons.done),
                   selected: false,
                   onTap: () {
-                    Navigator.push(
-                      context,
-                      PageTransition(
-                        type: PageTransitionType.rightToLeftWithFade,
-                        alignment: Alignment.bottomCenter,
-                        child: NotificationSettings(),
-                      ),
-                    );
+                    _launchURL();
                   },
                 ),
               ),
@@ -131,48 +155,7 @@ class _SettingsPageState extends State<SettingsPage> {
             ),
           ],
         ),
-        bottomSheet: Container(
-          color: Colors.lightBlue[800],
-          height: 70,
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: [
-              Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  InkWell(
-                    onTap: () {
-                      _launchURL();
-                    },
-                    child: Icon(
-                      Icons.document_scanner,
-                      size: 40,
-                    ),
-                  ),
-                  Text(
-                    "Patent Pending",
-                    textScaleFactor: 1,
-                  )
-                ],
-              ),
-              Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  InkWell(
-                    onTap: () {
-                      _launchURL();
-                    },
-                    child: Icon(
-                      Icons.contact_page,
-                      size: 40,
-                    ),
-                  ),
-                  Text("Contact", textScaleFactor: 1),
-                ],
-              ),
-            ],
-          ),
-        ),
+
         // bottomNavigationBar: new BottomNavigationBar(
         //   currentIndex: index,
         //   onTap: () {
