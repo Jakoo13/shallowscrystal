@@ -1,10 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:page_transition/page_transition.dart';
 import 'package:url_launcher/url_launcher.dart';
-
-import 'NotificationSettings.dart';
 
 class SettingsPage extends StatefulWidget {
   const SettingsPage({Key? key}) : super(key: key);
@@ -182,6 +179,6 @@ class _SettingsPageState extends State<SettingsPage> {
 
   void _launchURL() async {
     const String _url = "https://netscaledigital.com/contact-us";
-    if (!await launch(_url)) throw 'Could not launch $_url';
+    if (!await launchUrl(Uri.parse(_url))) throw 'Could not launch $_url';
   }
 }

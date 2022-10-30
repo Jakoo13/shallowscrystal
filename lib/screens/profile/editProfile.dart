@@ -29,7 +29,7 @@ class _EditProfileState extends State<EditProfile> {
   var firebaseUser = FirebaseAuth.instance.currentUser;
 
   Future uploadPhoto(residence) async {
-    final result = await picker.getImage(source: ImageSource.gallery);
+    final result = await picker.pickImage(source: ImageSource.gallery);
     if (result == null) return;
     final path = result.path;
 
@@ -294,12 +294,8 @@ class _EditProfileState extends State<EditProfile> {
                                             residences
                                                 .doc(userData['residence'])
                                                 .update({
-                                                  'about':
-                                                      _aboutMeController.text,
-                                                })
-                                                .then((value) =>
-                                                    print('Profile Updated'))
-                                                .catchError(
+                                              'about': _aboutMeController.text,
+                                            }).catchError(
                                                     (error) => print(error));
 
                                             Navigator.of(context).pop();

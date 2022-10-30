@@ -5,12 +5,14 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:get/get.dart';
 
 import 'package:shallows/main.dart';
 //import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:shallows/screens/home/SkierAnimation.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:shallows/screens/lake/LakePage.dart';
+import 'package:shallows/screens/lake/lake_screen_controller.dart';
 import 'package:shallows/screens/settings/SettingsPage.dart';
 // import 'package:shallows/screens/messages/allMessages.dart';
 // import 'package:shallows/screens/residences/ResidencesPage.dart';
@@ -119,7 +121,7 @@ class _HomePageState extends State<HomePage> {
               color: Colors.blue,
               playSound: true,
               icon: '@mipmap/ic_launcher'),
-          iOS: IOSNotificationDetails(
+          iOS: DarwinNotificationDetails(
             presentAlert: true,
             presentBadge: true,
             presentSound: true,
@@ -129,6 +131,7 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
+    var lakeController = Get.put(LakeScreenController());
     //Get Screen Size of Every Device
     //double width = MediaQuery.of(context).size.width;
     double height = MediaQuery.of(context).size.height;
@@ -193,7 +196,7 @@ class _HomePageState extends State<HomePage> {
                         borderRadius: BorderRadius.circular(25),
                       ),
                       child: ListTile(
-                        tileColor: Colors.yellow,
+                        tileColor: Color.fromARGB(255, 255, 235, 59),
                         contentPadding: EdgeInsets.symmetric(
                             vertical: 15.0, horizontal: 16.0),
                         shape: RoundedRectangleBorder(
@@ -219,6 +222,23 @@ class _HomePageState extends State<HomePage> {
                           );
                         },
                       ),
+                    ),
+                    InkWell(
+                      onTap: () {
+                        print(lakeController.currentUserSnapshot['residence']);
+                      },
+                      child: Container(
+                          width: 100,
+                          height: 50,
+                          color: Colors.black,
+                          child: Center(
+                            child: Text(
+                              "Test Me",
+                              style: TextStyle(
+                                color: Colors.white,
+                              ),
+                            ),
+                          )),
                     ),
                     FutureBuilder<DocumentSnapshot>(
                       future: users.doc(userId).get(),

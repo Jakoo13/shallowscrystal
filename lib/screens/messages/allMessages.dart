@@ -90,8 +90,6 @@ class _AllMessagesState extends State<AllMessages> {
                                                     index,
                                                     userData['residence'],
                                                     data.docs[index]['name'],
-                                                    data.docs[index]
-                                                        ['photoURL'],
                                                   ),
                                                 ),
                                               );

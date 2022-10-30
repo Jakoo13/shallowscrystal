@@ -143,28 +143,3 @@ class _NotificationSettingsState extends State<NotificationSettings> {
     );
   }
 }
-                                                                    // onPressed:
-                                                                    //       () {
-                                                                    //     residences
-                                                                    //         .doc(residenceData.docs[index].id)
-                                                                    //         .update({
-                                                                    //           'flagOutTime': dateFormatted,
-                                                                    //         })
-                                                                    //         .then((value) => print('Profile Updated'))
-                                                                    //         .catchError((error) => print(error));
-                                                                    //     print(residenceData
-                                                                    //         .docs[index]
-                                                                    //         .id);
-                                                                    //     if (flagOut ==
-                                                                    //         true) {
-                                                                    //       _database.changeFlagPosition(
-                                                                    //           false,
-                                                                    //           residenceData.docs[index].id);
-                                                                    //     } else {
-                                                                    //       _database.changeFlagPosition(
-                                                                    //           true,
-                                                                    //           residenceData.docs[index].id);
-                                                                    //     }
-                                                                    //     Navigator.of(context)
-                                                                    //         .pop();
-                                                                    //   },
