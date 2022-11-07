@@ -48,6 +48,7 @@ dependencies:
   google_fonts: ^3.0.1
   url_launcher: ^6.0.17
   get: ^4.6.5
+  rxdart: ^0.27.5
 
   
   
@@ -97,5 +98,8 @@ flutter:
     - family: OpenSans
       fonts:
         - asset: assets/fonts/OpenSans.ttf
+    - family: Roboto
+      fonts:
+        - asset: assets/fonts/Roboto-Regular.ttf
           
  

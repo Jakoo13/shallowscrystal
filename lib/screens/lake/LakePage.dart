@@ -2,9 +2,10 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:shallows/screens/lake/residence_tile.dart';
-
+import 'package:shallows/screens/messages/AllMessages.dart';
+import 'widgets/current_user_tile.dart';
 import 'lake_screen_controller.dart';
+import 'widgets/non_user_tile.dart';
 
 class LakePage extends StatefulWidget {
   static String id = 'LakePage';
@@ -21,33 +22,43 @@ class _LakePageState extends State<LakePage> {
 
   @override
   Widget build(BuildContext context) {
-    var lakeController = Get.put(LakeScreenController());
-
-    //Get Screen Size of Every Device
-    //double width = MediaQuery.of(context).size.width;
-    double height = MediaQuery.of(context).size.height;
-    //Get Safe Area of Every Device
-    var padding = MediaQuery.of(context).padding;
-    double newheight = height - padding.top - padding.bottom;
+    final lakeController = Get.find<LakeScreenController>();
 
     return MediaQuery(
       data: MediaQuery.of(context).copyWith(textScaleFactor: 1),
       child: Scaffold(
         appBar: AppBar(
+          backgroundColor: Color.fromARGB(255, 41, 47, 63),
           title: Text(
-            "Lake Page",
+            "Lake Rotation",
+            style: TextStyle(
+              fontWeight: FontWeight.w500,
+              color: Colors.white,
+              fontSize: 27,
+              fontFamily: "Roboto",
+              letterSpacing: 2,
+            ),
           ),
+          elevation: 2,
+          actions: <Widget>[
+            InkWell(
+              onTap: () {
+                Get.to(() => AllMessages());
+              },
+              child: Padding(
+                padding: const EdgeInsets.only(right: 18.0),
+                child: Icon(
+                  Icons.message,
+                  color: Colors.white70,
+                  size: 30,
+                ),
+              ),
+            ),
+          ],
         ),
         body: Container(
           decoration: BoxDecoration(
-            gradient: new LinearGradient(
-              begin: Alignment.topCenter,
-              end: Alignment.bottomCenter,
-              colors: [
-                Color.fromARGB(255, 58, 123, 213),
-                Color.fromARGB(255, 58, 96, 115),
-              ],
-            ),
+            color: Color.fromARGB(255, 41, 47, 63),
           ),
           child: StreamBuilder<QuerySnapshot>(
             stream: lakeController.residenceStream,
@@ -57,26 +68,35 @@ class _LakePageState extends State<LakePage> {
               }
 
               if (snapshot.connectionState == ConnectionState.waiting) {
-                return Text("Loading");
+                return CircularProgressIndicator();
               }
               return ListView.builder(
-                  itemCount: snapshot.data!.docs.length,
-                  itemBuilder: (BuildContext context, int index) {
-                    var data = snapshot.data!.docs[index];
-                    return ResidenceTile(index: index, data: data);
-                  });
-              // ListView(
-              //   children: snapshot.data!.docs.map((DocumentSnapshot document) {
-
-              //     Map<String, dynamic> data =
-              //         document.data()! as Map<String, dynamic>;
-              //     return ResidenceTile(data: data);
-              //   }).toList(),
-              // );
+                padding: const EdgeInsets.only(
+                  top: 20,
+                  bottom: 40,
+                ),
+                itemCount: snapshot.data!.docs.length,
+                itemBuilder: (BuildContext context, int index) {
+                  QueryDocumentSnapshot data = snapshot.data!.docs[index];
+                  return showResidenceTile(context, index, data);
+                },
+              );
             },
           ),
         ),
       ),
+    );
+  }
+}
+
+Widget showResidenceTile(context, index, data) {
+  final lakeController = Get.find<LakeScreenController>();
+  if (data["name"] == lakeController.currentUserSnapshot["residence"]) {
+    return CurrentUserTile(index: index, specificResidentData: data);
+  } else {
+    return NonUserTile(
+      index: index,
+      specificResidentData: data,
     );
   }
 }
@@ -489,11 +509,7 @@ class _LakePageState extends State<LakePage> {
       //                                                       ],
       //                                                     ));
       //                                           },
-      //                                           // messageData.docs[
-      //                                           //                 count - 1]
-      //                                           //             ['read'] ==
-      //                                           //         "false"
-      //                                           //     ?
+      //                                            
       //                                           leading: flagOut
       //                                               ? Icon(Icons.flag_rounded,
       //                                                   color: Colors.black)

@@ -1,5 +1,3 @@
-//import 'package:firebase_core/firebase_core.dart';
-//import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
@@ -8,17 +6,12 @@ import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:get/get.dart';
 
 import 'package:shallows/main.dart';
-//import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:shallows/screens/home/SkierAnimation.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:shallows/screens/lake/LakePage.dart';
 import 'package:shallows/screens/lake/lake_screen_controller.dart';
+import 'package:shallows/screens/messages/ChatScreen.dart';
 import 'package:shallows/screens/settings/SettingsPage.dart';
-// import 'package:shallows/screens/messages/allMessages.dart';
-// import 'package:shallows/screens/residences/ResidencesPage.dart';
-// import 'package:shallows/screens/profile/ProfilePage.dart';
-//import 'package:shallows/services/auth_service.dart';
-//import 'package:shallows/services/local_notification_service.dart';
 
 Future<void> saveTokenToDatabase(String token) async {
   // Assume user is logged in for this example
@@ -131,7 +124,7 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    var lakeController = Get.put(LakeScreenController());
+    var lakeScreenController = Get.put(LakeScreenController());
     //Get Screen Size of Every Device
     //double width = MediaQuery.of(context).size.width;
     double height = MediaQuery.of(context).size.height;
@@ -143,14 +136,7 @@ class _HomePageState extends State<HomePage> {
     String userId = FirebaseAuth.instance.currentUser!.uid;
     return Container(
       decoration: BoxDecoration(
-        gradient: LinearGradient(
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
-          colors: [
-            Color.fromARGB(255, 58, 123, 213),
-            Color.fromARGB(255, 58, 96, 115),
-          ],
-        ),
+        color: Color.fromARGB(255, 41, 47, 63),
       ),
       child: Scaffold(
         // By defaut, Scaffold background is white
@@ -196,7 +182,7 @@ class _HomePageState extends State<HomePage> {
                         borderRadius: BorderRadius.circular(25),
                       ),
                       child: ListTile(
-                        tileColor: Color.fromARGB(255, 255, 235, 59),
+                        tileColor: Colors.white,
                         contentPadding: EdgeInsets.symmetric(
                             vertical: 15.0, horizontal: 16.0),
                         shape: RoundedRectangleBorder(
@@ -204,9 +190,15 @@ class _HomePageState extends State<HomePage> {
                         ),
                         leading: Icon(Icons.assistant_photo),
                         title: Text(
-                          'Lake Queue',
+                          'Lake Rotation',
                           textScaleFactor: 1.5,
                           textAlign: TextAlign.center,
+                          style: TextStyle(
+                              letterSpacing: 2,
+                              fontSize: 20,
+                              fontWeight: FontWeight.w600,
+                              color: Colors.grey[700],
+                              fontFamily: "Roboto"),
                         ),
                         trailing: Icon(Icons.assistant_photo),
                         //subtitle: Text('This is subtitle'),
@@ -225,7 +217,7 @@ class _HomePageState extends State<HomePage> {
                     ),
                     InkWell(
                       onTap: () {
-                        print(lakeController.currentUserSnapshot['residence']);
+                        Get.to(ChatScreen(otherResidence: "Gilker"));
                       },
                       child: Container(
                           width: 100,
@@ -279,8 +271,9 @@ class _HomePageState extends State<HomePage> {
                                         maxLines: 2,
                                         style: TextStyle(
                                           color: Colors.white,
-                                          fontSize: 16,
+                                          fontSize: 18,
                                           fontWeight: FontWeight.w500,
+                                          fontFamily: "Roboto",
                                         ),
                                       ),
                                     ),
@@ -308,7 +301,7 @@ class _HomePageState extends State<HomePage> {
                               ),
                               Padding(
                                 padding: const EdgeInsets.only(
-                                  top: 10.0,
+                                  top: 20.0,
                                 ),
                                 child: Row(
                                   mainAxisAlignment:
@@ -320,8 +313,9 @@ class _HomePageState extends State<HomePage> {
                                         textScaleFactor: 1.5,
                                         style: TextStyle(
                                           color: Colors.white,
-                                          fontSize: 16,
+                                          fontSize: 18,
                                           fontWeight: FontWeight.w500,
+                                          fontFamily: "Roboto",
                                         ),
                                       ),
                                     ),

@@ -1,142 +1,117 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:shallows/providers/UserResidence.dart';
+import 'package:get/get.dart';
+import 'package:shallows/screens/lake/lake_screen_controller.dart';
 import 'package:shallows/screens/messages/ChatScreen.dart';
-import 'package:shallows/services/UserCollectionSetup.dart';
+import 'package:shallows/screens/messages/all_messages_tile.dart';
+import 'package:shallows/screens/messages/chat_controller.dart';
 
-class AllMessages extends StatefulWidget {
-  const AllMessages({Key? key}) : super(key: key);
+class AllMessages extends StatelessWidget {
+  const AllMessages({
+    Key? key,
+  }) : super(key: key);
 
-  @override
-  _AllMessagesState createState() => _AllMessagesState();
-}
-
-class _AllMessagesState extends State<AllMessages> {
-  var users = UserCollectionSetup();
-  final CollectionReference usersCollection =
-      FirebaseFirestore.instance.collection('users');
   @override
   Widget build(BuildContext context) {
-    double height = MediaQuery.of(context).size.height;
-    //Get Safe Area of Every Device
-    var padding = MediaQuery.of(context).padding;
-    double newheight = height - padding.top - padding.bottom;
+    var chatController = Get.put(ChatController());
+    var lakeController = Get.put(LakeScreenController());
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          'Messages',
-          textScaleFactor: 1,
-        ),
-        elevation: 0,
-        backgroundColor: Colors.lightBlue[700],
-      ),
-      backgroundColor: Colors.transparent,
-      body: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 20),
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
-            colors: [
-              Color.fromARGB(255, 58, 123, 213),
-              Color.fromARGB(255, 58, 96, 115),
-            ],
+          "Messages",
+          style: TextStyle(
+            fontSize: 28,
+            fontFamily: "Roboto",
           ),
         ),
-        child: FutureBuilder(
-            future: usersCollection.doc(auth.currentUser!.uid).get(),
-            builder: (BuildContext context,
-                AsyncSnapshot<DocumentSnapshot> snapshot) {
-              if (snapshot.hasError) {
-                return Text('Something went wrong');
-              }
-              if (snapshot.hasData && !snapshot.data!.exists) {
-                return Text('Document does not exist');
-              }
-              if (snapshot.connectionState == ConnectionState.done) {
-                Map<String, dynamic> userData =
-                    snapshot.data!.data() as Map<String, dynamic>;
-                return Column(
-                  children: [
-                    Container(
-                      padding: const EdgeInsets.only(top: 20),
-                      height: newheight * .85,
-                      child: StreamBuilder<QuerySnapshot>(
-                          stream: users.residences,
-                          builder: (context, snapshot) {
-                            final data = snapshot.requireData;
-                            return ListView.builder(
-                                itemCount: data.size,
-                                itemBuilder: (context, index) {
-                                  return data.docs[index]['name'] !=
-                                          userData['residence']
-                                      ? Card(
-                                          shape: RoundedRectangleBorder(
-                                            borderRadius:
-                                                BorderRadius.circular(25),
-                                          ),
-                                          child: ListTile(
-                                            shape: RoundedRectangleBorder(
-                                              borderRadius:
-                                                  BorderRadius.circular(25),
-                                            ),
-                                            tileColor: Colors.teal[200],
-                                            onTap: () {
-                                              Navigator.push(
-                                                context,
-                                                MaterialPageRoute(
-                                                  builder: (context) =>
-                                                      ChatScreen(
-                                                    index,
-                                                    userData['residence'],
-                                                    data.docs[index]['name'],
-                                                  ),
-                                                ),
-                                              );
-                                            },
-                                            leading: Icon(Icons.message,
-                                                color: Colors.yellow[200]),
-                                            trailing: Icon(
-                                                Icons.arrow_forward_ios,
-                                                color: Colors.yellow[200]),
-                                            selected: false,
-                                            selectedTileColor: Colors.yellow,
-                                            title: Text(
-                                              '${data.docs[index]['name']}',
-                                              textAlign: TextAlign.justify,
-                                              style: TextStyle(
-                                                color: Colors.grey[900],
-                                                fontWeight: FontWeight.w700,
-                                                fontSize: 20,
-                                              ),
-                                              textScaleFactor: 1,
-                                            ),
-                                          ),
-                                        )
-                                      : SizedBox.shrink();
-                                });
-                          }),
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
+        actions: [
+          PopupMenuButton<int>(
+            onSelected: (value) {
+              Get.to(
+                () => ChatScreen(
+                  otherResidence: lakeController.residencesList[value]["name"],
+                ),
+              );
+            },
+            itemBuilder: (context) => [
+              // popupmenu item 1
+              ...lakeController.residencesList.asMap().entries.map((e) {
+                int index = e.key;
+                var val = e.value;
+
+                return PopupMenuItem(
+                    value: index,
+                    // row has two child icon and text.
+                    child: Row(
                       children: [
-                        Container(
-                          padding: const EdgeInsets.only(top: 15),
-                          alignment: Alignment.center,
-                          child: Icon(
-                            Icons.arrow_downward,
-                            color: Colors.white,
-                            size: 22,
-                          ),
-                        )
+                        Icon(Icons.star),
+                        SizedBox(
+                          // sized box with width 10
+                          width: 10,
+                        ),
+                        Text(val["name"])
                       ],
-                    )
-                  ],
-                );
-              }
-              return Text('loading');
-            }),
+                    ));
+              }),
+            ],
+            offset: Offset(0, 100),
+            color: Colors.grey,
+            elevation: 2,
+          ),
+        ],
+        backgroundColor: Color.fromARGB(255, 41, 47, 63),
+        elevation: 0,
+      ),
+      body: Container(
+        height: MediaQuery.of(context).size.height,
+        color: Color.fromRGBO(41, 47, 63, 1),
+        child: Obx(
+          () => ListView.builder(
+            padding: const EdgeInsets.only(
+              top: 20,
+              bottom: 40,
+            ),
+            itemCount: chatController.messages.length,
+            itemBuilder: (BuildContext context, int index) {
+              print(chatController.messages);
+              return Container(
+                child: Text(chatController.messages.toString()),
+              );
+            },
+          ),
+        ),
       ),
     );
+  }
+}
+
+Widget showMessageTile(data) {
+  final lakeController = Get.find<LakeScreenController>();
+  final chatController = Get.find<ChatController>();
+  print("function ran");
+  //Check if residence has already been added to array
+  if (chatController.messagesFromAndTo.contains(data["from"]) ||
+      chatController.messagesFromAndTo.contains(data["to"])) {
+    return SizedBox.shrink();
+  }
+
+  if (data["from"] == lakeController.currentUserSnapshot["residence"] ||
+      data["to"] == lakeController.currentUserSnapshot["residence"]) {
+    //Add the other residence to the array if they haven't already been added
+    if (data["from"] != lakeController.currentUserSnapshot["residence"]) {
+      chatController.messagesFromAndTo.add(data["from"]);
+      return AllMessagesTile(
+        otherResidence: data["from"],
+        content: data["content"],
+      );
+    } else {
+      chatController.messagesFromAndTo.add(data["to"]);
+      return AllMessagesTile(
+        otherResidence: data["to"],
+        content: data["content"],
+      );
+    }
+  } else {
+    return SizedBox.shrink();
   }
 }

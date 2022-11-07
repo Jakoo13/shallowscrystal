@@ -2,6 +2,7 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:get/get.dart';
 //import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:shallows/models/UserModel.dart';
 import 'package:shallows/screens/lake/LakePage.dart';
@@ -82,7 +83,7 @@ class _MyAppState extends State<MyApp> {
           create: (_) => UserModel(),
         ),
       ],
-      child: MaterialApp(
+      child: GetMaterialApp(
         debugShowCheckedModeBanner: false,
         title: 'Shallows',
         initialRoute: '/',

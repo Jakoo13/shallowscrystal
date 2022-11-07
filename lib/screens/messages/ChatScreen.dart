@@ -1,17 +1,17 @@
 import 'dart:async';
-import 'dart:collection';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:shallows/screens/lake/lake_screen_controller.dart';
+import 'package:shallows/screens/messages/chat_controller.dart';
 import 'package:shallows/screens/messages/widgets/message_input.dart';
-import 'package:intl/intl.dart';
+
+import '../lake/lake_screen_controller.dart';
 
 class ChatScreen extends StatefulWidget {
-  final int index;
-  final String currentUserResidence;
-  final String name;
-
-  ChatScreen(this.index, this.currentUserResidence, this.name);
+  final String otherResidence;
+  ChatScreen({required this.otherResidence});
 
   @override
   _ChatScreenState createState() => _ChatScreenState();
@@ -34,156 +34,37 @@ class _ChatScreenState extends State<ChatScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final chatController = Get.find<ChatController>();
+    final lakeScreenController = Get.find<LakeScreenController>();
     scrollDown();
     //print(widget.name);
-    return MediaQuery(
-      data: MediaQuery.of(context).copyWith(textScaleFactor: 1),
-      child: Scaffold(
-        appBar: AppBar(
-          title: Text(
-            "The ${widget.name}'s",
-            textScaleFactor: 1,
-          ),
-        ),
-        body: Column(
-          children: [
-            Flexible(
-              child: FutureBuilder(
-                  future: users.doc(auth.currentUser!.uid).get(),
-                  builder: (BuildContext context,
-                      AsyncSnapshot<DocumentSnapshot> snapshot) {
-                    if (snapshot.hasError) {
-                      return Text('Something went wrong');
-                    }
-                    if (snapshot.hasData && !snapshot.data!.exists) {
-                      return Text('Document does not exist');
-                    }
-                    if (snapshot.connectionState == ConnectionState.done) {
-                      Map<String, dynamic> userData =
-                          snapshot.data!.data() as Map<String, dynamic>;
-                      String sortAlphabetically() {
-                        final sortedSet = SplayTreeSet.from(
-                          {"${userData['residence']}", "${widget.name}"},
-                        );
-                        print(sortedSet.join());
-                        return sortedSet.join('');
-                      }
-
-                      return StreamBuilder(
-                        stream: fireStore
-                            .collection('messages')
-                            .doc('${sortAlphabetically()}')
-                            .collection('chats')
-                            .orderBy('timeStamp', descending: false)
-                            .snapshots(),
-                        builder: (
-                          BuildContext context,
-                          AsyncSnapshot<QuerySnapshot> chatSnapshot,
-                        ) {
-                          if (chatSnapshot.hasError) {
-                            return Text('Something Went Wrong');
-                          }
-                          if (chatSnapshot.connectionState ==
-                              ConnectionState.waiting) {
-                            return Text('Loading');
-                          }
-                          final messageData = chatSnapshot.requireData;
-                          return ListView.builder(
-                              controller: _myScrollController,
-                              itemCount: messageData.size,
-                              itemBuilder: (context, index) {
-                                var from = messageData.docs[index]['from'];
-                                var content =
-                                    messageData.docs[index]['content'];
-                                var timeStamp =
-                                    messageData.docs[index]['timeStamp'];
-                                var timeFormatted = timeStamp.toDate();
-                                var formattedDate = DateFormat('MM-dd - kk:mm')
-                                    .format(timeFormatted);
-                                return Column(
-                                  children: [
-                                    Row(
-                                      mainAxisAlignment:
-                                          from == userData['residence']
-                                              ? MainAxisAlignment.end
-                                              : MainAxisAlignment.start,
-                                      children: [
-                                        Container(
-                                          padding: EdgeInsets.all(12),
-                                          margin: EdgeInsets.symmetric(
-                                              horizontal: 14, vertical: 8),
-                                          constraints:
-                                              BoxConstraints(maxWidth: 240),
-                                          decoration: BoxDecoration(
-                                            color: from == userData['residence']
-                                                ? Colors.blue
-                                                : Colors.green,
-                                            borderRadius:
-                                                from == userData['residence']
-                                                    ? BorderRadius.only(
-                                                        bottomLeft:
-                                                            Radius.circular(15),
-                                                      )
-                                                    : BorderRadius.only(
-                                                        bottomRight:
-                                                            Radius.circular(15),
-                                                      ),
-                                          ),
-                                          child: Column(
-                                            crossAxisAlignment:
-                                                from == userData['residence']
-                                                    ? CrossAxisAlignment.end
-                                                    : CrossAxisAlignment.start,
-                                            children: [
-                                              Text(
-                                                content,
-                                                style: TextStyle(
-                                                    color: Colors.white,
-                                                    fontSize: 17),
-                                              ),
-                                            ],
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                    Row(
-                                      mainAxisAlignment:
-                                          from == userData['residence']
-                                              ? MainAxisAlignment.end
-                                              : MainAxisAlignment.start,
-                                      children: [
-                                        Padding(
-                                          padding: from == userData['residence']
-                                              ? const EdgeInsets.only(
-                                                  right: 20,
-                                                )
-                                              : const EdgeInsets.only(left: 20),
-                                          child: Text(
-                                            formattedDate.toString(),
-                                          ),
-                                        ),
-                                      ],
-                                    )
-                                  ],
-                                );
-                              });
-                        }
-
-                        //return Text('loading');
-                        ,
-                      );
-                    }
-                    return Text('loading');
-                  }),
+    return WillPopScope(
+      onWillPop: () async {
+        chatController.messagesFromAndTo.clear();
+        Get.back();
+        return false;
+      },
+      child: MediaQuery(
+        data: MediaQuery.of(context).copyWith(textScaleFactor: 1),
+        child: Scaffold(
+          appBar: AppBar(
+            title: Text(
+              "The ${widget.otherResidence}'s",
+              textScaleFactor: 1,
             ),
-            Align(
-              alignment: FractionalOffset.bottomCenter,
-              child: MessageInput(
-                '${widget.name}',
-                '${widget.currentUserResidence}',
-              ),
-            )
-          ],
+            backgroundColor: Color.fromARGB(255, 58, 123, 213),
+          ),
+          body: Column(
+            children: [
+              Align(
+                alignment: FractionalOffset.bottomCenter,
+                child: MessageInput(
+                  widget.otherResidence,
+                  '${lakeScreenController.currentUserSnapshot["residence"]}',
+                ),
+              )
+            ],
+          ),
         ),
       ),
     );

@@ -304,7 +304,6 @@ class _RegisterState extends State<Register> {
                                           print('error registering');
                                         } else {
                                           print('registered');
-                                          print(result.uid);
                                         }
                                         Navigator.pop(context);
                                       } on FirebaseAuthException catch (error) {

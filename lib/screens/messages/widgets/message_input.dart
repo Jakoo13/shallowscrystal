@@ -1,6 +1,8 @@
-import 'dart:collection';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:shallows/screens/lake/lake_screen_controller.dart';
+import 'package:shallows/screens/messages/chat_controller.dart';
 
 class MessageInput extends StatefulWidget {
   final String? sentTo;
@@ -18,28 +20,25 @@ class _MessageInputState extends State<MessageInput> {
   var _messageString = '';
   var _messageController = TextEditingController();
 
-  String sortAlphabetically() {
-    final sortedSet = SplayTreeSet.from(
-      {"${widget.sentFrom}", "${widget.sentTo}"},
-    );
-    print(sortedSet.join());
-    return sortedSet.join('');
-  }
+  var lakeController = Get.find<LakeScreenController>();
 
   void _sendMessage() async {
     print('button Pressed');
-
+    var chatController = Get.find<ChatController>();
     //FocusScope.of(context).unfocus();
-
+    chatController.messagesFromAndTo.clear();
+    print(chatController.messagesFromAndTo);
     await FirebaseFirestore.instance
-        .collection('messages/${sortAlphabetically()}/chats')
+        .collection('messages')
+        .doc(lakeController.currentUserSnapshot["residence"])
+        .collection("${widget.sentTo}")
         .doc()
         .set({
       'content': _messageString,
       'from': widget.sentFrom,
       'to': widget.sentTo,
       'timeStamp': Timestamp.now(),
-      'read': "false"
+      'read': false
     });
     _messageController.clear();
   }
