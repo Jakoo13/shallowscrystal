@@ -49,6 +49,7 @@ dependencies:
   url_launcher: ^6.0.17
   get: ^4.6.5
   rxdart: ^0.27.5
+  async: ^2.8.2
 
   
   

@@ -142,7 +142,8 @@ Widget showResidenceTile(context, index, data) {
       //                     child: Container(
       //                       height: newheight * .84,
       //                       padding: const EdgeInsets.only(top: 10),
-      //                       child: StreamBuilder<QuerySnapshot>(
+      //                       child: 
+      // StreamBuilder<QuerySnapshot>(
       //                         stream: _database.residenceSnapshot,
       //                         builder: (
       //                           BuildContext context,
@@ -173,7 +174,8 @@ Widget showResidenceTile(context, index, data) {
       //                                   return sortedSet.join('');
       //                                 }
 
-      //                                 return StreamBuilder(
+      //                                 return 
+      // StreamBuilder(
       //                                     stream: fireStore
       //                                         .collection('messages')
       //                                         .doc('${sortAlphabetically()}')

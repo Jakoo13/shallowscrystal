@@ -1,10 +1,13 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:rxdart/rxdart.dart';
 import 'package:shallows/screens/lake/lake_screen_controller.dart';
 import 'package:shallows/screens/messages/ChatScreen.dart';
 import 'package:shallows/screens/messages/all_messages_tile.dart';
 import 'package:shallows/screens/messages/chat_controller.dart';
+
+import 'MessageModel.dart';
 
 class AllMessages extends StatelessWidget {
   const AllMessages({
@@ -15,6 +18,7 @@ class AllMessages extends StatelessWidget {
   Widget build(BuildContext context) {
     var chatController = Get.put(ChatController());
     var lakeController = Get.put(LakeScreenController());
+
     return Scaffold(
       appBar: AppBar(
         title: Text(
@@ -73,10 +77,15 @@ class AllMessages extends StatelessWidget {
             ),
             itemCount: chatController.messages.length,
             itemBuilder: (BuildContext context, int index) {
-              print(chatController.messages);
-              return Container(
-                child: Text(chatController.messages.toString()),
-              );
+              // print("From Snap: ${chatController.messages[index][0].content}");
+              if (chatController.messages[index].isNotEmpty) {
+                return AllMessagesTile(
+                    content: chatController.messages[index].last.content,
+                    otherResidence: lakeController.residencesList[index]
+                        ["name"]);
+              } else {
+                return SizedBox.shrink();
+              }
             },
           ),
         ),

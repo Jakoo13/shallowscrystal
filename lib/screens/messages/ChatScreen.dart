@@ -4,6 +4,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:shallows/screens/lake/lake_screen_controller.dart';
+import 'package:shallows/screens/messages/allMessages.dart';
 import 'package:shallows/screens/messages/chat_controller.dart';
 import 'package:shallows/screens/messages/widgets/message_input.dart';
 
@@ -38,33 +39,26 @@ class _ChatScreenState extends State<ChatScreen> {
     final lakeScreenController = Get.find<LakeScreenController>();
     scrollDown();
     //print(widget.name);
-    return WillPopScope(
-      onWillPop: () async {
-        chatController.messagesFromAndTo.clear();
-        Get.back();
-        return false;
-      },
-      child: MediaQuery(
-        data: MediaQuery.of(context).copyWith(textScaleFactor: 1),
-        child: Scaffold(
-          appBar: AppBar(
-            title: Text(
-              "The ${widget.otherResidence}'s",
-              textScaleFactor: 1,
-            ),
-            backgroundColor: Color.fromARGB(255, 58, 123, 213),
+    return MediaQuery(
+      data: MediaQuery.of(context).copyWith(textScaleFactor: 1),
+      child: Scaffold(
+        appBar: AppBar(
+          title: Text(
+            "The ${widget.otherResidence}'s",
+            textScaleFactor: 1,
           ),
-          body: Column(
-            children: [
-              Align(
-                alignment: FractionalOffset.bottomCenter,
-                child: MessageInput(
-                  widget.otherResidence,
-                  '${lakeScreenController.currentUserSnapshot["residence"]}',
-                ),
-              )
-            ],
-          ),
+          backgroundColor: Color.fromARGB(255, 58, 123, 213),
+        ),
+        body: Column(
+          children: [
+            Align(
+              alignment: FractionalOffset.bottomCenter,
+              child: MessageInput(
+                widget.otherResidence,
+                '${lakeScreenController.currentUserSnapshot["residence"]}',
+              ),
+            )
+          ],
         ),
       ),
     );

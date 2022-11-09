@@ -3,6 +3,7 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:shallows/screens/messages/ChatScreen.dart';
+import 'package:shallows/screens/messages/chat_controller.dart';
 
 class AllMessagesTile extends StatelessWidget {
   final String otherResidence;
@@ -15,15 +16,17 @@ class AllMessagesTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: () => Get.to(ChatScreen(
-        otherResidence: otherResidence,
-      )),
+      onTap: () {
+        Get.to(ChatScreen(
+          otherResidence: otherResidence,
+        ));
+      },
       child: Container(
         padding: const EdgeInsets.only(
           top: 22,
           bottom: 22,
           left: 20,
-          right: 20,
+          right: 10,
         ),
         decoration: BoxDecoration(
           border: Border(

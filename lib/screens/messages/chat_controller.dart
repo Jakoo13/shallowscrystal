@@ -1,13 +1,16 @@
+import 'package:async/async.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:get/get.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:shallows/screens/lake/lake_screen_controller.dart';
+import 'dart:async';
 
 import 'MessageModel.dart';
 
 class ChatController extends GetxController {
   final lakeController = Get.find<LakeScreenController>();
-  final RxList<QuerySnapshot> messages = RxList<QuerySnapshot>();
+  final RxList<List<Message>> messages = RxList<List<Message>>();
+  final RxList messages1 = RxList();
   final RxBool shownTile = false.obs;
 
   final messagesFromAndTo = RxList<String>();
@@ -15,16 +18,14 @@ class ChatController extends GetxController {
   RxList collectionElements = [].obs;
 
   @override
-  onInit() async {
-    messages.bindStream(mergedStream);
-    getData();
+  void onInit() async {
+    messages.bindStream(getData());
+    // print(mergedStream);
     super.onInit();
   }
 
-  List<Stream> streamList = [];
-  var mergedStream;
-
-  getData() {
+  Stream<List<List<Message>>> getData() {
+    List<Stream<List<Message>>> listStreams = [];
     for (var i = 0; i < lakeController.residencesList.length; i++) {
       Stream<QuerySnapshot?> stream = FirebaseFirestore.instance
           .collection('messages')
@@ -32,25 +33,12 @@ class ChatController extends GetxController {
           .collection(lakeController.residencesList[i]["name"].toString())
           .snapshots();
 
-      streamList.add(stream);
-      print(streamList);
-    }
-    return mergedStream = MergeStream(streamList);
-  }
-  // Stream<List<Message>> streamMessages() {
-  //   for (var i = 0; i < lakeController.residencesList.length; i++) {
-  // Stream<QuerySnapshot?> stream = FirebaseFirestore.instance
-  //     .collection('messages')
-  //     .doc(lakeController.currentUserSnapshot["residence"])
-  //     .collection(lakeController.residencesList[i]["name"].toString())
-  //     .snapshots();
+      Stream<List<Message>> mappedData = stream.map((snapshot) => snapshot!.docs
+          .map((doc) => Message.fromMap(doc.data() as Map<String, dynamic>))
+          .toList());
 
-  //     var data = stream.map((querySnapshot) => querySnapshot!.docs
-  //         .map((doc) => Message.fromMap(doc.data() as Map<String, dynamic>))
-  //         .toList());
-  //     print(lakeController.residencesList[i]["name"]);
-  //     print(data);
-  //   }
-  //   throw "error";
-  // }
+      listStreams.add(mappedData);
+    }
+    return StreamZip([...listStreams]).asBroadcastStream();
+  }
 }
