@@ -1,7 +1,6 @@
 import 'package:async/async.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:get/get.dart';
-import 'package:rxdart/rxdart.dart';
 import 'package:shallows/screens/lake/lake_screen_controller.dart';
 import 'dart:async';
 
@@ -40,5 +39,9 @@ class ChatController extends GetxController {
       listStreams.add(mappedData);
     }
     return StreamZip([...listStreams]).asBroadcastStream();
+  }
+
+  void updateData() {
+    messages.bindStream(getData());
   }
 }

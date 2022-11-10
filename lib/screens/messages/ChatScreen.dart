@@ -4,7 +4,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:shallows/screens/lake/lake_screen_controller.dart';
-import 'package:shallows/screens/messages/allMessages.dart';
 import 'package:shallows/screens/messages/chat_controller.dart';
 import 'package:shallows/screens/messages/widgets/message_input.dart';
 
@@ -47,6 +46,10 @@ class _ChatScreenState extends State<ChatScreen> {
             "The ${widget.otherResidence}'s",
             textScaleFactor: 1,
           ),
+          leading: IconButton(onPressed: () {
+            chatController.updateData();
+            Get.back();
+          }, icon: Icon(Icons.arrow_back),),
           backgroundColor: Color.fromARGB(255, 58, 123, 213),
         ),
         body: Column(
