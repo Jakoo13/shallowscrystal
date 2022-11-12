@@ -1,18 +1,36 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:rxdart/rxdart.dart';
 import 'package:shallows/screens/lake/lake_screen_controller.dart';
 import 'package:shallows/screens/messages/ChatScreen.dart';
 import 'package:shallows/screens/messages/all_messages_tile.dart';
 import 'package:shallows/screens/messages/chat_controller.dart';
 
-import 'MessageModel.dart';
-
-class AllMessages extends StatelessWidget {
+class AllMessages extends StatefulWidget {
   const AllMessages({
     Key? key,
   }) : super(key: key);
+
+  @override
+  State<AllMessages> createState() => _AllMessagesState();
+}
+
+class _AllMessagesState extends State<AllMessages> {
+  Timer? timer;
+
+  @override
+  void initState() {
+    super.initState();
+    timer = Timer.periodic(Duration(seconds: 5),
+        (Timer t) => Get.find<ChatController>().updateData());
+  }
+
+  @override
+  void dispose() {
+    timer?.cancel();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
