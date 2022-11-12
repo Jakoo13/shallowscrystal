@@ -42,6 +42,7 @@ class ChatController extends GetxController {
   }
 
   void updateData() {
+    print("Calling::");
     messages.bindStream(getData());
   }
 }
