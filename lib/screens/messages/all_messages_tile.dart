@@ -4,17 +4,21 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:shallows/screens/messages/ChatScreen.dart';
-import 'package:shallows/screens/messages/chat_controller.dart';
 import 'package:intl/intl.dart';
 
 class AllMessagesTile extends StatelessWidget {
   final String otherResidence;
   final String content;
   final Timestamp date;
+  final bool read;
+  final String lastMessageId;
+
   AllMessagesTile({
     required this.otherResidence,
     required this.content,
     required this.date,
+    required this.read,
+    required this.lastMessageId,
   });
 
   @override
@@ -26,6 +30,7 @@ class AllMessagesTile extends StatelessWidget {
       onTap: () {
         Get.to(ChatScreen(
           otherResidence: otherResidence,
+          lastMessageId: lastMessageId,
         ));
       },
       child: Container(
@@ -71,16 +76,38 @@ class AllMessagesTile extends StatelessWidget {
                 children: [
                   Padding(
                     padding: const EdgeInsets.only(bottom: 14.0),
-                    child: Text(
-                      otherResidence,
-                      style: TextStyle(
-                        fontSize: 20,
-                        fontFamily: "Roboto",
-                        color: Colors.white,
-                        fontWeight: FontWeight.w500,
-                        letterSpacing: 1.5,
-                      ),
-                    ),
+                    child: read
+                        ? Text(
+                            otherResidence,
+                            style: TextStyle(
+                              fontSize: 20,
+                              fontFamily: "Roboto",
+                              color: Colors.white,
+                              fontWeight: FontWeight.w500,
+                              letterSpacing: 1.5,
+                            ),
+                          )
+                        : RichText(
+                            text: TextSpan(
+                              text: otherResidence,
+                              style: TextStyle(
+                                fontSize: 20,
+                                fontFamily: "Roboto",
+                                color: Colors.white,
+                                fontWeight: FontWeight.w500,
+                                letterSpacing: 1.5,
+                              ),
+                              children: const <TextSpan>[
+                                TextSpan(
+                                  text: '•',
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.red,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
                   ),
                   Row(
                     children: [
