@@ -29,7 +29,8 @@ class ChatController extends GetxController {
       Stream<QuerySnapshot?> stream = FirebaseFirestore.instance
           .collection('messages')
           .doc(lakeController.currentUserSnapshot["residence"])
-          .collection(lakeController.residencesList[i]["name"].toString())
+          .collection(lakeController.residencesList[i]["name"])
+          .orderBy("timeStamp", descending: false)
           .snapshots();
 
       Stream<List<Message>> mappedData = stream.map((snapshot) => snapshot!.docs
@@ -43,7 +44,7 @@ class ChatController extends GetxController {
   }
 
   void updateData() {
-    print("Calling::");
+    print("Calling::Update Data");
     messages.bindStream(getData());
   }
 }

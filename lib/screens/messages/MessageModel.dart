@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:uuid/uuid.dart';
 
 class Message {
   final String from;
@@ -6,6 +7,7 @@ class Message {
   final String content;
   final Timestamp timeStamp;
   final bool read;
+  final String docId;
 
   Message({
     required this.from,
@@ -13,6 +15,7 @@ class Message {
     required this.content,
     required this.timeStamp,
     required this.read,
+    required this.docId,
   });
 
   Map<String, dynamic> toMap() {
@@ -22,11 +25,13 @@ class Message {
       'content': content,
       'timeStamp': timeStamp,
       'read': read,
+      'docId': docId,
     };
   }
 
   Message.fromMap(Map<String, dynamic> messageMap)
-      : from = messageMap["from"],
+      : docId = messageMap["docId"] ?? Uuid().v4(),
+        from = messageMap["from"],
         to = messageMap["to"],
         content = messageMap["content"],
         timeStamp = messageMap["timeStamp"],

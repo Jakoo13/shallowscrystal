@@ -52,6 +52,7 @@ class _AllMessagesState extends State<AllMessages> {
               Get.to(
                 () => ChatScreen(
                   otherResidence: lakeController.residencesList[value]["name"],
+                  lastMessageId: '',
                 ),
               );
             },
@@ -110,6 +111,8 @@ class _AllMessagesState extends State<AllMessages> {
                   content: chatController.messages[index].last.content,
                   otherResidence: lakeController.residencesList[index]["name"],
                   date: chatController.messages[index].last.timeStamp,
+                  read: chatController.messages[index].last.read,
+                  lastMessageId: chatController.messages[index].last.docId,
                 );
               } else {
                 return SizedBox.shrink();
@@ -122,6 +125,7 @@ class _AllMessagesState extends State<AllMessages> {
   }
 }
 
+///*** JAKE COMMENTED THIS -- Maybe Delete later
 // Widget showMessageTile(data) {
 //   final lakeController = Get.find<LakeScreenController>();
 //   final chatController = Get.find<ChatController>();

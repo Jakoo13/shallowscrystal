@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:shallows/screens/lake/lake_screen_controller.dart';
 import 'package:shallows/screens/messages/chat_controller.dart';
+import 'package:uuid/uuid.dart';
 
 class MessageInput extends StatefulWidget {
   final String? sentTo;
@@ -28,24 +29,30 @@ class _MessageInputState extends State<MessageInput> {
     //FocusScope.of(context).unfocus();
     chatController.messagesFromAndTo.clear();
     print(chatController.messagesFromAndTo);
+
+    var docId1 = Uuid().v4();
+    var docId2 = Uuid().v4();
+
     await FirebaseFirestore.instance
         .collection('messages')
         .doc(lakeController.currentUserSnapshot["residence"])
         .collection("${widget.sentTo}")
-        .doc()
+        .doc(docId1)
         .set({
+      'docId': docId1,
       'content': _messageString,
       'from': widget.sentFrom,
       'to': widget.sentTo,
       'timeStamp': Timestamp.now(),
-      'read': false
+      'read': true
     });
     await FirebaseFirestore.instance
         .collection('messages')
         .doc(widget.sentTo)
         .collection(lakeController.currentUserSnapshot["residence"])
-        .doc()
+        .doc(docId2)
         .set({
+      'docId': docId2,
       'content': _messageString,
       'from': widget.sentFrom,
       'to': widget.sentTo,

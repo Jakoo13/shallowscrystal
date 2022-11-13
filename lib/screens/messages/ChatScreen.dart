@@ -12,13 +12,21 @@ import '../lake/lake_screen_controller.dart';
 
 class ChatScreen extends StatefulWidget {
   final String otherResidence;
-  ChatScreen({required this.otherResidence});
+  final String lastMessageId;
+
+  ChatScreen({
+    required this.otherResidence,
+    required this.lastMessageId,
+  });
 
   @override
   _ChatScreenState createState() => _ChatScreenState();
 }
 
 class _ChatScreenState extends State<ChatScreen> {
+  final chatController = Get.find<ChatController>();
+  final lakeScreenController = Get.find<LakeScreenController>();
+
   final CollectionReference users =
       FirebaseFirestore.instance.collection('users');
   // final CollectionReference messages =
@@ -33,12 +41,26 @@ class _ChatScreenState extends State<ChatScreen> {
             .jumpTo(_myScrollController.position.maxScrollExtent));
   }
 
+  void _readMessage() async {
+    print("READING MESSAGE :${widget.lastMessageId}");
+    await FirebaseFirestore.instance
+        .collection('messages')
+        .doc(lakeScreenController.currentUserSnapshot["residence"])
+        .collection("${widget.otherResidence}")
+        .doc(widget.lastMessageId)
+        .update({'read': true});
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    if (widget.lastMessageId != '') {
+      _readMessage();
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-    final chatController = Get.find<ChatController>();
-    final lakeScreenController = Get.find<LakeScreenController>();
-    // scrollDown();
-
     return MediaQuery(
       data: MediaQuery.of(context).copyWith(textScaleFactor: 1),
       child: Scaffold(
