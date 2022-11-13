@@ -215,23 +215,6 @@ class _HomePageState extends State<HomePage> {
                         },
                       ),
                     ),
-                    InkWell(
-                      onTap: () {
-                        Get.to(ChatScreen(otherResidence: "Gilker"));
-                      },
-                      child: Container(
-                          width: 100,
-                          height: 50,
-                          color: Colors.black,
-                          child: Center(
-                            child: Text(
-                              "Test Me",
-                              style: TextStyle(
-                                color: Colors.white,
-                              ),
-                            ),
-                          )),
-                    ),
                     FutureBuilder<DocumentSnapshot>(
                       future: users.doc(userId).get(),
                       builder: (BuildContext context,

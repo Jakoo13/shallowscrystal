@@ -40,6 +40,18 @@ class _MessageInputState extends State<MessageInput> {
       'timeStamp': Timestamp.now(),
       'read': false
     });
+    await FirebaseFirestore.instance
+        .collection('messages')
+        .doc(widget.sentTo)
+        .collection(lakeController.currentUserSnapshot["residence"])
+        .doc()
+        .set({
+      'content': _messageString,
+      'from': widget.sentFrom,
+      'to': widget.sentTo,
+      'timeStamp': Timestamp.now(),
+      'read': false
+    });
     _messageController.clear();
   }
 
