@@ -58,7 +58,9 @@ class _MessageInputState extends State<MessageInput> {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 20),
+      padding: WidgetsBinding.instance.window.viewInsets.bottom > 0.0
+          ? EdgeInsets.only(left: 15.0, right: 12, bottom: 15)
+          : EdgeInsets.only(left: 15.0, right: 12, bottom: 35),
       child: Row(
         children: [
           Expanded(
@@ -68,9 +70,18 @@ class _MessageInputState extends State<MessageInput> {
               },
               controller: _messageController,
               decoration: InputDecoration(
+                filled: true,
+                fillColor: Color.fromARGB(255, 187, 193, 213),
                 hintText: 'Send Message',
                 border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(12),
+                  borderSide: BorderSide(
+                    color: Colors.white,
+                  ),
+                ),
+                focusedBorder: OutlineInputBorder(
+                  borderSide: BorderSide(
+                    color: Colors.blue,
+                  ),
                 ),
               ),
             ),

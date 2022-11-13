@@ -136,7 +136,14 @@ class _HomePageState extends State<HomePage> {
     String userId = FirebaseAuth.instance.currentUser!.uid;
     return Container(
       decoration: BoxDecoration(
-        color: Color.fromARGB(255, 41, 47, 63),
+        gradient: LinearGradient(
+          begin: Alignment.topCenter,
+          end: Alignment.bottomCenter,
+          colors: [
+            Color.fromARGB(255, 58, 96, 115),
+            Color.fromARGB(255, 41, 47, 63),
+          ],
+        ),
       ),
       child: Scaffold(
         // By defaut, Scaffold background is white

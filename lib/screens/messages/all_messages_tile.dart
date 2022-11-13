@@ -1,20 +1,27 @@
 import 'dart:math';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:shallows/screens/messages/ChatScreen.dart';
 import 'package:shallows/screens/messages/chat_controller.dart';
+import 'package:intl/intl.dart';
 
 class AllMessagesTile extends StatelessWidget {
   final String otherResidence;
   final String content;
+  final Timestamp date;
   AllMessagesTile({
     required this.otherResidence,
     required this.content,
+    required this.date,
   });
 
   @override
   Widget build(BuildContext context) {
+    DateTime fromTimeStamp = DateTime.parse(date.toDate().toString());
+    final DateFormat formatter = DateFormat('MMM dd, yyyy');
+    final String dateFormatted = formatter.format(fromTimeStamp);
     return InkWell(
       onTap: () {
         Get.to(ChatScreen(
@@ -101,7 +108,7 @@ class AllMessagesTile extends StatelessWidget {
               ),
             ),
             Text(
-              "Oct 18, 2022",
+              dateFormatted,
               style: TextStyle(
                 fontSize: 16,
                 fontFamily: "Roboto",

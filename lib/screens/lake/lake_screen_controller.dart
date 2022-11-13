@@ -15,8 +15,10 @@ class LakeScreenController extends GetxController {
 
   CollectionReference users = FirebaseFirestore.instance.collection('users');
 
-  final Stream<QuerySnapshot> residenceStream =
-      FirebaseFirestore.instance.collection('residences').snapshots();
+  final Stream<QuerySnapshot> residenceStream = FirebaseFirestore.instance
+      .collection('residences')
+      .orderBy("position")
+      .snapshots();
 
 //Returns True if most recent Notification HAS NOT been read
   showNotification() async {

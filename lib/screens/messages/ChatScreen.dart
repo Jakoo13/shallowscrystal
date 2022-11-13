@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:shallows/screens/lake/lake_screen_controller.dart';
 import 'package:shallows/screens/messages/chat_controller.dart';
+import 'package:shallows/screens/messages/widgets/message_display.dart';
 import 'package:shallows/screens/messages/widgets/message_input.dart';
 
 import '../lake/lake_screen_controller.dart';
@@ -36,8 +37,8 @@ class _ChatScreenState extends State<ChatScreen> {
   Widget build(BuildContext context) {
     final chatController = Get.find<ChatController>();
     final lakeScreenController = Get.find<LakeScreenController>();
-    scrollDown();
-    //print(widget.name);
+    // scrollDown();
+
     return MediaQuery(
       data: MediaQuery.of(context).copyWith(textScaleFactor: 1),
       child: Scaffold(
@@ -46,22 +47,31 @@ class _ChatScreenState extends State<ChatScreen> {
             "The ${widget.otherResidence}'s",
             textScaleFactor: 1,
           ),
-          leading: IconButton(onPressed: () {
-            chatController.updateData();
-            Get.back();
-          }, icon: Icon(Icons.arrow_back),),
-          backgroundColor: Color.fromARGB(255, 58, 123, 213),
+          leading: IconButton(
+            onPressed: () {
+              chatController.updateData();
+              Get.back();
+            },
+            icon: Icon(Icons.arrow_back),
+          ),
+          backgroundColor: Color.fromARGB(255, 41, 47, 63),
         ),
-        body: Column(
-          children: [
-            Align(
-              alignment: FractionalOffset.bottomCenter,
-              child: MessageInput(
-                widget.otherResidence,
-                '${lakeScreenController.currentUserSnapshot["residence"]}',
-              ),
-            )
-          ],
+        body: Container(
+          color: Color.fromARGB(255, 41, 47, 63),
+          child: Column(
+            mainAxisSize: MainAxisSize.max,
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              MessageDisplay(recipient: widget.otherResidence),
+              Align(
+                alignment: FractionalOffset.bottomCenter,
+                child: MessageInput(
+                  widget.otherResidence,
+                  '${lakeScreenController.currentUserSnapshot["residence"]}',
+                ),
+              )
+            ],
+          ),
         ),
       ),
     );

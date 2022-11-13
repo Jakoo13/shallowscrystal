@@ -38,7 +38,8 @@ class ChatController extends GetxController {
 
       listStreams.add(mappedData);
     }
-    return StreamZip([...listStreams]).asBroadcastStream();
+
+    return StreamZip([...listStreams]);
   }
 
   void updateData() {

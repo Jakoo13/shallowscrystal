@@ -22,7 +22,7 @@ class _AllMessagesState extends State<AllMessages> {
   @override
   void initState() {
     super.initState();
-    timer = Timer.periodic(Duration(seconds: 5),
+    timer = Timer.periodic(Duration(seconds: 8),
         (Timer t) => Get.find<ChatController>().updateData());
   }
 
@@ -86,7 +86,16 @@ class _AllMessagesState extends State<AllMessages> {
       ),
       body: Container(
         height: MediaQuery.of(context).size.height,
-        color: Color.fromRGBO(41, 47, 63, 1),
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+            colors: [
+              Color.fromARGB(255, 41, 47, 63),
+              Color.fromARGB(255, 32, 55, 66),
+            ],
+          ),
+        ),
         child: Obx(
           () => ListView.builder(
             padding: const EdgeInsets.only(
@@ -98,9 +107,10 @@ class _AllMessagesState extends State<AllMessages> {
               // print("From Snap: ${chatController.messages[index][0].content}");
               if (chatController.messages[index].isNotEmpty) {
                 return AllMessagesTile(
-                    content: chatController.messages[index].last.content,
-                    otherResidence: lakeController.residencesList[index]
-                        ["name"]);
+                  content: chatController.messages[index].last.content,
+                  otherResidence: lakeController.residencesList[index]["name"],
+                  date: chatController.messages[index].last.timeStamp,
+                );
               } else {
                 return SizedBox.shrink();
               }
@@ -112,33 +122,33 @@ class _AllMessagesState extends State<AllMessages> {
   }
 }
 
-Widget showMessageTile(data) {
-  final lakeController = Get.find<LakeScreenController>();
-  final chatController = Get.find<ChatController>();
-  print("function ran");
-  //Check if residence has already been added to array
-  if (chatController.messagesFromAndTo.contains(data["from"]) ||
-      chatController.messagesFromAndTo.contains(data["to"])) {
-    return SizedBox.shrink();
-  }
+// Widget showMessageTile(data) {
+//   final lakeController = Get.find<LakeScreenController>();
+//   final chatController = Get.find<ChatController>();
+//   print("function ran");
+//   //Check if residence has already been added to array
+//   if (chatController.messagesFromAndTo.contains(data["from"]) ||
+//       chatController.messagesFromAndTo.contains(data["to"])) {
+//     return SizedBox.shrink();
+//   }
 
-  if (data["from"] == lakeController.currentUserSnapshot["residence"] ||
-      data["to"] == lakeController.currentUserSnapshot["residence"]) {
-    //Add the other residence to the array if they haven't already been added
-    if (data["from"] != lakeController.currentUserSnapshot["residence"]) {
-      chatController.messagesFromAndTo.add(data["from"]);
-      return AllMessagesTile(
-        otherResidence: data["from"],
-        content: data["content"],
-      );
-    } else {
-      chatController.messagesFromAndTo.add(data["to"]);
-      return AllMessagesTile(
-        otherResidence: data["to"],
-        content: data["content"],
-      );
-    }
-  } else {
-    return SizedBox.shrink();
-  }
-}
+//   if (data["from"] == lakeController.currentUserSnapshot["residence"] ||
+//       data["to"] == lakeController.currentUserSnapshot["residence"]) {
+//     //Add the other residence to the array if they haven't already been added
+//     if (data["from"] != lakeController.currentUserSnapshot["residence"]) {
+//       chatController.messagesFromAndTo.add(data["from"]);
+//       return AllMessagesTile(
+//         otherResidence: data["from"],
+//         content: data["content"],
+//       );
+//     } else {
+//       chatController.messagesFromAndTo.add(data["to"]);
+//       return AllMessagesTile(
+//         otherResidence: data["to"],
+//         content: data["content"],
+//       );
+//     }
+//   } else {
+//     return SizedBox.shrink();
+//   }
+// }

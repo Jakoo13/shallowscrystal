@@ -27,13 +27,13 @@ class _SignInState extends State<SignIn> {
         child: Scaffold(
           //resizeToAvoidBottomInset: false,
           body: Container(
-            decoration: new BoxDecoration(
-              gradient: new LinearGradient(
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
                 begin: Alignment.topCenter,
                 end: Alignment.bottomCenter,
                 colors: [
-                  Color.fromARGB(255, 58, 123, 213),
                   Color.fromARGB(255, 58, 96, 115),
+                  Color.fromARGB(255, 41, 47, 63),
                 ],
               ),
             ),
