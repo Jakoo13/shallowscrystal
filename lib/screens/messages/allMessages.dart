@@ -1,5 +1,4 @@
-import 'dart:async';
-
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:shallows/screens/lake/lake_screen_controller.dart';
@@ -7,36 +6,15 @@ import 'package:shallows/screens/messages/ChatScreen.dart';
 import 'package:shallows/screens/messages/all_messages_tile.dart';
 import 'package:shallows/screens/messages/chat_controller.dart';
 
-class AllMessages extends StatefulWidget {
+class AllMessages extends StatelessWidget {
   const AllMessages({
     Key? key,
   }) : super(key: key);
 
   @override
-  State<AllMessages> createState() => _AllMessagesState();
-}
-
-class _AllMessagesState extends State<AllMessages> {
-  Timer? timer;
-
-  @override
-  void initState() {
-    super.initState();
-    timer = Timer.periodic(Duration(seconds: 8),
-        (Timer t) => Get.find<ChatController>().updateData());
-  }
-
-  @override
-  void dispose() {
-    timer?.cancel();
-    super.dispose();
-  }
-
-  @override
   Widget build(BuildContext context) {
-    var chatController = Get.put(ChatController());
     var lakeController = Get.put(LakeScreenController());
-
+    var chatController = Get.put(ChatController());
     return Scaffold(
       appBar: AppBar(
         title: Text(
@@ -52,7 +30,7 @@ class _AllMessagesState extends State<AllMessages> {
               Get.to(
                 () => ChatScreen(
                   otherResidence: lakeController.residencesList[value]["name"],
-                  lastMessageId: '',
+                  // lastMessageId: '',
                 ),
               );
             },
@@ -97,29 +75,40 @@ class _AllMessagesState extends State<AllMessages> {
             ],
           ),
         ),
-        child: Obx(
-          () => ListView.builder(
-            padding: const EdgeInsets.only(
-              top: 20,
-              bottom: 40,
-            ),
-            itemCount: chatController.messages.length,
-            itemBuilder: (BuildContext context, int index) {
-              // print("From Snap: ${chatController.messages[index][0].content}");
-              if (chatController.messages[index].isNotEmpty) {
-                return AllMessagesTile(
-                  content: chatController.messages[index].last.content,
-                  otherResidence: lakeController.residencesList[index]["name"],
-                  date: chatController.messages[index].last.timeStamp,
-                  read: chatController.messages[index].last.read,
-                  lastMessageId: chatController.messages[index].last.docId,
-                );
-              } else {
-                return SizedBox.shrink();
+        child: StreamBuilder<QuerySnapshot>(
+            stream: chatController.mostRecentMessagesStream,
+            builder: (context, snapshot) {
+              if (snapshot.hasError) {
+                return Text('Something went wrong');
               }
-            },
-          ),
-        ),
+
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return CircularProgressIndicator();
+              }
+              return ListView.builder(
+                padding: const EdgeInsets.only(
+                  top: 20,
+                  bottom: 40,
+                ),
+                itemCount: snapshot.data!.docs.length,
+                itemBuilder: (BuildContext context, int index) {
+                  var messageData = snapshot.data!.docs;
+
+                  if (snapshot.data!.docs.length > 0) {
+                    return AllMessagesTile(
+                      content: messageData[index]["content"],
+                      otherResidence: messageData[index].id,
+                      date: messageData[index]["timeStamp"],
+                      read: messageData[index]["read"],
+                      lastMessageFrom: messageData[index]["residenceFrom"],
+                      // lastMessageId: chatController.messages[index].last.docId,
+                    );
+                  } else {
+                    return SizedBox.shrink();
+                  }
+                },
+              );
+            }),
       ),
     );
   }

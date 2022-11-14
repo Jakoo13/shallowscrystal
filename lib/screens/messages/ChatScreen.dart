@@ -8,29 +8,21 @@ import 'package:shallows/screens/messages/chat_controller.dart';
 import 'package:shallows/screens/messages/widgets/message_display.dart';
 import 'package:shallows/screens/messages/widgets/message_input.dart';
 
-import '../lake/lake_screen_controller.dart';
-
-class ChatScreen extends StatefulWidget {
+class ChatScreen extends StatelessWidget {
   final String otherResidence;
-  final String lastMessageId;
+  // final String lastMessageId;
 
   ChatScreen({
     required this.otherResidence,
-    required this.lastMessageId,
+    // required this.lastMessageId,
   });
 
-  @override
-  _ChatScreenState createState() => _ChatScreenState();
-}
-
-class _ChatScreenState extends State<ChatScreen> {
   final chatController = Get.find<ChatController>();
   final lakeScreenController = Get.find<LakeScreenController>();
 
   final CollectionReference users =
       FirebaseFirestore.instance.collection('users');
-  // final CollectionReference messages =
-  //     FirebaseFirestore.instance.collection('messages');
+
   FirebaseFirestore fireStore = FirebaseFirestore.instance;
   final FirebaseAuth auth = FirebaseAuth.instance;
   ScrollController _myScrollController = ScrollController();
@@ -41,24 +33,6 @@ class _ChatScreenState extends State<ChatScreen> {
             .jumpTo(_myScrollController.position.maxScrollExtent));
   }
 
-  void _readMessage() async {
-    print("READING MESSAGE :${widget.lastMessageId}");
-    await FirebaseFirestore.instance
-        .collection('messages')
-        .doc(lakeScreenController.currentUserSnapshot["residence"])
-        .collection("${widget.otherResidence}")
-        .doc(widget.lastMessageId)
-        .update({'read': true});
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    if (widget.lastMessageId != '') {
-      _readMessage();
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     return MediaQuery(
@@ -66,12 +40,11 @@ class _ChatScreenState extends State<ChatScreen> {
       child: Scaffold(
         appBar: AppBar(
           title: Text(
-            "The ${widget.otherResidence}'s",
+            "The $otherResidence's",
             textScaleFactor: 1,
           ),
           leading: IconButton(
             onPressed: () {
-              chatController.updateData();
               Get.back();
             },
             icon: Icon(Icons.arrow_back),
@@ -84,11 +57,11 @@ class _ChatScreenState extends State<ChatScreen> {
             mainAxisSize: MainAxisSize.max,
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
-              MessageDisplay(recipient: widget.otherResidence),
+              MessageDisplay(recipient: otherResidence),
               Align(
                 alignment: FractionalOffset.bottomCenter,
                 child: MessageInput(
-                  widget.otherResidence,
+                  otherResidence,
                   '${lakeScreenController.currentUserSnapshot["residence"]}',
                 ),
               )
@@ -99,7 +72,6 @@ class _ChatScreenState extends State<ChatScreen> {
     );
   }
 }
-
 //   Align(
 //   alignment: FractionalOffset.bottomCenter,
 //   child: MessageInput(

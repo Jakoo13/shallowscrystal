@@ -17,11 +17,11 @@ class _SettingsPageState extends State<SettingsPage> {
     return Container(
       decoration: BoxDecoration(
         gradient: LinearGradient(
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
+          begin: Alignment.topCenter,
+          end: Alignment.bottomCenter,
           colors: [
-            Color.fromARGB(255, 58, 123, 213),
             Color.fromARGB(255, 58, 96, 115),
+            Color.fromARGB(255, 41, 47, 63),
           ],
         ),
       ),
@@ -37,37 +37,6 @@ class _SettingsPageState extends State<SettingsPage> {
         ),
         body: Column(
           children: [
-            // Padding(
-            //   padding: const EdgeInsets.only(
-            //     top: 100.0,
-            //     left: 30,
-            //     right: 30,
-            //     bottom: 0,
-            //   ),
-            //   child: Card(
-            //     child: ListTile(
-            //       tileColor: Colors.yellow,
-            //       leading: Icon(Icons.add),
-            //       title: Text(
-            //         'Notifications',
-            //         textScaleFactor: 1.5,
-            //         textAlign: TextAlign.center,
-            //       ),
-            //       trailing: Icon(Icons.done),
-            //       selected: false,
-            //       onTap: () {
-            //         Navigator.push(
-            //           context,
-            //           PageTransition(
-            //             type: PageTransitionType.rightToLeftWithFade,
-            //             alignment: Alignment.bottomCenter,
-            //             child: NotificationSettings(),
-            //           ),
-            //         );
-            //       },
-            //     ),
-            //   ),
-            // ),
             Padding(
               padding: const EdgeInsets.only(
                 top: 30.0,
@@ -152,27 +121,6 @@ class _SettingsPageState extends State<SettingsPage> {
             ),
           ],
         ),
-
-        // bottomNavigationBar: new BottomNavigationBar(
-        //   currentIndex: index,
-        //   onTap: () {
-        //     _getBody(index);
-        //   },
-        //   backgroundColor: Colors.lightBlue[700],
-        //   unselectedItemColor: Colors.black45,
-        //   selectedItemColor: Colors.black45,
-        //   elevation: 0,
-        //   items: [
-        //     new BottomNavigationBarItem(
-        //         icon: Icon(
-        //           Icons.document_scanner,
-        //         ),
-        //         label: "Patent Pending",
-        //         backgroundColor: Colors.black),
-        //     new BottomNavigationBarItem(
-        //         icon: Icon(Icons.contact_page), label: "Contact"),
-        //   ],
-        // ),
       ),
     );
   }

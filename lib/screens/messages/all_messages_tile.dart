@@ -5,33 +5,46 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:shallows/screens/messages/ChatScreen.dart';
 import 'package:intl/intl.dart';
+import 'package:shallows/screens/messages/chat_controller.dart';
+
+import '../lake/lake_screen_controller.dart';
 
 class AllMessagesTile extends StatelessWidget {
   final String otherResidence;
   final String content;
   final Timestamp date;
   final bool read;
-  final String lastMessageId;
+  final String lastMessageFrom;
+  // final String lastMessageId;
 
   AllMessagesTile({
     required this.otherResidence,
     required this.content,
     required this.date,
     required this.read,
-    required this.lastMessageId,
+    required this.lastMessageFrom,
+    // required this.lastMessageId,
   });
 
   @override
   Widget build(BuildContext context) {
+    var lakeController = Get.find<LakeScreenController>();
+    var chatController = Get.find<ChatController>();
     DateTime fromTimeStamp = DateTime.parse(date.toDate().toString());
     final DateFormat formatter = DateFormat('MMM dd, yyyy');
     final String dateFormatted = formatter.format(fromTimeStamp);
+    var currentUser = lakeController.currentUserSnapshot["residence"];
     return InkWell(
       onTap: () {
-        Get.to(ChatScreen(
-          otherResidence: otherResidence,
-          lastMessageId: lastMessageId,
-        ));
+        Get.to(
+          ChatScreen(
+            otherResidence: otherResidence,
+          ),
+        );
+        //Update read status to true if the last message you received and didn't send
+        if (lastMessageFrom != currentUser) {
+          chatController.updateReadStatus(otherResidence);
+        }
       },
       child: Container(
         padding: const EdgeInsets.only(
@@ -76,8 +89,31 @@ class AllMessagesTile extends StatelessWidget {
                 children: [
                   Padding(
                     padding: const EdgeInsets.only(bottom: 14.0),
-                    child: read
-                        ? Text(
+                    child: read == false &&
+                            lastMessageFrom !=
+                                lakeController.currentUserSnapshot["residence"]
+                        ? Row(
+                            children: [
+                              Text(
+                                otherResidence,
+                                style: TextStyle(
+                                  fontSize: 20,
+                                  fontFamily: "Roboto",
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.w500,
+                                  letterSpacing: 1.5,
+                                ),
+                              ),
+                              SizedBox(
+                                width: 15,
+                              ),
+                              Icon(
+                                Icons.circle_notifications,
+                                color: Colors.red,
+                              ),
+                            ],
+                          )
+                        : Text(
                             otherResidence,
                             style: TextStyle(
                               fontSize: 20,
@@ -85,27 +121,6 @@ class AllMessagesTile extends StatelessWidget {
                               color: Colors.white,
                               fontWeight: FontWeight.w500,
                               letterSpacing: 1.5,
-                            ),
-                          )
-                        : RichText(
-                            text: TextSpan(
-                              text: otherResidence,
-                              style: TextStyle(
-                                fontSize: 20,
-                                fontFamily: "Roboto",
-                                color: Colors.white,
-                                fontWeight: FontWeight.w500,
-                                letterSpacing: 1.5,
-                              ),
-                              children: const <TextSpan>[
-                                TextSpan(
-                                  text: '•',
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.red,
-                                  ),
-                                ),
-                              ],
                             ),
                           ),
                   ),

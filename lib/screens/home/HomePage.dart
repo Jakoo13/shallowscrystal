@@ -4,14 +4,13 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:get/get.dart';
-
 import 'package:shallows/main.dart';
 import 'package:shallows/screens/home/SkierAnimation.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:shallows/screens/lake/LakePage.dart';
-import 'package:shallows/screens/lake/lake_screen_controller.dart';
-import 'package:shallows/screens/messages/ChatScreen.dart';
 import 'package:shallows/screens/settings/SettingsPage.dart';
+
+import '../lake/lake_screen_controller.dart';
 
 Future<void> saveTokenToDatabase(String token) async {
   // Assume user is logged in for this example
@@ -124,7 +123,7 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    var lakeScreenController = Get.put(LakeScreenController());
+    Get.put(LakeScreenController());
     //Get Screen Size of Every Device
     //double width = MediaQuery.of(context).size.width;
     double height = MediaQuery.of(context).size.height;
@@ -198,11 +197,11 @@ class _HomePageState extends State<HomePage> {
                         leading: Icon(Icons.assistant_photo),
                         title: Text(
                           'Lake Rotation',
-                          textScaleFactor: 1.5,
+                          textScaleFactor: 1,
                           textAlign: TextAlign.center,
                           style: TextStyle(
                               letterSpacing: 2,
-                              fontSize: 20,
+                              fontSize: 25,
                               fontWeight: FontWeight.w600,
                               color: Colors.grey[700],
                               fontFamily: "Roboto"),

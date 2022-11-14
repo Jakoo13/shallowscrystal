@@ -31,13 +31,13 @@ class _RegisterState extends State<Register> {
         data: MediaQuery.of(context).copyWith(textScaleFactor: 1),
         child: Scaffold(
           body: Container(
-            decoration: new BoxDecoration(
-              gradient: new LinearGradient(
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
                 begin: Alignment.topCenter,
                 end: Alignment.bottomCenter,
                 colors: [
-                  Color.fromARGB(255, 58, 123, 213),
                   Color.fromARGB(255, 58, 96, 115),
+                  Color.fromARGB(255, 41, 47, 63),
                 ],
               ),
             ),
@@ -275,6 +275,20 @@ class _RegisterState extends State<Register> {
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
                           ElevatedButton(
+                            child: Text('Back'),
+                            style: ElevatedButton.styleFrom(
+                              primary: Colors.limeAccent[700],
+                              onPrimary: Colors.black87,
+                              textStyle: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                color: Colors.grey,
+                              ),
+                            ),
+                            onPressed: () {
+                              Navigator.pop(context);
+                            },
+                          ),
+                          ElevatedButton(
                             style: ElevatedButton.styleFrom(
                               primary: Colors.limeAccent[700],
                               onPrimary: Colors.black87,
@@ -313,20 +327,6 @@ class _RegisterState extends State<Register> {
                                       setState(() => isLoading = false);
                                     }
                                   },
-                          ),
-                          ElevatedButton(
-                            child: Text('Back'),
-                            style: ElevatedButton.styleFrom(
-                              primary: Colors.limeAccent[700],
-                              onPrimary: Colors.black87,
-                              textStyle: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                color: Colors.grey,
-                              ),
-                            ),
-                            onPressed: () {
-                              Navigator.pop(context);
-                            },
                           ),
                         ],
                       ),

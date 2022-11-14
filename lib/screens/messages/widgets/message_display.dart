@@ -1,5 +1,4 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:shallows/screens/lake/lake_screen_controller.dart';
@@ -43,7 +42,11 @@ class _MessageDisplayState extends State<MessageDisplay> {
               itemBuilder: (context, index) {
                 bool sentByMe = chatDocs[index]["from"] ==
                     lakeController.currentUserSnapshot["residence"];
-                return MessageBubble(chatDocs[index]["content"], sentByMe);
+                return MessageBubble(
+                  chatDocs[index]["content"],
+                  sentByMe,
+                  chatDocs[index]["timeStamp"],
+                );
                 // MessageBubble(
                 //   chatDocs[index]['text'],
                 //   chatDocs[index]['firstName'],

@@ -5,7 +5,7 @@ import 'package:shallows/screens/lake/lake_screen_controller.dart';
 import 'package:shallows/screens/messages/chat_controller.dart';
 import 'package:uuid/uuid.dart';
 
-class MessageInput extends StatefulWidget {
+class MessageInput extends StatelessWidget {
   final String? sentTo;
   final String? sentFrom;
 
@@ -13,49 +13,60 @@ class MessageInput extends StatefulWidget {
     this.sentTo,
     this.sentFrom,
   );
-  @override
-  _MessageInputState createState() => _MessageInputState();
-}
 
-class _MessageInputState extends State<MessageInput> {
   var _messageString = '';
   var _messageController = TextEditingController();
 
   var lakeController = Get.find<LakeScreenController>();
 
   void _sendMessage() async {
-    print('button Pressed');
-    var chatController = Get.find<ChatController>();
-    //FocusScope.of(context).unfocus();
-    chatController.messagesFromAndTo.clear();
-    print(chatController.messagesFromAndTo);
-
-    var docId1 = Uuid().v4();
-    var docId2 = Uuid().v4();
-
+    //Add to the sending users messages
     await FirebaseFirestore.instance
         .collection('messages')
         .doc(lakeController.currentUserSnapshot["residence"])
-        .collection("${widget.sentTo}")
-        .doc(docId1)
+        .collection("$sentTo")
+        .doc()
         .set({
-      'docId': docId1,
       'content': _messageString,
-      'from': widget.sentFrom,
-      'to': widget.sentTo,
+      'from': sentFrom,
+      'to': sentTo,
       'timeStamp': Timestamp.now(),
-      'read': true
+      'read': false
     });
+    //Add to the receiving users messages
     await FirebaseFirestore.instance
         .collection('messages')
-        .doc(widget.sentTo)
+        .doc(sentTo)
         .collection(lakeController.currentUserSnapshot["residence"])
-        .doc(docId2)
+        .doc()
         .set({
-      'docId': docId2,
       'content': _messageString,
-      'from': widget.sentFrom,
-      'to': widget.sentTo,
+      'from': sentFrom,
+      'to': sentTo,
+      'timeStamp': Timestamp.now(),
+      'read': false
+    });
+    //Add to recents collection in order to show most recent messages in AllMessagesScreen
+    await FirebaseFirestore.instance
+        .collection('mostRecentMessages')
+        .doc(lakeController.currentUserSnapshot["residence"])
+        .collection("fromAndTo")
+        .doc("$sentTo")
+        .set({
+      'content': _messageString,
+      'residenceFrom': lakeController.currentUserSnapshot["residence"],
+      'timeStamp': Timestamp.now(),
+      'read': false
+    });
+    //Do the same thing for the receiving user
+    await FirebaseFirestore.instance
+        .collection('mostRecentMessages')
+        .doc("$sentTo")
+        .collection("fromAndTo")
+        .doc(lakeController.currentUserSnapshot["residence"])
+        .set({
+      'content': _messageString,
+      'residenceFrom': lakeController.currentUserSnapshot["residence"],
       'timeStamp': Timestamp.now(),
       'read': false
     });
