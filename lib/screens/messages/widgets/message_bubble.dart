@@ -41,24 +41,22 @@ class MessageBubble extends StatelessWidget {
               bottomRight: Radius.circular(8),
             ),
           ),
-          child: Flexible(
-            child: Column(
-              children: [
-                Text(
-                  message,
-                  style: TextStyle(color: Colors.white, fontSize: 17),
+          child: Column(
+            children: [
+              Text(
+                message,
+                style: TextStyle(color: Colors.white, fontSize: 17),
+              ),
+              SizedBox(
+                height: 4,
+              ),
+              Text(
+                dateFormatted,
+                style: TextStyle(
+                  fontSize: 12,
                 ),
-                SizedBox(
-                  height: 4,
-                ),
-                Text(
-                  dateFormatted,
-                  style: TextStyle(
-                    fontSize: 12,
-                  ),
-                ),
-              ],
-            ),
+              ),
+            ],
           ),
         )
       ],

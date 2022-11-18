@@ -38,21 +38,28 @@ class AllMessages extends StatelessWidget {
               // popupmenu item 1
               ...lakeController.residencesList.asMap().entries.map((e) {
                 int index = e.key;
-                var val = e.value;
 
+                var val = e.value;
+                if (val["name"] !=
+                    lakeController.currentUserSnapshot["residence"]) {
+                  return PopupMenuItem(
+                      value: index,
+                      // row has two child icon and text.
+                      child: Row(
+                        children: [
+                          Icon(Icons.star),
+                          SizedBox(
+                            // sized box with width 10
+                            width: 10,
+                          ),
+                          Text(val["name"])
+                        ],
+                      ));
+                }
                 return PopupMenuItem(
-                    value: index,
-                    // row has two child icon and text.
-                    child: Row(
-                      children: [
-                        Icon(Icons.star),
-                        SizedBox(
-                          // sized box with width 10
-                          width: 10,
-                        ),
-                        Text(val["name"])
-                      ],
-                    ));
+                  child: SizedBox.shrink(),
+                  height: 0,
+                );
               }),
             ],
             offset: Offset(0, 100),

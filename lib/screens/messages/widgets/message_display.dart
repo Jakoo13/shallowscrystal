@@ -27,7 +27,6 @@ class _MessageDisplayState extends State<MessageDisplay> {
               .snapshots(),
           builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
             if (!snapshot.hasData) {
-              print("snapdata: ${snapshot.data}");
               return Text("Loading.....");
             }
             //if (snapshot.data == )

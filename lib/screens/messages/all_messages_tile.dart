@@ -37,7 +37,7 @@ class AllMessagesTile extends StatelessWidget {
     return InkWell(
       onTap: () {
         Get.to(
-          ChatScreen(
+          () => ChatScreen(
             otherResidence: otherResidence,
           ),
         );

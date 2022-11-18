@@ -10,7 +10,7 @@ const fcm = admin.messaging();
 
 
 //Update Flag Out at Certain Time
-exports.scheduledFunction = functions.pubsub.schedule('32 22 * * *').onRun(async (context) => {
+exports.scheduledFunction = functions.pubsub.schedule('32 20 * * *').onRun(async (context) => {
     console.log('This will be run nightly at 10:40 MST!');
     const setFlag = await db.collection('residences')
       .where('flagOut', '==', true).get();
@@ -44,10 +44,9 @@ exports.scheduledFunction = functions.pubsub.schedule('32 22 * * *').onRun(async
 
 
 //onCreate is fired when new document is added to specified collection
-exports.messageTrigger = functions.firestore.document('/messages/{names}/chats/{chatId}').onCreate(async (snapshot, context)=> {
+exports.messageTrigger = functions.firestore.document('/messages/{residence1}/{residence2}/{chatId}').onCreate(async (snapshot, context)=> {
         var newData;
         newData = snapshot.data();
-
         var sentFrom = newData.from;
         var sentTo = newData.to;
         var content = newData.content;

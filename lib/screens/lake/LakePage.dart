@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:shallows/screens/messages/AllMessages.dart';
+import 'package:shallows/screens/messages/chat_controller.dart';
 import 'widgets/current_user_tile.dart';
 import 'lake_screen_controller.dart';
 import 'widgets/non_user_tile.dart';
@@ -22,69 +23,105 @@ class _LakePageState extends State<LakePage> {
 
   @override
   Widget build(BuildContext context) {
+    bool unreadMessages = false;
     final lakeController = Get.find<LakeScreenController>();
-
+    var chatController = Get.put(ChatController());
     return MediaQuery(
       data: MediaQuery.of(context).copyWith(textScaleFactor: 1),
-      child: Scaffold(
-        appBar: AppBar(
-          backgroundColor: Color.fromARGB(255, 41, 47, 63),
-          title: Text(
-            "Lake Rotation",
-            style: TextStyle(
-              fontWeight: FontWeight.w500,
-              color: Colors.white,
-              fontSize: 27,
-              fontFamily: "Roboto",
-              letterSpacing: 2,
-            ),
-          ),
-          elevation: 2,
-          actions: <Widget>[
-            InkWell(
-              onTap: () {
-                Get.to(() => AllMessages());
-              },
-              child: Padding(
-                padding: const EdgeInsets.only(right: 18.0),
-                child: Icon(
-                  Icons.message,
-                  color: Colors.white70,
-                  size: 30,
+      child: StreamBuilder<QuerySnapshot>(
+          stream: chatController.mostRecentMessagesStream,
+          builder: (context, snapshot) {
+            if (snapshot.hasError) {
+              return Text('Something went wrong');
+            }
+
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return CircularProgressIndicator();
+            }
+            //See if any unread messages
+            var messageData = snapshot.data!.docs;
+            for (var i = 0; i < messageData.length; i++) {
+              if (messageData[i]["residenceFrom"] !=
+                      lakeController.currentUserSnapshot["residence"] &&
+                  messageData[i]["read"] == false) {
+                unreadMessages = true;
+              }
+            }
+            //Come Back
+            return Scaffold(
+              appBar: AppBar(
+                backgroundColor: Color.fromARGB(255, 41, 47, 63),
+                title: Text(
+                  "Lake Rotation",
+                  style: TextStyle(
+                    fontWeight: FontWeight.w500,
+                    color: Colors.white,
+                    fontSize: 27,
+                    fontFamily: "Roboto",
+                    letterSpacing: 2,
+                  ),
+                ),
+                elevation: 2,
+                actions: <Widget>[
+                  InkWell(
+                    onTap: () {
+                      Get.to(() => AllMessages());
+                    },
+                    child: Padding(
+                      padding: const EdgeInsets.only(top: 10, right: 18.0),
+                      child: Stack(
+                        children: [
+                          Icon(
+                            Icons.message,
+                            color: Colors.white70,
+                            size: 30,
+                          ),
+                          unreadMessages
+                              ? Container(
+                                  height: 13,
+                                  width: 13,
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(15),
+                                    color: Colors.red,
+                                  ),
+                                )
+                              : SizedBox.shrink(),
+                        ],
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              body: Container(
+                decoration: BoxDecoration(
+                  color: Color.fromARGB(255, 41, 47, 63),
+                ),
+                child: StreamBuilder<QuerySnapshot>(
+                  stream: lakeController.residenceStream,
+                  builder: (context, snapshot) {
+                    if (snapshot.hasError) {
+                      return Text('Something went wrong');
+                    }
+
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return CircularProgressIndicator();
+                    }
+                    return ListView.builder(
+                      padding: const EdgeInsets.only(
+                        top: 20,
+                        bottom: 40,
+                      ),
+                      itemCount: snapshot.data!.docs.length,
+                      itemBuilder: (BuildContext context, int index) {
+                        QueryDocumentSnapshot data = snapshot.data!.docs[index];
+                        return showResidenceTile(context, index, data);
+                      },
+                    );
+                  },
                 ),
               ),
-            ),
-          ],
-        ),
-        body: Container(
-          decoration: BoxDecoration(
-            color: Color.fromARGB(255, 41, 47, 63),
-          ),
-          child: StreamBuilder<QuerySnapshot>(
-            stream: lakeController.residenceStream,
-            builder: (context, snapshot) {
-              if (snapshot.hasError) {
-                return Text('Something went wrong');
-              }
-
-              if (snapshot.connectionState == ConnectionState.waiting) {
-                return CircularProgressIndicator();
-              }
-              return ListView.builder(
-                padding: const EdgeInsets.only(
-                  top: 20,
-                  bottom: 40,
-                ),
-                itemCount: snapshot.data!.docs.length,
-                itemBuilder: (BuildContext context, int index) {
-                  QueryDocumentSnapshot data = snapshot.data!.docs[index];
-                  return showResidenceTile(context, index, data);
-                },
-              );
-            },
-          ),
-        ),
-      ),
+            );
+          }),
     );
   }
 }
