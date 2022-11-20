@@ -2,10 +2,9 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:shallows/screens/lake/lake_screen_controller.dart';
-import 'package:shallows/screens/messages/chat_controller.dart';
-import 'package:uuid/uuid.dart';
 
-class MessageInput extends StatelessWidget {
+//Only a statuful widget because if its not the input state is not saved when switching to emoji's or closing the keyboard
+class MessageInput extends StatefulWidget {
   final String? sentTo;
   final String? sentFrom;
 
@@ -14,7 +13,13 @@ class MessageInput extends StatelessWidget {
     this.sentFrom,
   );
 
+  @override
+  State<MessageInput> createState() => _MessageInputState();
+}
+
+class _MessageInputState extends State<MessageInput> {
   var _messageString = '';
+
   var _messageController = TextEditingController();
 
   var lakeController = Get.find<LakeScreenController>();
@@ -24,25 +29,25 @@ class MessageInput extends StatelessWidget {
     await FirebaseFirestore.instance
         .collection('messages')
         .doc(lakeController.currentUserSnapshot["residence"])
-        .collection("$sentTo")
+        .collection("${widget.sentTo}")
         .doc()
         .set({
       'content': _messageString,
-      'from': sentFrom,
-      'to': sentTo,
+      'from': widget.sentFrom,
+      'to': widget.sentTo,
       'timeStamp': Timestamp.now(),
       'read': false
     });
     //Add to the receiving users messages
     await FirebaseFirestore.instance
         .collection('messages')
-        .doc(sentTo)
+        .doc(widget.sentTo)
         .collection(lakeController.currentUserSnapshot["residence"])
         .doc()
         .set({
       'content': _messageString,
-      'from': sentFrom,
-      'to': sentTo,
+      'from': widget.sentFrom,
+      'to': widget.sentTo,
       'timeStamp': Timestamp.now(),
       'read': false
     });
@@ -51,7 +56,7 @@ class MessageInput extends StatelessWidget {
         .collection('mostRecentMessages')
         .doc(lakeController.currentUserSnapshot["residence"])
         .collection("fromAndTo")
-        .doc("$sentTo")
+        .doc("${widget.sentTo}")
         .set({
       'content': _messageString,
       'residenceFrom': lakeController.currentUserSnapshot["residence"],
@@ -61,7 +66,7 @@ class MessageInput extends StatelessWidget {
     //Do the same thing for the receiving user
     await FirebaseFirestore.instance
         .collection('mostRecentMessages')
-        .doc("$sentTo")
+        .doc("${widget.sentTo}")
         .collection("fromAndTo")
         .doc(lakeController.currentUserSnapshot["residence"])
         .set({
@@ -86,7 +91,9 @@ class MessageInput extends StatelessWidget {
               onChanged: (val) {
                 _messageString = val;
               },
+              keyboardType: TextInputType.text,
               controller: _messageController,
+              maxLines: 1,
               decoration: InputDecoration(
                 filled: true,
                 fillColor: Color.fromARGB(255, 187, 193, 213),

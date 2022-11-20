@@ -90,7 +90,12 @@ class AllMessages extends StatelessWidget {
               }
 
               if (snapshot.connectionState == ConnectionState.waiting) {
-                return CircularProgressIndicator();
+                return Container(
+                  width: double.infinity,
+                  child: Center(
+                    child: CircularProgressIndicator(),
+                  ),
+                );
               }
               return ListView.builder(
                 padding: const EdgeInsets.only(
