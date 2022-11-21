@@ -4,11 +4,11 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:get/get.dart';
-import 'package:shallows/main.dart';
-import 'package:shallows/screens/home/SkierAnimation.dart';
+import 'package:ShallowsCrystal/main.dart';
+import 'package:ShallowsCrystal/screens/home/SkierAnimation.dart';
 import 'package:page_transition/page_transition.dart';
-import 'package:shallows/screens/lake/LakePage.dart';
-import 'package:shallows/screens/settings/SettingsPage.dart';
+import 'package:ShallowsCrystal/screens/lake/LakePage.dart';
+import 'package:ShallowsCrystal/screens/settings/SettingsPage.dart';
 
 import '../lake/lake_screen_controller.dart';
 

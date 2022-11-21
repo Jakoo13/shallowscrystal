@@ -5,7 +5,6 @@ import 'package:get/get.dart';
 class LakeScreenController extends GetxController {
   List residencesList = [].obs;
   late final DocumentSnapshot currentUserSnapshot;
-
   List hasNotificationFrom = [].obs;
 
   CollectionReference residences =
@@ -28,9 +27,10 @@ class LakeScreenController extends GetxController {
   }
 
   getCurrentUser() async {
-    var thisUser = await users.doc(currentUser!.uid).get();
-
-    return currentUserSnapshot = thisUser;
+    if (currentUser != null) {
+      var thisUser = await users.doc(currentUser!.uid).get();
+      return currentUserSnapshot = thisUser;
+    }
   }
 
   getResidences() async {

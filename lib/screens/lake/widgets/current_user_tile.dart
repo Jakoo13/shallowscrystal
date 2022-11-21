@@ -2,7 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:shallows/screens/lake/lake_screen_controller.dart';
+import 'package:ShallowsCrystal/screens/lake/lake_screen_controller.dart';
 import 'package:intl/intl.dart';
 
 class CurrentUserTile extends StatelessWidget {

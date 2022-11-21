@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:shallows/screens/home/HomePage.dart';
-import 'package:shallows/screens/authenticate/SignIn.dart';
-import 'package:shallows/models/UserModel.dart';
-import 'package:shallows/services/auth_service.dart';
+import 'package:ShallowsCrystal/screens/home/HomePage.dart';
+import 'package:ShallowsCrystal/screens/authenticate/SignIn.dart';
+import 'package:ShallowsCrystal/models/UserModel.dart';
+import 'package:ShallowsCrystal/services/auth_service.dart';
 
 class Wrapper extends StatelessWidget {
   const Wrapper({Key? key}) : super(key: key);

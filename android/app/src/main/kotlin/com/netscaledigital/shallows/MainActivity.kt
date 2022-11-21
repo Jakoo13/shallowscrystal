@@ -1,4 +1,4 @@
-package com.netscaledigital.shallows
+package com.netscaledigital.crystal
 
 import io.flutter.embedding.android.FlutterActivity
 

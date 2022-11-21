@@ -3,21 +3,21 @@
 <plist version="1.0">
 <dict>
 	<key>CLIENT_ID</key>
-	<string>694910055150-n0uq0c5v2h6bioticrms37m1a787rbis.apps.googleusercontent.com</string>
+	<string>1053741217645-8b0c4r58k8rkg29b65ssa8sl3c3ni82s.apps.googleusercontent.com</string>
 	<key>REVERSED_CLIENT_ID</key>
-	<string>com.googleusercontent.apps.694910055150-n0uq0c5v2h6bioticrms37m1a787rbis</string>
+	<string>com.googleusercontent.apps.1053741217645-8b0c4r58k8rkg29b65ssa8sl3c3ni82s</string>
 	<key>API_KEY</key>
-	<string>AIzaSyDkttXpkimD7Lg09yNzOECrzc6xqPnzjZ0</string>
+	<string>AIzaSyAjU3U2lbGmLUO7Pnkq6gFwrQCq-rgXTEo</string>
 	<key>GCM_SENDER_ID</key>
-	<string>694910055150</string>
+	<string>1053741217645</string>
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
-	<string>com.netscaledigital.shallows</string>
+	<string>com.netscaledigital.crystal</string>
 	<key>PROJECT_ID</key>
-	<string>shallows-3e9ed</string>
+	<string>shallowscrystal</string>
 	<key>STORAGE_BUCKET</key>
-	<string>shallows-3e9ed.appspot.com</string>
+	<string>shallowscrystal.appspot.com</string>
 	<key>IS_ADS_ENABLED</key>
 	<false></false>
 	<key>IS_ANALYTICS_ENABLED</key>
@@ -29,6 +29,6 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:694910055150:ios:67ef30bffc43a35b8d39ff</string>
+	<string>1:1053741217645:ios:e1e6557b2c79d6933b8c64</string>
 </dict>
 </plist>

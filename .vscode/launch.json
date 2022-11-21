@@ -6,18 +6,18 @@
     "configurations": [
         
         {
-            "name": "Shallows",
+            "name": "ShallowsCrystal",
             "request": "launch",
             "type": "dart"
         },
         {
-            "name": "Shallows (profile mode)",
+            "name": "ShallowsCrystal (profile mode)",
             "request": "launch",
             "type": "dart",
             "flutterMode": "profile"
         },
         {
-            "name": "Shallows (release mode)",
+            "name": "ShallowsCrystal (release mode)",
             "request": "launch",
             "type": "dart",
             "flutterMode": "release"

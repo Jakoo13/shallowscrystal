@@ -1,22 +1,20 @@
+import 'package:ShallowsCrystal/services/auth_service.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:get/get.dart';
-//import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-import 'package:shallows/models/UserModel.dart';
-import 'package:shallows/screens/lake/LakePage.dart';
-import 'package:shallows/screens/authenticate/Register.dart';
-import 'package:shallows/screens/authenticate/SignIn.dart';
-import 'package:shallows/screens/profile/ProfilePage.dart';
-import 'package:shallows/screens/profile/editProfile.dart';
-import 'package:shallows/screens/wrapper.dart';
+import 'package:ShallowsCrystal/models/UserModel.dart';
+import 'package:ShallowsCrystal/screens/lake/LakePage.dart';
+import 'package:ShallowsCrystal/screens/authenticate/Register.dart';
+import 'package:ShallowsCrystal/screens/authenticate/SignIn.dart';
+import 'package:ShallowsCrystal/screens/profile/ProfilePage.dart';
+import 'package:ShallowsCrystal/screens/profile/editProfile.dart';
+import 'package:ShallowsCrystal/screens/wrapper.dart';
 import 'package:provider/provider.dart';
-import 'package:shallows/services/auth_service.dart';
-//import 'package:shared_preferences/shared_preferences.dart';
 
 const AndroidNotificationChannel channel = AndroidNotificationChannel(
-    'com.netscaledigital.shallows.urgent', 'High Importance Notifications',
+    'com.netscaledigital.crystal', 'High Importance Notifications',
     importance: Importance.high, playSound: true);
 
 final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =

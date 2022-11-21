@@ -1,8 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:shallows/screens/residences/ResidenceProfile.dart';
-import 'package:shallows/screens/residences/MembersAnimation.dart';
-import 'package:shallows/services/UserCollectionSetup.dart';
+import 'package:ShallowsCrystal/screens/residences/ResidenceProfile.dart';
+import 'package:ShallowsCrystal/screens/residences/MembersAnimation.dart';
+import 'package:ShallowsCrystal/services/UserCollectionSetup.dart';
 
 class ResidencesPage extends StatefulWidget {
   const ResidencesPage({Key? key}) : super(key: key);

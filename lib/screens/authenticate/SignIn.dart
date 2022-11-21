@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:shallows/services/auth_service.dart';
+import 'package:ShallowsCrystal/services/auth_service.dart';
+import 'package:get/get.dart';
+import '../lake/lake_screen_controller.dart';
 import 'Register.dart';
 import 'package:page_transition/page_transition.dart';
 
@@ -20,6 +22,7 @@ class _SignInState extends State<SignIn> {
 
   @override
   Widget build(BuildContext context) {
+    Get.put(LakeScreenController());
     User? user = FirebaseAuth.instance.currentUser;
     return MaterialApp(
       home: MediaQuery(

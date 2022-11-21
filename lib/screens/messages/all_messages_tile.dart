@@ -3,9 +3,9 @@ import 'dart:math';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:shallows/screens/messages/ChatScreen.dart';
+import 'package:ShallowsCrystal/screens/messages/ChatScreen.dart';
 import 'package:intl/intl.dart';
-import 'package:shallows/screens/messages/chat_controller.dart';
+import 'package:ShallowsCrystal/screens/messages/chat_controller.dart';
 
 import '../lake/lake_screen_controller.dart';
 

@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:get/get.dart';
-import 'package:shallows/screens/lake/lake_screen_controller.dart';
+import 'package:ShallowsCrystal/screens/lake/lake_screen_controller.dart';
 
 class ChatController extends GetxController {
   final lakeController = Get.find<LakeScreenController>();

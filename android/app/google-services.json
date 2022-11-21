@@ -1,40 +1,48 @@
 {
   "project_info": {
-    "project_number": "694910055150",
-    "project_id": "shallows-3e9ed",
-    "storage_bucket": "shallows-3e9ed.appspot.com"
+    "project_number": "1053741217645",
+    "project_id": "shallowscrystal",
+    "storage_bucket": "shallowscrystal.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:694910055150:android:1645a85a9545e4638d39ff",
+        "mobilesdk_app_id": "1:1053741217645:android:d793092c65ceb7d03b8c64",
         "android_client_info": {
-          "package_name": "com.netscaledigital.shallows"
+          "package_name": "com.netscaledigital.crystal"
         }
       },
       "oauth_client": [
         {
-          "client_id": "694910055150-ku4lq9ktcch1k34pptr3tq3ae58vnbn9.apps.googleusercontent.com",
+          "client_id": "1053741217645-eh6g590d04cgp5q5i0a05egkols7pr1p.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.netscaledigital.crystal",
+            "certificate_hash": "0dbcc78276e2f864ce9e86c0bd06a9f34ce72139"
+          }
+        },
+        {
+          "client_id": "1053741217645-k5i3lvliqu2kgm3h73rfr7uul6eigbke.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyBkfE2NkwMPE3fdhFcIWHnrP_QDi0DmeLM"
+          "current_key": "AIzaSyC6inicWN9-0Xr4iyAfxqfsXMqyTOt0V8o"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "694910055150-ku4lq9ktcch1k34pptr3tq3ae58vnbn9.apps.googleusercontent.com",
+              "client_id": "1053741217645-k5i3lvliqu2kgm3h73rfr7uul6eigbke.apps.googleusercontent.com",
               "client_type": 3
             },
             {
-              "client_id": "694910055150-n0uq0c5v2h6bioticrms37m1a787rbis.apps.googleusercontent.com",
+              "client_id": "1053741217645-8b0c4r58k8rkg29b65ssa8sl3c3ni82s.apps.googleusercontent.com",
               "client_type": 2,
               "ios_info": {
-                "bundle_id": "com.netscaledigital.shallows"
+                "bundle_id": "com.netscaledigital.crystal"
               }
             }
           ]

@@ -3,10 +3,10 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:shallows/screens/lake/lake_screen_controller.dart';
-import 'package:shallows/screens/messages/chat_controller.dart';
-import 'package:shallows/screens/messages/widgets/message_display.dart';
-import 'package:shallows/screens/messages/widgets/message_input.dart';
+import 'package:ShallowsCrystal/screens/lake/lake_screen_controller.dart';
+import 'package:ShallowsCrystal/screens/messages/chat_controller.dart';
+import 'package:ShallowsCrystal/screens/messages/widgets/message_display.dart';
+import 'package:ShallowsCrystal/screens/messages/widgets/message_input.dart';
 
 class ChatScreen extends StatelessWidget {
   final String otherResidence;

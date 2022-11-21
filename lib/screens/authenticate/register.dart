@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:shallows/services/auth_service.dart';
+import 'package:ShallowsCrystal/services/auth_service.dart';
 //import 'package:shallows/screens/authenticate/residenceDropDown.dart';
 
 class Register extends StatefulWidget {
