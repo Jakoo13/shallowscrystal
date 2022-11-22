@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:ShallowsCrystal/services/auth_service.dart';
+import 'package:get/get.dart';
+
+import '../../services/get_residences_controller.dart';
 //import 'package:shallows/screens/authenticate/residenceDropDown.dart';
 
 class Register extends StatefulWidget {
@@ -25,7 +28,7 @@ class _RegisterState extends State<Register> {
   @override
   Widget build(BuildContext context) {
     User? user = FirebaseAuth.instance.currentUser;
-
+    var residencesController = Get.find<GetResidencesController>();
     return MaterialApp(
       home: MediaQuery(
         data: MediaQuery.of(context).copyWith(textScaleFactor: 1),
@@ -152,28 +155,8 @@ class _RegisterState extends State<Register> {
                             });
                             print(dropdownValue);
                           },
-                          items: <String>[
-                            'Residence',
-                            'Black',
-                            'Cannon',
-                            'DeGravina',
-                            'Doran',
-                            'Earnhardt',
-                            'Eaton',
-                            'Gilker',
-                            'Gregg',
-                            'Hilderbrand',
-                            'Holmes',
-                            'Kirker',
-                            'Korinek',
-                            'Kubacki',
-                            'McNabb',
-                            'Miller',
-                            'Ogden',
-                            'Perry',
-                            'Pisio',
-                            'Young'
-                          ].map<DropdownMenuItem<String>>((String value) {
+                          items: residencesController.residencesListString
+                              .map<DropdownMenuItem<String>>((String value) {
                             return DropdownMenuItem<String>(
                               value: value,
                               child: Text(

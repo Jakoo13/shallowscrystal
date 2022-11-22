@@ -1,3 +1,4 @@
+import 'package:ShallowsCrystal/services/get_residences_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:ShallowsCrystal/services/auth_service.dart';
@@ -22,7 +23,7 @@ class _SignInState extends State<SignIn> {
 
   @override
   Widget build(BuildContext context) {
-    Get.put(LakeScreenController());
+    Get.put(GetResidencesController());
     User? user = FirebaseAuth.instance.currentUser;
     return MaterialApp(
       home: MediaQuery(
