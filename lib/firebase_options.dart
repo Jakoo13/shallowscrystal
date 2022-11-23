@@ -69,8 +69,10 @@ class DefaultFirebaseOptions {
     messagingSenderId: '1053741217645',
     projectId: 'shallowscrystal',
     storageBucket: 'shallowscrystal.appspot.com',
-    androidClientId: '1053741217645-eh6g590d04cgp5q5i0a05egkols7pr1p.apps.googleusercontent.com',
-    iosClientId: '1053741217645-8b0c4r58k8rkg29b65ssa8sl3c3ni82s.apps.googleusercontent.com',
-    iosBundleId: 'com.netscaledigital.crystal',
+    androidClientId:
+        '1053741217645-eh6g590d04cgp5q5i0a05egkols7pr1p.apps.googleusercontent.com',
+    iosClientId:
+        '1053741217645-8b0c4r58k8rkg29b65ssa8sl3c3ni82s.apps.googleusercontent.com',
+    iosBundleId: 'com.netscaledigital.lakeflagscrystal',
   );
 }

@@ -7,17 +7,17 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:1053741217645:android:d793092c65ceb7d03b8c64",
+        "mobilesdk_app_id": "1:1053741217645:android:b1b3ad2e07057a6f3b8c64",
         "android_client_info": {
-          "package_name": "com.netscaledigital.crystal"
+          "package_name": "com.netscaledigital.lakeflagscrystal"
         }
       },
       "oauth_client": [
         {
-          "client_id": "1053741217645-eh6g590d04cgp5q5i0a05egkols7pr1p.apps.googleusercontent.com",
+          "client_id": "1053741217645-tb8sendrs467mheql1kcndldsivneuml.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
-            "package_name": "com.netscaledigital.crystal",
+            "package_name": "com.netscaledigital.lakeflagscrystal",
             "certificate_hash": "0dbcc78276e2f864ce9e86c0bd06a9f34ce72139"
           }
         },

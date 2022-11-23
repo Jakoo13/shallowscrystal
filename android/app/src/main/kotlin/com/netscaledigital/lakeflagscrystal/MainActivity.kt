@@ -1,4 +1,4 @@
-package com.netscaledigital.crystal
+package com.netscaledigital.lakeflagscrystal
 
 import io.flutter.embedding.android.FlutterActivity
 

@@ -3,9 +3,11 @@
 <plist version="1.0">
 <dict>
 	<key>CLIENT_ID</key>
-	<string>1053741217645-8b0c4r58k8rkg29b65ssa8sl3c3ni82s.apps.googleusercontent.com</string>
+	<string>1053741217645-bt9nh54amf5dvu6nnudbo00e0kcqpvvt.apps.googleusercontent.com</string>
 	<key>REVERSED_CLIENT_ID</key>
-	<string>com.googleusercontent.apps.1053741217645-8b0c4r58k8rkg29b65ssa8sl3c3ni82s</string>
+	<string>com.googleusercontent.apps.1053741217645-bt9nh54amf5dvu6nnudbo00e0kcqpvvt</string>
+	<key>ANDROID_CLIENT_ID</key>
+	<string>1053741217645-eh6g590d04cgp5q5i0a05egkols7pr1p.apps.googleusercontent.com</string>
 	<key>API_KEY</key>
 	<string>AIzaSyAjU3U2lbGmLUO7Pnkq6gFwrQCq-rgXTEo</string>
 	<key>GCM_SENDER_ID</key>
@@ -13,7 +15,7 @@
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
-	<string>com.netscaledigital.crystal</string>
+	<string>com.netscaledigital.lakeflagscrystal</string>
 	<key>PROJECT_ID</key>
 	<string>shallowscrystal</string>
 	<key>STORAGE_BUCKET</key>
@@ -29,6 +31,6 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:1053741217645:ios:e1e6557b2c79d6933b8c64</string>
+	<string>1:1053741217645:ios:5d01fa555fd0abf03b8c64</string>
 </dict>
 </plist>

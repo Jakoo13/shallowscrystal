@@ -2,7 +2,7 @@
 <resources>
     <string name="app_name">ShallowsCrystal</string>
     <string name="title_activity_main">MyApp</string>
-    <string name="package_name">com.netscaledigital.crystal</string>
-    <string name="custom_url_scheme">com.netscaledigital.crystal</string>
-    <string name="default_notification_channel_id">com.netscaledigital.crystal.urgent</string>
+    <string name="package_name">ccom.netscaledigital.lakeflagscrystal</string>
+    <string name="custom_url_scheme">com.netscaledigital.lakeflagscrystal</string>
+    <string name="default_notification_channel_id">com.netscaledigital.lakeflagscrystal.urgent</string>
 </resources>

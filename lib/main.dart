@@ -14,7 +14,7 @@ import 'package:ShallowsCrystal/screens/wrapper.dart';
 import 'package:provider/provider.dart';
 
 const AndroidNotificationChannel channel = AndroidNotificationChannel(
-    'com.netscaledigital.crystal', 'High Importance Notifications',
+    'com.netscaledigital.lakeflagscrystal', 'High Importance Notifications',
     importance: Importance.high, playSound: true);
 
 final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
