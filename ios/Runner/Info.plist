@@ -36,6 +36,7 @@
 	<string>Allow access to photo library</string>
 	<key>UIBackgroundModes</key>
 	<array>
+		<string>external-accessory</string>
 		<string>processing</string>
 		<string>remote-notification</string>
 	</array>
